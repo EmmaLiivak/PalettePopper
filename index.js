@@ -66,6 +66,7 @@ function generateBricks() {
 function gameLoop() {
   moveBall();
   updateFPS();
+  checkGameEnd();
   requestAnimationFrame(gameLoop);
 }
 
@@ -74,7 +75,6 @@ function moveBall() {
   checkWallCollisions();
   checkPaddleCollision();
   checkBrickCollisions();
-  checkGameEnd();
 }
 
 function updateBallPosition() {
