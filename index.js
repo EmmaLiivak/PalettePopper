@@ -1,10 +1,10 @@
-const brickContainer = document.querySelector('.brickContainer');
-const paddle = document.querySelector('.paddle');
-const gameWidth = document.querySelector('.game').offsetWidth;
-const paddleWidth = paddle.offsetWidth;
-
 const NUMBER_OF_BRICKS = 60;
 const PADDLE_STEP = 10;
+
+const brickContainer = document.querySelector('.brickContainer');
+const paddle = document.querySelector('.paddle');
+const gameWidth = document.querySelector('.game').offsetWidth - PADDLE_STEP;
+const paddleWidth = paddle.offsetWidth;
 
 function generateBricks(){
   for (let i = 0; i < NUMBER_OF_BRICKS; i++){
@@ -20,23 +20,31 @@ function generateBricks(){
 
 generateBricks();
 
-function movePaddle(e) {
-  let paddleLeft = paddle.offsetLeft;
-
-  switch(e.key) {
+function handleKeyPress(event) {
+  switch(event.key) {
     case 'ArrowLeft':
-      if (paddleLeft > 0) {
-        paddle.style.left = (paddleLeft - PADDLE_STEP) + 'px';
-      }
+      movePaddleLeft();
       break;
     case 'ArrowRight':
-      if (paddleLeft + paddleWidth < gameWidth) {
-        paddle.style.left = (paddleLeft + PADDLE_STEP) + 'px';
-      }
+      movePaddleRight();
       break;
     default:
       break;
   }
 }
 
-document.addEventListener('keydown', movePaddle);
+function movePaddleLeft() {
+  const paddlePositionX = paddle.offsetLeft;
+  if (paddlePositionX > 0) {
+    paddle.style.left = (paddlePositionX - PADDLE_STEP) + 'px';
+  }
+}
+
+function movePaddleRight() {
+  const paddlePositionX = paddle.offsetLeft;
+  if (paddlePositionX + paddleWidth < gameWidth) {
+    paddle.style.left = (paddlePositionX + PADDLE_STEP) + 'px';
+  }
+}
+
+document.addEventListener('keydown', handleKeyPress);
