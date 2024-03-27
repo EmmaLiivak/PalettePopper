@@ -12,7 +12,7 @@ const paddleWidth = paddle.offsetWidth;
 const ballDiameter = ball.offsetWidth;
 const ballRadius = ballDiameter / 2;
 let ballX = gameWidth / 2; // Initial horizontal position
-let ballY = ballRadius; // Initial vertical position
+let ballY = gameHeight / 2; // Initial vertical position
 let speedX = 3; // Horizontal speed
 let speedY = -3; // Vertical speed
 
@@ -30,10 +30,13 @@ function generateBricks(){
 
 generateBricks();
 
+const bricks = document.querySelectorAll('.brick');
+
 function moveBall() {
   updateBallPosition();
   checkWallCollisions();
   checkPaddleCollision();
+  checkBrickCollisions();
 }
 
 function updateBallPosition() {
@@ -60,6 +63,55 @@ function checkPaddleCollision() {
     ballX <= paddle.offsetLeft + paddle.offsetWidth) {
       speedY = -speedY; // Reverse vertical direction
     }
+}
+
+function checkBrickCollisions() {
+  bricks.forEach(brick => {
+    if (brick.classList.contains('removed')) {
+      return; // Skip brick if already removed
+    }
+    
+    if (isCollisionWithBrick(brick)) {
+      handleBrickCollision(brick);
+    }
+  });
+}
+
+function isCollisionWithBrick(brick) {
+  const brickRect = brick.getBoundingClientRect();
+  const ballRect = ball.getBoundingClientRect();
+  
+  return (
+    ballRect.right >= brickRect.left && 
+    ballRect.left <= brickRect.right &&
+    ballRect.bottom >= brickRect.top &&
+    ballRect.top <= brickRect.bottom
+  );
+}
+
+function handleBrickCollision(brick) {
+  // Remove the brick from the game
+  brick.classList.add('removed');
+  brick.style.backgroundColor = 'transparent';
+  
+  const brickRect = brick.getBoundingClientRect();
+  const ballRect = ball.getBoundingClientRect();
+  
+  const ballCenterX = ballRect.left + ballRect.width / 2;
+  const ballCenterY = ballRect.top + ballRect.height / 2;
+  const brickCenterX = brickRect.left + brickRect.width / 2;
+  const brickCenterY = brickRect.top + brickRect.height / 2;
+  
+  const dx = ballCenterX - brickCenterX;
+  const dy = ballCenterY - brickCenterY;
+  
+  if (Math.abs(dx) > Math.abs(dy)) {
+    // Horizontal collision
+    speedY = -speedY; // Reverse vertical direction
+  } else {
+    // Vertical collision
+    speedX = -speedX; // Reverse horizontal direction
+  }
 }
 
 function handleKeyPress(event) {
