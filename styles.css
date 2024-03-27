@@ -1,13 +1,33 @@
-.grid {
-  position: absolute;
-  width: 600px;
-  height: 300px;
+.game {
+  position: relative;
+  width: 80vw;
+  height: 80vh;
+  margin: 0 auto;
+  overflow: hidden;
   border: solid black 1px;
 }
 
-.brick {
+.brickContainer {
+  display: grid;
+  grid-template-columns: repeat(10, auto);
+  grid-gap: 5px;
+  padding: 5px 5px 0px 5px;
+  height: 40%;
+}
+
+.paddle{
+  background-color: black;
   position: absolute;
-  width: 100px;
-  height: 20px;
-  background-color: blue;
+  height: 2%;
+  width: 10%;
+  bottom: 0px;
+  left: 180px;
+}
+
+.ball{
+  height: 1vw;
+  width: 1vw;
+  border-radius: 50%;
+  background-color: red;
+  position: absolute;
 }
