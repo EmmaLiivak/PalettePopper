@@ -1,22 +1,52 @@
+// Constants
 const NUMBER_OF_BRICKS = 60;
 const PADDLE_STEP = 10;
 
+// Elements
 const brickContainer = document.querySelector('.brickContainer');
 const paddle = document.querySelector('.paddle');
 const ball = document.querySelector('.ball');
 const game = document.querySelector('.game');
+const timeDisplay = document.querySelector('.time');
+const scoreDisplay = document.querySelector('.score');
+const livesDisplay = document.querySelector('.lives');
+const fpsDisplay = document.querySelector('.fps');
 
+// Game dimensions
 const gameWidth = game.offsetWidth;
 const gameHeight = game.offsetHeight;
+
+// Paddle dimensions
 const paddleWidth = paddle.offsetWidth;
+const paddleHeight = paddle.offsetHeight;
+
+// Ball dimensions
 const ballDiameter = ball.offsetWidth;
 const ballRadius = ballDiameter / 2;
-let ballX = gameWidth / 2; // Initial horizontal position
-let ballY = gameHeight / 2; // Initial vertical position
+let ballX = paddle.offsetLeft + paddleWidth / 2 - ballRadius;
+let ballY = gameHeight - paddleHeight - ballDiameter;
 let speedX = 3; // Horizontal speed
 let speedY = -3; // Vertical speed
 
-function generateBricks(){
+// Game metrics variables
+let lastUpdateTime = null;
+let totalElapsedTime = 0;
+let score = 0;
+let lives = 3;
+const times = [];
+let fps;
+
+// Generate bricks
+generateBricks();
+const bricks = document.querySelectorAll('.brick');
+
+// Event listeners
+document.addEventListener('keydown', handleKeyPress);
+
+// Start game loop
+gameLoop();
+
+function generateBricks() {
   for (let i = 0; i < NUMBER_OF_BRICKS; i++){
     let brick = document.createElement('div');
     brick.classList.add('brick'); 
@@ -28,9 +58,11 @@ function generateBricks(){
   }
 }
 
-generateBricks();
-
-const bricks = document.querySelectorAll('.brick');
+function gameLoop() {
+  moveBall();
+  updateFPS();
+  requestAnimationFrame(gameLoop);
+}
 
 function moveBall() {
   updateBallPosition();
@@ -47,22 +79,20 @@ function updateBallPosition() {
 }
 
 function checkWallCollisions() {
-  // Collides with left or right wall
   if (ballX > gameWidth - ballDiameter || ballX < 0) {
     speedX = -speedX; // Reverse horizontal direction
   }
-  // collides with top or bottom wall
   if (ballY < 0 || ballY > gameHeight - ballDiameter) {
     speedY = -speedY; // Reverse vertical direction
   }
 }
 
 function checkPaddleCollision() {
-  if (ballY + ballDiameter >= gameHeight - paddle.offsetHeight &&
+  if (ballY + ballDiameter > gameHeight - paddle.offsetHeight &&
     ballX >= paddle.offsetLeft && 
     ballX <= paddle.offsetLeft + paddle.offsetWidth) {
-      speedY = -speedY; // Reverse vertical direction
-    }
+    speedY = -speedY; // Reverse vertical direction
+  }
 }
 
 function checkBrickCollisions() {
@@ -70,7 +100,6 @@ function checkBrickCollisions() {
     if (brick.classList.contains('removed')) {
       return; // Skip brick if already removed
     }
-    
     if (isCollisionWithBrick(brick)) {
       handleBrickCollision(brick);
     }
@@ -92,7 +121,10 @@ function isCollisionWithBrick(brick) {
 function handleBrickCollision(brick) {
   // Remove the brick from the game
   brick.classList.add('removed');
-  brick.style.backgroundColor = 'transparent';
+
+  // Update score
+  score += 100
+  scoreDisplay.textContent = 'Score: ' + score;
   
   const brickRect = brick.getBoundingClientRect();
   const ballRect = ball.getBoundingClientRect();
@@ -105,13 +137,7 @@ function handleBrickCollision(brick) {
   const dx = ballCenterX - brickCenterX;
   const dy = ballCenterY - brickCenterY;
   
-  if (Math.abs(dx) > Math.abs(dy)) {
-    // Horizontal collision
-    speedY = -speedY; // Reverse vertical direction
-  } else {
-    // Vertical collision
-    speedX = -speedX; // Reverse horizontal direction
-  }
+  Math.abs(dx) > Math.abs(dy) ? speedY = -speedY : speedX = -speedX;
 }
 
 function handleKeyPress(event) {
@@ -141,12 +167,12 @@ function movePaddleRight() {
   }
 }
 
-document.addEventListener('keydown', handleKeyPress);
-
-
-function gameLoop() {
-  moveBall();
-  requestAnimationFrame(gameLoop);
+function updateFPS() {
+  const now = performance.now();
+  while (times.length > 0 && times[0] <= now - 1000) {
+    times.shift();
+  }
+  times.push(now);
+  fps = times.length;
+  fpsDisplay.textContent = 'FPS: ' + fps;
 }
-
-gameLoop();

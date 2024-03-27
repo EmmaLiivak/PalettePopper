@@ -33,3 +33,7 @@
   left: calc(50% - (1vw / 2));
   background-color: red;
 }
+
+.removed {
+  background-color: transparent !important;
+}
