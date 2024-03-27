@@ -12,6 +12,9 @@ const scoreDisplay = document.querySelector('.score');
 const livesDisplay = document.querySelector('.lives');
 const fpsDisplay = document.querySelector('.fps');
 
+// Game state
+let gamePaused = true;
+
 // Game dimensions
 const gameWidth = game.offsetWidth;
 const gameHeight = game.offsetHeight;
@@ -25,8 +28,10 @@ const ballDiameter = ball.offsetWidth;
 const ballRadius = ballDiameter / 2;
 let ballX = paddle.offsetLeft + paddleWidth / 2 - ballRadius;
 let ballY = gameHeight - paddleHeight - ballDiameter;
-let speedX = 3; // Horizontal speed
-let speedY = -3; // Vertical speed
+let speedX = 0; // Horizontal speed
+let speedY = 0; // Vertical speed
+let lastSpeedX = 3;
+let lastSpeedY = -3;
 
 // Game metrics variables
 let lastUpdateTime = null;
@@ -41,6 +46,7 @@ generateBricks();
 const bricks = document.querySelectorAll('.brick');
 
 // Event listeners
+document.addEventListener('keydown', handleSpaceKeyPress);
 document.addEventListener('keydown', handleKeyPress);
 
 // Start game loop
@@ -140,6 +146,33 @@ function handleBrickCollision(brick) {
   Math.abs(dx) > Math.abs(dy) ? speedY = -speedY : speedX = -speedX;
 }
 
+function handleSpaceKeyPress(event) {
+  if (event.key === ' ' || event.key === 'Spacebar') {
+    gamePaused ? resumeGame() : pauseGame();
+  }
+}
+
+function resumeGame() {
+  // Give ball speed
+  speedX = lastSpeedX;
+  speedY = lastSpeedY;
+
+  // Start the timer
+  lastUpdateTime = performance.now();
+  updateTime();
+  timerInterval = setInterval(updateTime, 1000);
+  gamePaused = false;
+}
+
+function pauseGame() {
+  lastSpeedX = speedX;
+  lastSpeedY = speedY;
+  speedX = 0;
+  speedY = 0;
+  clearInterval(timerInterval);
+  gamePaused = true;
+}
+
 function handleKeyPress(event) {
   switch(event.key) {
     case 'ArrowLeft':
@@ -175,4 +208,20 @@ function updateFPS() {
   times.push(now);
   fps = times.length;
   fpsDisplay.textContent = 'FPS: ' + fps;
+}
+
+function updateTime() {
+  if (gamePaused) return;
+  let currentTime = performance.now();
+  let elapsedTime = currentTime - lastUpdateTime;
+  totalElapsedTime += elapsedTime;
+  let seconds = Math.floor(totalElapsedTime / 1000);
+  let minutes = Math.floor(seconds / 60);
+  seconds = seconds % 60;
+  minutes = String(minutes).padStart(2, '0');
+  seconds = String(seconds).padStart(2, '0');
+
+  timeDisplay.textContent = 'Time: ' + minutes + ':' + seconds;
+
+  lastUpdateTime = currentTime;
 }
