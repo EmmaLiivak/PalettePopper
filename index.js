@@ -1,6 +1,6 @@
 // Constants
 const NUMBER_OF_BRICKS = 60;
-const PADDLE_STEP = 10;
+const PADDLE_STEP = 15;
 
 // Elements
 const brickContainer = document.querySelector('.brickContainer');
@@ -47,7 +47,6 @@ const bricks = document.querySelectorAll('.brick');
 
 // Event listeners
 document.addEventListener('keydown', handleSpaceKeyPress);
-document.addEventListener('keydown', handleKeyPress);
 
 // Start game loop
 gameLoop();
@@ -75,6 +74,7 @@ function moveBall() {
   checkWallCollisions();
   checkPaddleCollision();
   checkBrickCollisions();
+  checkGameEnd();
 }
 
 function updateBallPosition() {
@@ -88,9 +88,20 @@ function checkWallCollisions() {
   if (ballX > gameWidth - ballDiameter || ballX < 0) {
     speedX = -speedX; // Reverse horizontal direction
   }
-  if (ballY < 0 || ballY > gameHeight - ballDiameter) {
+  if (ballY < 0) {
     speedY = -speedY; // Reverse vertical direction
   }
+  if (ballY > gameHeight - ballDiameter) {
+    handleBottomWallCollision();
+  }
+}
+
+function handleBottomWallCollision() {
+  lives--;
+  livesDisplay.innerHTML = 'Lives: ' + '&#10084;'.repeat(lives);
+  pauseGame();
+  resetBallPosition();
+  ballCollidedWithBottom = true;
 }
 
 function checkPaddleCollision() {
@@ -146,6 +157,11 @@ function handleBrickCollision(brick) {
   Math.abs(dx) > Math.abs(dy) ? speedY = -speedY : speedX = -speedX;
 }
 
+function checkGameEnd() {
+  if (lives < 1) alert('Game Over!');
+  if (allBricksRemoved()) alert('Game Won!');
+}
+
 function handleSpaceKeyPress(event) {
   if (event.key === ' ' || event.key === 'Spacebar') {
     gamePaused ? resumeGame() : pauseGame();
@@ -161,6 +177,9 @@ function resumeGame() {
   lastUpdateTime = performance.now();
   updateTime();
   timerInterval = setInterval(updateTime, 1000);
+
+  document.addEventListener('keydown', handleKeyPress);
+  ballCollidedWithBottom = false;
   gamePaused = false;
 }
 
@@ -170,6 +189,7 @@ function pauseGame() {
   speedX = 0;
   speedY = 0;
   clearInterval(timerInterval);
+  document.removeEventListener('keydown', handleKeyPress);
   gamePaused = true;
 }
 
@@ -195,7 +215,7 @@ function movePaddleLeft() {
 
 function movePaddleRight() {
   const paddlePositionX = paddle.offsetLeft;
-  if (paddlePositionX + paddleWidth < (gameWidth - PADDLE_STEP)) {
+  if (paddlePositionX + paddleWidth < gameWidth) {
     paddle.style.left = (paddlePositionX + PADDLE_STEP) + 'px';
   }
 }
@@ -224,4 +244,23 @@ function updateTime() {
   timeDisplay.textContent = 'Time: ' + minutes + ':' + seconds;
 
   lastUpdateTime = currentTime;
+}
+
+function resetBallPosition() {
+  // Move the ball back to the paddle position
+  ballX = paddle.offsetLeft + (paddleWidth - ballDiameter) / 2;
+  ballY = gameHeight - paddleHeight - ballDiameter;
+ 
+  // Update the ball position on the screen
+  ball.style.left = ballX + 'px';
+  ball.style.top = ballY + 'px';
+}
+
+function allBricksRemoved() {
+  for (let brick of bricks) {
+    if (!brick.classList.contains('removed')) {
+      return false;
+    }
+  }
+  return true;
 }
