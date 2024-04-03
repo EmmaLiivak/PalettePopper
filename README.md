@@ -6,7 +6,7 @@ Captivating brick-breaker experience where color theory takes center stage.
 
 ### Architecture
 
-The game utilizes Entity-Component-System (ECS) to manage the complexity and scalability of our game's codebase. This decision was made after careful consideration of various architectural approaches (like Object-Oriented or Component-Based architectures).
+The game utilizes Entity-Component-System (ECS) to manage the complexity and scalability of the game's codebase. This decision was made after careful consideration of various architectural approaches (like Object-Oriented or Component-Based architectures).
 
 **Reasons for Choosing ECS:**
 
@@ -27,6 +27,7 @@ Getting Started:
 
 * ['Learn JavaScript by Building 7 Games - Full Course' by freeCodeCamp.org](https://youtu.be/ec8vSKJuZTk?si=NRVQajK8dl4IUJ6z)
 * ['Creating a Brickbreaker style game in JavaScript, CSS, and HTML' by Nate McGraw](https://nmcgr001.medium.com/)
+* ['JS for Game'](https://jsforgames.com)
 
 ESC Framework Design:
 
@@ -34,4 +35,7 @@ ESC Framework Design:
 * ['ECS back and forth' by Michele Caini](https://skypjack.github.io/2019-02-14-ecs-baf-part-1/)
 * ['Building a fast ECS on top of a slow ECS' by UnitOfTime](https://youtu.be/71RSWVyOMEY?si=FTp15Vik_aTjxvuH)
 * [How to Build an Entity Component System Game in Javascript](http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript)
-* ['JS for Game'](https://jsforgames.com)
+
+Physics:
+
+*[Physics for a Block Breaker Game](https://www.smilingcatentertainment.com/physics-for-a-block-breaker-game/)

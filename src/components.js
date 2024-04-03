@@ -10,7 +10,7 @@ export default class Component {
 }
 
 // Position Component
-export class Position extends Component {
+export class PositionComponent extends Component {
   constructor(x, y) {
     super();
     this.x = x;
@@ -18,8 +18,17 @@ export class Position extends Component {
   }
 }
 
+// Dimension Component
+export class DimensionComponent extends Component {
+  constructor(height, width) {
+    super();
+    this.height = height;
+    this.width = width;
+  }
+}
+
 // Velocity Component
-export class Velocity extends Component {
+export class VelocityComponent extends Component {
   constructor(dx, dy) {
     super();
     this.dx = dx;
@@ -27,10 +36,32 @@ export class Velocity extends Component {
   }
 }
 
+// Dimension component
+export class Dimension extends Component {
+  constructor(width, height) {
+    super();
+    this.width = width;
+    this.height = height;
+  }
+}
+
 // Render component
-export class Render extends Component {
+export class RenderComponent extends Component {
   constructor(type) {
     super();
     this.type = type;
+  }
+}
+
+// Collision component
+export class CollisionComponent extends Component {
+  constructor(collisionTag) {
+    super();
+    this.collisionTag = collisionTag;
+    this.collisionCallbacks = {};
+  }
+
+  setCollisionCallback(targetCollisionTag, callback) {
+    this.collisionCallbacks[targetCollisionTag] = callback;
   }
 }

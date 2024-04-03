@@ -1,32 +1,42 @@
 import Entity from './entity.js';
-import { Position, Velocity, Render } from './components.js';
-import { MovementSystem, RenderSystem } from './systems.js';
+import { PositionComponent, VelocityComponent, RenderComponent, CollisionComponent, DimensionComponent } from './components.js';
+import { MovementSystem, RenderSystem, WallCollisionSystem } from './systems.js';
 
-// Create a new entity
+const game = document.querySelector('.gameContainer');
+
+// Game dimensions
+const gameWidth = game.offsetWidth;
+const gameHeight = game.offsetHeight;
+
 const ball = new Entity();
 
-// Create and attach components to the entity
-const position = new Position(0, 0);
-const velocity = new Velocity(2, -2);
-const render = new Render('ball');
+ball.attachComponents(
+  new PositionComponent(0, 0),
+  new DimensionComponent(window.innerWidth * 0.01, window.innerWidth * 0.01),
+  new VelocityComponent(2, -2),
+  new RenderComponent('ball'),
+  new CollisionComponent('ball')
+);
 
-ball.attachComponents(position, velocity, render);
-
-const ballHTML = document.querySelector('.ball')
+const ballHTML = document.querySelector('.ball');
 
 const movementSystem = new MovementSystem(ball);
-const renderSystem = new RenderSystem(ball, ballHTML);
+const ballRenderSystem = new RenderSystem(ball, ballHTML);
+const wallCollisionSystem = new WallCollisionSystem(ball, gameWidth, gameHeight);
 
 // Main game loop
 function gameLoop() {
   // Update the movement system
   movementSystem.update();
 
+  // Update collision system
+  wallCollisionSystem.update();
+
   // Render the ball using the render system
-  renderSystem.update();
+  ballRenderSystem.update();
 
   // Request the next animation frame
-  requestAnimationFrame(gameLoop);
+  requestAnimationFrame(gameLoop)
 }
 
 // Start the game loop
