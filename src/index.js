@@ -1,5 +1,5 @@
 import Entity from './entity.js';
-import { PositionComponent, VelocityComponent, RenderComponent, CollisionComponent, DimensionComponent, KeyboardInputComponent } from './components.js';
+import { PositionComponent, VelocityComponent, RenderComponent, CollisionComponent, DimensionComponent, KeyboardInputComponent, SpeedComponent } from './components.js';
 import { MovementSystem, RenderSystem, WallCollisionSystem, KeyboardInputSystem } from './systems.js';
 
 const game = document.querySelector('.gameContainer');
@@ -19,12 +19,15 @@ ball.attachComponents(
 
 const paddle = new Entity();
 paddle.attachComponents(
-  new PositionComponent(gameHeight, gameWidth / 2),
-  new DimensionComponent(gameHeight * 0.02, gameWidth * 0.1),
+  new PositionComponent(0, (gameHeight - gameHeight * 0.02)),
+  new SpeedComponent(2),
+  new DimensionComponent(gameWidth * 0.1, gameHeight * 0.02),
   new RenderComponent('paddle'),
   new CollisionComponent('paddle'),
   new KeyboardInputComponent()
 )
+
+console.log(paddle);
 
 const ballHTML = document.querySelector('.ball');
 const paddleHTML = document.querySelector('.paddle')
@@ -33,7 +36,7 @@ const movementSystem = new MovementSystem(ball);
 const ballRenderSystem = new RenderSystem(ball, ballHTML);
 const paddleRenderSystem = new RenderSystem(paddle, paddleHTML);
 const wallCollisionSystem = new WallCollisionSystem(ball, gameWidth, gameHeight);
-const keyboardInputSystem = new KeyboardInputSystem(paddle);
+const keyboardInputSystem = new KeyboardInputSystem(paddle, gameWidth);
 
 // Main game loop
 function gameLoop() {

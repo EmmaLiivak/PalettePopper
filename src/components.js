@@ -20,10 +20,10 @@ export class PositionComponent extends Component {
 
 // Dimension Component
 export class DimensionComponent extends Component {
-  constructor(height, width) {
+  constructor(width, height) {
     super();
-    this.height = height;
     this.width = width;
+    this.height = height;
   }
 }
 
@@ -33,6 +33,13 @@ export class VelocityComponent extends Component {
     super();
     this.dx = dx;
     this.dy = dy;
+  }
+}
+
+export class SpeedComponent extends Component {
+  constructor(speed) {
+    super();
+    this.speed = speed;
   }
 }
 

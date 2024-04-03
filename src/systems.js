@@ -1,4 +1,4 @@
-import { PositionComponent, VelocityComponent, DimensionComponent } from './components.js';
+import { PositionComponent, VelocityComponent, SpeedComponent, DimensionComponent } from './components.js';
 
 export default class System {
   constructor() {
@@ -69,8 +69,10 @@ export class WallCollisionSystem extends System {
 
 // Keyboard Input System
 export class KeyboardInputSystem extends System {
-  constructor() {
+  constructor(entity, gameWidth) {
     super();
+    this.entity = entity;
+    this.gameWidth = gameWidth;
     this.left = false;
     this.right = false;
     window.addEventListener('keydown', this.handleKeyDown.bind(this));
@@ -108,21 +110,16 @@ export class KeyboardInputSystem extends System {
   }
 
   update() {
-    if (this.entities && this.entities.length > 0) {
-      for(const entity of this.entities) {
-        let horVelocity = 0;
-        let velocityValue = 2
-
-        if (this.left && !this.right) {
-            horVelocity = -velocityValue;
-        } else if (!this.left && this.right) {
-            horVelocity = velocityValue;
-        }
-
-        // Update the position of the entity
-        entity.position.x += horVelocity;
-        entity.position.y += verVelocity;
-      }
+    // Update the position of the entity
+    const entityPosition = this.entity.components.find(component => component instanceof PositionComponent);
+    const entityDimension = this.entity.components.find(component => component instanceof DimensionComponent);
+    const entitySpeed = this.entity.components.find(component => component instanceof SpeedComponent);
+    
+    if (this.left && entityPosition.x > 0) {
+      entityPosition.x -= entitySpeed.speed;
+    }
+    if (this.right && entityPosition.x + entityDimension.width < this.gameWidth) {
+      entityPosition.x += entitySpeed.speed;
     }
   }
 }
