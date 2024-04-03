@@ -66,3 +66,63 @@ export class WallCollisionSystem extends System {
     }
   }
 }
+
+// Keyboard Input System
+export class KeyboardInputSystem extends System {
+  constructor() {
+    super();
+    this.left = false;
+    this.right = false;
+    window.addEventListener('keydown', this.handleKeyDown.bind(this));
+    window.addEventListener('keyup', this.handleKeyUp.bind(this));
+  }
+
+  handleKeyDown(event) {
+    switch (event.code) {
+      case 'KeyA':
+      case 'ArrowLeft':
+        this.left = true;
+        break;
+      case 'KeyD':
+      case 'ArrowRight':
+        this.right = true;
+        break;
+      default:
+        break;
+    }
+  }
+
+  handleKeyUp(event) {
+    switch (event.code) {
+      case 'KeyA':
+      case 'ArrowLeft':
+        this.left = false;
+        break;
+      case 'KeyD':
+      case 'ArrowRight':
+        this.right = false;
+        break;
+      default:
+        break;
+    }
+  }
+
+  update() {
+    if (this.entities && this.entities.length > 0) {
+      for(const entity of this.entities) {
+        let horVelocity = 0;
+        let velocityValue = 2
+
+        if (this.left && !this.right) {
+            horVelocity = -velocityValue;
+        } else if (!this.left && this.right) {
+            horVelocity = velocityValue;
+        }
+
+        // Update the position of the entity
+        entity.position.x += horVelocity;
+        entity.position.y += verVelocity;
+      }
+    }
+  }
+}

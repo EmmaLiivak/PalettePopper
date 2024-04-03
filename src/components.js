@@ -65,3 +65,10 @@ export class CollisionComponent extends Component {
     this.collisionCallbacks[targetCollisionTag] = callback;
   }
 }
+
+export class KeyboardInputComponent extends Component {
+  constructor(entity) {
+    super();
+    this.entity = entity;
+  }
+}
