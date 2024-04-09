@@ -13,8 +13,7 @@ export default class CollisionSystem extends System {
         this.entities.forEach(otherEntity => {
           if (entity.id !== otherEntity.id && otherEntity.hasComponent(CollisionComponent)) {
             if (this.checkCollision(entity, otherEntity)) {
-              this.handleCollision(entity, otherEntity);
-              this.handleCollision(otherEntity, entity);
+              this.invokeCallbacks(entity, otherEntity);
             }
           }
         });
@@ -36,23 +35,32 @@ export default class CollisionSystem extends System {
     );
   }
 
-  handleCollision(entity1, entity2) {
-    if (entity1.name !== 'ball') return;
+  invokeCallbacks(entity1, entity2) {
+    const collisionComponent1 = entity1.getComponent(CollisionComponent);
+    const collisionComponent2 = entity2.getComponent(CollisionComponent);
 
-    const velocity = entity1.getComponent(VelocityComponent);
+    const tag1 = collisionComponent1.tag;
+    const tag2 = collisionComponent2.tag;
 
-    switch (entity2.name) {
-      case 'topWall':
-      case 'bottomWall':
-        velocity.dy = -velocity.dy;
-        break;
-      case 'rightWall':
-      case 'leftWall':
-        velocity.dx = -velocity.dx;
-        break;
-      default:
-        console.error('Invalid wall type');
-        break;
-    }
+    collisionComponent1.invokeCallbacks(tag2, entity1, entity2);
+    collisionComponent2.invokeCallbacks(tag1, entity2, entity1);
+  }
+}
+
+export function OnCollisionWithWall(ball, wallType) {
+  const velocity = ball.getComponent(VelocityComponent);
+
+  switch (wallType) {
+    case 'top':
+    case 'bottom':
+      velocity.dy = -velocity.dy;
+      break;
+    case 'right':
+    case 'left':
+      velocity.dx = -velocity.dx;
+      break;
+    default:
+      console.error('Invalid wall type');
+      break;
   }
 }

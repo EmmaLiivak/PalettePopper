@@ -1,4 +1,5 @@
 import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, CollisionComponent, PlayerInputComponent } from "./components.js";
+import { OnCollisionWithWall } from "./systems/collisionSystem.js";
 
 const game = document.querySelector('.gameContainer');
 const containerWidth = game.offsetWidth;
@@ -56,6 +57,11 @@ BallEntity.attachComponents(
   new ColorComponent(ballColor),
   ballCollisionComponent
 );
+
+ballCollisionComponent.setCallback('topWall', () => OnCollisionWithWall(BallEntity, 'top'));
+ballCollisionComponent.setCallback('leftWall', () => OnCollisionWithWall(BallEntity, 'left'));
+ballCollisionComponent.setCallback('rightWall', () => OnCollisionWithWall(BallEntity, 'right'));
+ballCollisionComponent.setCallback('bottomWall', () => OnCollisionWithWall(BallEntity, 'bottom'));
 
 const paddleEntity = new Entity('paddle');
 paddleEntity.attachComponents(

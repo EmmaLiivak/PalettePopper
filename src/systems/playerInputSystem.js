@@ -1,11 +1,7 @@
-import { PositionComponent, VelocityComponent, SpeedComponent, DimensionComponent, BodyComponent, CollisionComponent, SizeComponent } from './components.js';
-
-// Keyboard Input System
-export class KeyboardInputSystem extends System {
-  constructor(entity, gameWidth) {
+export class PlayerInputSystem extends System {
+  constructor(entities) {
     super();
-    this.entity = entity;
-    this.gameWidth = gameWidth;
+    this.entities = entities;
     this.left = false;
     this.right = false;
     window.addEventListener('keydown', this.handleKeyDown.bind(this));
