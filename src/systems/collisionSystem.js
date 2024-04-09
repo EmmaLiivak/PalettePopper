@@ -46,21 +46,3 @@ export default class CollisionSystem extends System {
     collisionComponent2.invokeCallbacks(tag1, entity2, entity1);
   }
 }
-
-export function OnCollisionWithWall(ball, wallType) {
-  const velocity = ball.getComponent(VelocityComponent);
-
-  switch (wallType) {
-    case 'top':
-    case 'bottom':
-      velocity.dy = -velocity.dy;
-      break;
-    case 'right':
-    case 'left':
-      velocity.dx = -velocity.dx;
-      break;
-    default:
-      console.error('Invalid wall type');
-      break;
-  }
-}

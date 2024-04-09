@@ -109,7 +109,7 @@ export class CollisionComponent extends CallbackManagerComponent {
   }
 }
 
-export class PlayerInputComponent extends CallbackManagerComponent {
+export class InputComponent extends CallbackManagerComponent {
   constructor(inputTag) {
     super(inputTag);
   }

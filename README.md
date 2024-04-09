@@ -35,6 +35,8 @@ ESC Framework Design:
 * ['ECS back and forth' by Michele Caini](https://skypjack.github.io/2019-02-14-ecs-baf-part-1/)
 * ['Building a fast ECS on top of a slow ECS' by UnitOfTime](https://youtu.be/71RSWVyOMEY?si=FTp15Vik_aTjxvuH)
 * [How to Build an Entity Component System Game in Javascript](http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript)
+* [Entity-Component-System For React JS](https://medium.com/@clevyr/entity-component-system-for-react-js-e3ab6e9be776)
+* [Entity Component Systems For The Web](https://medium.com/@drvondevious/entity-component-systems-for-the-web-22065c95de4c)
 
 Physics:
 
