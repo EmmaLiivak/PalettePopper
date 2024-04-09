@@ -59,8 +59,8 @@ Object.entries(keyMapping).forEach(([key, action]) => {
       switch (action) {
         case 'moveLeft':
         case 'moveRight':
-          velocity.dx = 0;
           movementSystem.removeComponent(paddleEntity);
+          velocity.dx = 0;
           break;
       }
     }
