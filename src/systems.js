@@ -1,71 +1,4 @@
-import { PositionComponent, VelocityComponent, SpeedComponent, DimensionComponent } from './components.js';
-
-export default class System {
-  constructor() {
-    this.components = [];
-  }
-
-  update() {
-
-  }
-
-  deleteStaleComponents() {
-    this.components = this.components.filter(x => !x.isDeleted);
-  }
-}
-
-export class MovementSystem extends System {
-  constructor(entity) {
-    super();
-    this.entity = entity;
-  }
-
-  update() {
-    const positionComponent = this.entity.components.find(component => component instanceof PositionComponent);
-    const velocityComponent = this.entity.components.find(component => component instanceof VelocityComponent);
-
-    if (positionComponent && velocityComponent) {
-      positionComponent.x += velocityComponent.dx;
-      positionComponent.y += velocityComponent.dy;
-    }
-  }
-}
-
-export class RenderSystem extends System {
-  constructor(entity, element) {
-    super();
-    this.entity = entity;
-    this.element = element;
-  }
-
-  update() {
-    const position = this.entity.components.find(component => component instanceof PositionComponent);
-    this.element.style.left = `${position.x}px`;
-    this.element.style.top = `${position.y}px`;
-  }
-}
-
-export class WallCollisionSystem extends System {
-  constructor(entity, gameWidth, gameHeight) {
-    super();
-    this.entity = entity;
-    this.gameWidth = gameWidth;
-    this.gameHeight = gameHeight;
-  }
-
-  update() {
-    const entityPosition = this.entity.components.find(component => component instanceof PositionComponent);
-    const entityVelocity = this.entity.components.find(component => component instanceof VelocityComponent);
-    const entityDimension = this.entity.components.find(component => component instanceof DimensionComponent);
-
-    if (entityPosition.x + entityDimension.width > this.gameWidth || entityPosition.x < 0) {
-      entityVelocity.dx = -entityVelocity.dx; // Reverse horizontal direction
-    }
-    if (entityPosition.y < 0 || entityPosition.y + entityDimension.height > this.gameHeight) {
-      entityVelocity.dy = -entityVelocity.dy; // Reverse vertical direction
-    }
-  }
-}
+import { PositionComponent, VelocityComponent, SpeedComponent, DimensionComponent, BodyComponent, CollisionComponent, SizeComponent } from './components.js';
 
 // Keyboard Input System
 export class KeyboardInputSystem extends System {
@@ -111,9 +44,9 @@ export class KeyboardInputSystem extends System {
 
   update() {
     // Update the position of the entity
-    const entityPosition = this.entity.components.find(component => component instanceof PositionComponent);
-    const entityDimension = this.entity.components.find(component => component instanceof DimensionComponent);
-    const entitySpeed = this.entity.components.find(component => component instanceof SpeedComponent);
+    const entityPosition = this.entity.getComponent(PositionComponent);
+    const entityDimension = this.entity.getComponent(DimensionComponent);
+    const entitySpeed = this.entity.getComponent(SpeedComponent);
     
     if (this.left && entityPosition.x > 0) {
       entityPosition.x -= entitySpeed.speed;

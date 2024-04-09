@@ -1,4 +1,4 @@
-export default class Component {
+class Component {
   constructor() {
     this.id = crypto.randomUUID();
     this.isDeleted = false;
@@ -9,25 +9,45 @@ export default class Component {
   }
 }
 
-// Position Component
-export class PositionComponent extends Component {
+class ObservableComponent extends Component {
+  constructor() {
+    super();
+    this.subscribers = new Set();
+  }
+
+  subscribe(callback) {
+    this.subscribers.add(callback);
+  }
+
+  unsubscribe(callback) {
+    this.subscribers.delete(callback);
+  }
+
+  notify() {
+    for (const subscriber of this.subscribers) {
+      subscriber();
+    }
+  }
+}
+
+export class PositionComponent extends ObservableComponent {
   constructor(x, y) {
     super();
     this.x = x;
     this.y = y;
   }
-}
 
-// Dimension Component
-export class DimensionComponent extends Component {
-  constructor(width, height) {
-    super();
-    this.width = width;
-    this.height = height;
+  setX(x) {
+    this.x = x;
+    this.notify();
+  }
+
+  setY(y) {
+    this.y = y;
+    this.notify();
   }
 }
 
-// Velocity Component
 export class VelocityComponent extends Component {
   constructor(dx, dy) {
     super();
@@ -36,15 +56,7 @@ export class VelocityComponent extends Component {
   }
 }
 
-export class SpeedComponent extends Component {
-  constructor(speed) {
-    super();
-    this.speed = speed;
-  }
-}
-
-// Dimension component
-export class Dimension extends Component {
+export class SizeComponent extends Component {
   constructor(width, height) {
     super();
     this.width = width;
@@ -52,30 +64,53 @@ export class Dimension extends Component {
   }
 }
 
-// Render component
-export class RenderComponent extends Component {
-  constructor(type) {
+export class ColorComponent extends ObservableComponent {
+  constructor(color) {
     super();
-    this.type = type;
+    this.color = color;
+  }
+
+  setColor(color) {
+    this.color = color;
+    this.notify();
   }
 }
 
-// Collision component
-export class CollisionComponent extends Component {
+class CallbackManagerComponent extends Component {
+  constructor(tag) {
+    super();
+    this.tag = tag;
+    this.callbacks = {};
+  }
+
+  setCallback(targetTag, callback) {
+    this.callbacks[targetTag] = callback;
+  }
+
+  removeCallback(targetTag) {
+    delete this.callbacks[targetTag];
+  }
+
+  clearCallbacks() {
+    this.callbacks = {};
+  }
+
+  invokeCallbacks(targetTag, ...args) {
+    const callback = this.callbacks[targetTag];
+    if (callback && typeof callback === 'function') {
+      callback(...args);
+    }
+  }
+}
+
+export class CollisionComponent extends CallbackManagerComponent {
   constructor(collisionTag) {
-    super();
-    this.collisionTag = collisionTag;
-    this.collisionCallbacks = {};
-  }
-
-  setCollisionCallback(targetCollisionTag, callback) {
-    this.collisionCallbacks[targetCollisionTag] = callback;
+    super(collisionTag);
   }
 }
 
-export class KeyboardInputComponent extends Component {
-  constructor(entity) {
-    super();
-    this.entity = entity;
+export class PlayerInputComponent extends CallbackManagerComponent {
+  constructor(inputTag) {
+    super(inputTag);
   }
 }
