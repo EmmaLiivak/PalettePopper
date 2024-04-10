@@ -3,7 +3,6 @@ import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent
 
 const gameContainer = document.querySelector('.gameContainer');
 const containerWidth = gameContainer.offsetWidth;
-const containerHeight = gameContainer.offsetHeight;
 
 const ballStartX = containerWidth / 2;
 const ballStartY = containerWidth / 2;
@@ -26,26 +25,27 @@ ballEntity.attachComponents(
   ballCollisionComponent
 );
 
-ballCollisionComponent.setCallback('topWall', () => onCollisionWithWall(ballEntity, 'top'));
-ballCollisionComponent.setCallback('leftWall', () => onCollisionWithWall(ballEntity, 'left'));
-ballCollisionComponent.setCallback('rightWall', () => onCollisionWithWall(ballEntity, 'right'));
-ballCollisionComponent.setCallback('bottomWall', () => onCollisionWithWall(ballEntity, 'bottom'));
+ballCollisionComponent.setCallback('topWall', () => collisionHandler('topWall'));
+ballCollisionComponent.setCallback('leftWall', () => collisionHandler('leftWall'));
+ballCollisionComponent.setCallback('rightWall', () => collisionHandler('rightWall'));
+ballCollisionComponent.setCallback('bottomWall', () => collisionHandler('bottomWall'));
+ballCollisionComponent.setCallback('paddle', () => collisionHandler('paddle'));
 
+function collisionHandler(collisionObject) {
+  const velocity = ballEntity.getComponent(VelocityComponent);
 
-function onCollisionWithWall(ball, wallType) {
-  const velocity = ball.getComponent(VelocityComponent);
-
-  switch (wallType) {
-    case 'top':
-    case 'bottom':
+  switch (collisionObject) {
+    case 'bottomWall':
+    case 'topWall':
+    case 'paddle':
       velocity.dy = -velocity.dy;
       break;
-    case 'right':
-    case 'left':
+    case 'rightWall':
+    case 'leftWall':
       velocity.dx = -velocity.dx;
       break;
     default:
-      console.error('Invalid wall type');
+      console.error('Invalid collision object type');
       break;
   }
 }

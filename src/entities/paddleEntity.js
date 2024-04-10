@@ -1,6 +1,6 @@
 import { Entity, EntityManager } from "./entity.js";
-import { movementSystem } from '../index.js'
-import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent } from "../components.js";
+import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, CollisionComponent } from "../components.js";
+import { movementSystem, renderingSystem } from "../index.js";
 
 const gameContainer = document.querySelector('.gameContainer');
 const containerWidth = gameContainer.offsetWidth;
@@ -10,14 +10,32 @@ export const paddleEntity = new Entity('paddle');
 EntityManager.addEntity(paddleEntity);
 
 const paddleInputComponent = new InputComponent('paddle');
+const paddleCollisionComponent = new CollisionComponent('paddle')
 
 paddleEntity.attachComponents(
   new PositionComponent(containerWidth * 0.45, containerHeight - (containerHeight * 0.02) - 2),
   new VelocityComponent(0, 0),
-  new SizeComponent(0, 0),
+  new SizeComponent(containerWidth * 0.1, containerHeight * 0.02),
   new ColorComponent(0),
-  paddleInputComponent
+  paddleInputComponent,
+  paddleCollisionComponent
 );
+
+paddleCollisionComponent.setCallback('leftWall', () => handleWallCollision('left'));
+paddleCollisionComponent.setCallback('rightWall', () => handleWallCollision('right'));
+
+const handleWallCollision = (collisionSide) => {
+  const position = paddleEntity.getComponent(PositionComponent);
+  const size = paddleEntity.getComponent(SizeComponent);
+
+  if (!position || !size) return;
+
+  if (collisionSide === 'left') {
+    position.x = 0;
+  } else if (collisionSide === 'right') {
+    position.x = containerWidth - size.width;
+  }
+};
 
 // Define a mapping between keys and their corresponding actions
 const keyMapping = {
@@ -35,19 +53,16 @@ Object.entries(keyMapping).forEach(([key, action]) => {
     if (keyState === 'down') {
       switch (action) {
         case 'moveLeft':
-          movementSystem.addComponent(paddleEntity);
-          velocity.dx = -1;
+          velocity.dx = -3;
           break;
         case 'moveRight':
-          movementSystem.addComponent(paddleEntity);
-          velocity.dx = 1;
+          velocity.dx = 3;
           break;
       }
     } else if (keyState === 'up') {
       switch (action) {
         case 'moveLeft':
         case 'moveRight':
-          movementSystem.removeComponent(paddleEntity);
           velocity.dx = 0;
           break;
       }

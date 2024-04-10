@@ -10,12 +10,13 @@ import { topWallEntity, bottomWallEntity, leftWallEntity, rightWallEntity } from
 
 export const movementSystem = new MovementSystem();
 movementSystem.addComponent(ballEntity);
+movementSystem.addComponent(paddleEntity);
 
 const collisionSystem = new CollisionSystem(entities);
 const inputSystem = new InputSystem(entities);
 inputSystem.startListening();
 
-const renderingSystem = new RenderingSystem({
+export const renderingSystem = new RenderingSystem({
   'ball': document.querySelector('.ball'),
   'paddle': document.querySelector('.paddle')
 });
