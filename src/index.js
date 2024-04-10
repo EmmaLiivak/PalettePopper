@@ -2,7 +2,7 @@ import { MovementSystem } from './systems/movementSystem.js'
 import { RenderingSystem } from './systems/renderingSystem.js';
 import CollisionSystem from './systems/collisionSystem.js';
 import { UpdateFPS, UpdateTime } from './utils.js';
-import { entities } from './entities/entity.js';
+import { entities } from './entities/entityTemplate.js';
 import { ballEntity } from './entities/ballEntity.js';
 import { paddleEntity } from './entities/paddleEntity.js';
 import InputSystem from './systems/inputSystem.js';

@@ -1,4 +1,4 @@
-import { Entity, EntityManager } from "./entity.js";
+import { Entity, EntityManager } from "./entityTemplate.js";
 import { PositionComponent, SizeComponent, CollisionComponent } from "../components.js";
 
 const gameContainer = document.querySelector('.gameContainer');

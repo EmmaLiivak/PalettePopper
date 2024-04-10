@@ -1,16 +1,6 @@
-import { Entity, EntityManager } from "./entity.js";
+import { Entity, EntityManager } from "./entityTemplate.js";
 import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent, ColorComponent } from "../components.js";
-
-const gameContainer = document.querySelector('.gameContainer');
-const containerWidth = gameContainer.offsetWidth;
-
-const ballStartX = containerWidth / 2;
-const ballStartY = containerWidth / 2;
-const ballStartDX = 2;
-const ballStartDY = 2;
-const ballWidth = window.innerWidth * 0.01;
-const ballHeight = window.innerWidth * 0.01;
-const ballColor = 'red';
+import { ballConfig } from "./entityConfigurations.js";
 
 export const ballEntity = new Entity('ball');
 
@@ -18,10 +8,10 @@ EntityManager.addEntity(ballEntity);
 
 const ballCollisionComponent = new CollisionComponent('ball');
 ballEntity.attachComponents(
-  new PositionComponent(ballStartX, ballStartY),
-  new VelocityComponent(ballStartDX, ballStartDY),
-  new SizeComponent(ballWidth, ballHeight),
-  new ColorComponent(ballColor),
+  new PositionComponent(ballConfig.startX, ballConfig.startY),
+  new VelocityComponent(ballConfig.startDX, ballConfig.startDY),
+  new SizeComponent(ballConfig.width, ballConfig.height),
+  new ColorComponent(ballConfig.color),
   ballCollisionComponent
 );
 

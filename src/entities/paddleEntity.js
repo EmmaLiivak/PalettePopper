@@ -1,10 +1,6 @@
-import { Entity, EntityManager } from "./entity.js";
+import { Entity, EntityManager } from "./entityTemplate.js";
+import { paddleConfig } from "./entityConfigurations.js";
 import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, CollisionComponent } from "../components.js";
-import { movementSystem, renderingSystem } from "../index.js";
-
-const gameContainer = document.querySelector('.gameContainer');
-const containerWidth = gameContainer.offsetWidth;
-const containerHeight = gameContainer.offsetHeight;
 
 export const paddleEntity = new Entity('paddle');
 EntityManager.addEntity(paddleEntity);
@@ -13,10 +9,10 @@ const paddleInputComponent = new InputComponent('paddle');
 const paddleCollisionComponent = new CollisionComponent('paddle')
 
 paddleEntity.attachComponents(
-  new PositionComponent(containerWidth * 0.45, containerHeight - (containerHeight * 0.02) - 2),
-  new VelocityComponent(0, 0),
-  new SizeComponent(containerWidth * 0.1, containerHeight * 0.02),
-  new ColorComponent(0),
+  new PositionComponent(paddleConfig.startX, paddleConfig.startY),
+  new VelocityComponent(paddleConfig.startDX, paddleConfig.startDY),
+  new SizeComponent(paddleConfig.width, paddleConfig.height),
+  new ColorComponent(paddleConfig.color),
   paddleInputComponent,
   paddleCollisionComponent
 );
@@ -53,10 +49,10 @@ Object.entries(keyMapping).forEach(([key, action]) => {
     if (keyState === 'down') {
       switch (action) {
         case 'moveLeft':
-          velocity.dx = -3;
+          velocity.dx = -paddleConfig.DX;
           break;
         case 'moveRight':
-          velocity.dx = 3;
+          velocity.dx = paddleConfig.DX;
           break;
       }
     } else if (keyState === 'up') {
