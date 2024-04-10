@@ -15,16 +15,19 @@ const collisionSystem = new CollisionSystem(entities);
 const inputSystem = new InputSystem(entities);
 inputSystem.startListening();
 
-new RenderingSystem(entities, {
+const renderingSystem = new RenderingSystem({
   'ball': document.querySelector('.ball'),
   'paddle': document.querySelector('.paddle')
 });
+renderingSystem.addComponent(ballEntity);
+renderingSystem.addComponent(paddleEntity);
 
 // Main game loop
 function gameLoop() {
   inputSystem.update();
   movementSystem.update();
   collisionSystem.update();
+  renderingSystem.update();
 
   UpdateTime();
   UpdateFPS();

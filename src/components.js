@@ -9,42 +9,11 @@ class Component {
   }
 }
 
-class ObservableComponent extends Component {
-  constructor() {
-    super();
-    this.subscribers = new Set();
-  }
-
-  subscribe(callback) {
-    this.subscribers.add(callback);
-  }
-
-  unsubscribe(callback) {
-    this.subscribers.delete(callback);
-  }
-
-  notify() {
-    for (const subscriber of this.subscribers) {
-      subscriber();
-    }
-  }
-}
-
-export class PositionComponent extends ObservableComponent {
+export class PositionComponent extends Component {
   constructor(x, y) {
     super();
     this.x = x;
     this.y = y;
-  }
-
-  setX(x) {
-    this.x = x;
-    this.notify();
-  }
-
-  setY(y) {
-    this.y = y;
-    this.notify();
   }
 }
 
@@ -64,15 +33,10 @@ export class SizeComponent extends Component {
   }
 }
 
-export class ColorComponent extends ObservableComponent {
+export class ColorComponent extends Component {
   constructor(color) {
     super();
     this.color = color;
-  }
-
-  setColor(color) {
-    this.color = color;
-    this.notify();
   }
 }
 

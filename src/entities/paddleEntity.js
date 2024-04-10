@@ -1,6 +1,6 @@
 import { Entity, EntityManager } from "./entity.js";
 import { movementSystem } from '../index.js'
-import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent } from "../components.js";
+import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent } from "../components.js";
 
 const gameContainer = document.querySelector('.gameContainer');
 const containerWidth = gameContainer.offsetWidth;
@@ -9,7 +9,6 @@ const containerHeight = gameContainer.offsetHeight;
 export const paddleEntity = new Entity('paddle');
 EntityManager.addEntity(paddleEntity);
 
-const paddleCollisionComponent = new CollisionComponent('paddle');
 const paddleInputComponent = new InputComponent('paddle');
 
 paddleEntity.attachComponents(
@@ -17,19 +16,8 @@ paddleEntity.attachComponents(
   new VelocityComponent(0, 0),
   new SizeComponent(0, 0),
   new ColorComponent(0),
-  paddleCollisionComponent,
   paddleInputComponent
 );
-
-// Set up collision callbacks for the paddle entity
-paddleCollisionComponent.setCallback('leftWall', () => stopPaddleMovement(paddleEntity));
-paddleCollisionComponent.setCallback('rightWall', () => stopPaddleMovement(paddleEntity));
-
-function stopPaddleMovement(paddle) {
-  console.log('collision');
-  const velocity = paddle.getComponent(VelocityComponent);
-  velocity.dx = 0;
-}
 
 // Define a mapping between keys and their corresponding actions
 const keyMapping = {

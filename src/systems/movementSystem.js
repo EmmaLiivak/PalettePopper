@@ -13,13 +13,9 @@ export class MovementSystem extends System {
 
       if (!position || !velocity) continue;
 
-      // Calculate new positions
-      const newX = position.x + velocity.dx;
-      const newY = position.y + velocity.dy;
-
-      // Update entity position
-      position.setX(newX);
-      position.setY(newY);
+      // Update entity position component
+      position.x += velocity.dx;
+      position.y += velocity.dy;
     }
 
     this.deleteStaleComponents();

@@ -2,26 +2,18 @@ import { PositionComponent } from "../components.js";
 import System from "./system.js";
 
 export class RenderingSystem extends System {
-  constructor(entities, elements) {
+  constructor(elements) {
     super();
-    this.entities = entities;
     this.elements = elements;
-    this.subscribeToPositionChanges();
   }
 
-  subscribeToPositionChanges() {
-    for (const entity of this.entities) {
-      const position = entity.getComponent(PositionComponent);
-
-      if (!position) continue;
-
-      position.subscribe(() => {
-        this.renderEntity(entity);
-      });
+  update() {
+    for (const entity of this.components) {
+      this.renderEntityPosition(entity);
     }
   }
 
-  renderEntity(entity) {
+  renderEntityPosition(entity) {
     const position = entity.getComponent(PositionComponent);
     const element = this.elements[entity.name];
 
