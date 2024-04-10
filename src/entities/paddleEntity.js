@@ -1,5 +1,5 @@
 import { Entity, EntityManager } from "./entityTemplate.js";
-import { paddleConfig } from "./entityConfigurations.js";
+import { paddleConfig, containerWidth } from "./entityConfigurations.js";
 import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, CollisionComponent } from "../components.js";
 
 export const paddleEntity = new Entity('paddle');

@@ -1,14 +1,14 @@
 // Game Container data and configuration
 const gameContainer = document.querySelector('.gameContainer');
-const containerWidth = gameContainer.offsetWidth;
+export const containerWidth = gameContainer.offsetWidth;
 const containerHeight = gameContainer.offsetHeight;
 
 // Initial ball configuration
 export const ballConfig = {
     startX: containerWidth / 2,
     startY: containerWidth / 2,
-    startDX: 0,
-    startDY: 0,
+    startDX: 2,
+    startDY: 2,
     DX: 3,
     DY: 3,
     width: containerWidth * 0.01,

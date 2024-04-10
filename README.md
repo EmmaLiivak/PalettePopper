@@ -11,15 +11,9 @@ The game utilizes Entity-Component-System (ECS) to manage the complexity and sca
 **Reasons for Choosing ECS:**
 
 * Modularity and Flexibility:
-  ECS promotes a modular design by separating entities (game objects), components (data), and systems (behavior). This modular approach allows us to independently modify and extend different aspects of the game without affecting other parts. For example, adding new features or entities becomes more straightforward as we can plug in new components and systems without rewriting existing code.
+  ECS promotes a modular design by separating entities (game objects), components (data), and systems (behavior). This modular approach makes adding new features or entities more straightforward as we can plug in new components and systems without rewriting existing code.
 * Scalability and Performance:
   By organizing entities based on their components and processing them in separate systems, ECS improves scalability and performance. Systems can operate on batches of entities with similar components, enabling efficient processing and optimization.
-* Separation of Concerns:
-  ECS enforces a clear separation of concerns by decoupling data from behavior. Entities are composed of components that represent their properties and attributes, while systems define the logic that operates on these components. This separation makes the codebase more maintainable, understandable, and easier to extend.
-* Dynamic Level Design:
-  ECS facilitates dynamic level design by allowing us to define reusable components and systems for generating and populating levels.
-* Adaptability and Iteration:
-  ECS architecture is highly adaptable to change, making it easier to iterate on and evolve the game over time. As the requirements or scope of the game evolve during development, we can easily modify existing components, systems, or add new ones without causing ripple effects throughout the codebase.
 
 #### Resources
 
@@ -40,4 +34,9 @@ ESC Framework Design:
 
 Physics:
 
-*[Physics for a Block Breaker Game](https://www.smilingcatentertainment.com/physics-for-a-block-breaker-game/)
+* [Physics for a Block Breaker Game](https://www.smilingcatentertainment.com/physics-for-a-block-breaker-game/)
+
+Performance:
+
+* [Simplify paint complexity and reduce paint areas](https://web.dev/articles/simplify-paint-complexity-and-reduce-paint-areas)
+* [Stick to Compositor-Only Properties and Manage Layer Count](https://web.dev/articles/stick-to-compositor-only-properties-and-manage-layer-count)

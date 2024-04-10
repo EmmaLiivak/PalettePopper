@@ -15,7 +15,9 @@
   padding: 5px 5px 0px 5px;
 }
 
-.paddle{
+.paddle {
+  will-change: transform;
+  transform: translateZ(0);
   position: absolute;
   height: 2%;
   width: 10%;
@@ -25,6 +27,8 @@
 }
 
 .ball {
+  will-change: transform;
+  transform: translateZ(0);
   position: absolute;
   height: 1vw;
   width: 1vw;
