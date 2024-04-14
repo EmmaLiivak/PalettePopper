@@ -1,4 +1,4 @@
-import System from "./system.js";
+import System from "./systemTemplate.js";
 import { InputComponent } from "../components.js";
 
 export default class InputSystem extends System {
@@ -21,7 +21,6 @@ export default class InputSystem extends System {
 
   handleKeyDown(event) {
     const key = event.key.toLowerCase();
-    console.log(`${key} key down`);
     this.entities.forEach(entity => {
       const inputComponent = entity.getComponent(InputComponent);
       if (inputComponent) {

@@ -1,5 +1,5 @@
 import { Entity, EntityManager } from "./entityTemplate.js";
-import { paddleConfig, containerWidth } from "./entityConfigurations.js";
+import { paddleConfig, gameContainerWidth } from "./entityConfigurations.js";
 import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, CollisionComponent } from "../components.js";
 
 export const paddleEntity = new Entity('paddle');
@@ -29,7 +29,7 @@ const handleWallCollision = (collisionSide) => {
   if (collisionSide === 'left') {
     position.x = 0;
   } else if (collisionSide === 'right') {
-    position.x = containerWidth - size.width;
+    position.x = gameContainerWidth - size.width;
   }
 };
 

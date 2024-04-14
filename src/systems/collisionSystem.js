@@ -1,5 +1,5 @@
 import { CollisionComponent, VelocityComponent, PositionComponent, SizeComponent } from "../components.js";
-import System from "./system.js";
+import System from "./systemTemplate.js";
 
 export default class CollisionSystem extends System {
   constructor(entities) {

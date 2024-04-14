@@ -78,3 +78,9 @@ export class InputComponent extends CallbackManagerComponent {
     super(inputTag);
   }
 }
+
+export class GameStateComponent extends CallbackManagerComponent {
+  constructor(gameStateTag) {
+    super(gameStateTag);
+  }
+}

@@ -1,5 +1,5 @@
 import { Entity, EntityManager } from "./entityTemplate.js";
-import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent, ColorComponent } from "../components.js";
+import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent } from "../components.js";
 import { ballConfig } from "./entityConfigurations.js";
 
 export const ballEntity = new Entity('ball');
@@ -7,12 +7,15 @@ export const ballEntity = new Entity('ball');
 EntityManager.addEntity(ballEntity);
 
 const ballCollisionComponent = new CollisionComponent('ball');
+const ballInputComponent = new InputComponent('ball');
+
 ballEntity.attachComponents(
   new PositionComponent(ballConfig.startX, ballConfig.startY),
   new VelocityComponent(ballConfig.startDX, ballConfig.startDY),
   new SizeComponent(ballConfig.width, ballConfig.height),
   new ColorComponent(ballConfig.color),
-  ballCollisionComponent
+  ballCollisionComponent,
+  ballInputComponent
 );
 
 ballCollisionComponent.setCallback('topWall', () => collisionHandler('topWall'));
@@ -37,5 +40,16 @@ function collisionHandler(collisionObject) {
     default:
       console.error('Invalid collision object type');
       break;
+  }
+}
+
+// Add callback to launch the ball when space is pressed
+ballInputComponent.setCallback(' ', () => launchBall());
+
+function launchBall() {
+  const velocity = ballEntity.getComponent(VelocityComponent);
+  if (velocity.dx === 0 && velocity.dy === 0) {
+    velocity.dx = ballConfig.defaultDX;
+    velocity.dy = ballConfig.defaultDY;
   }
 }

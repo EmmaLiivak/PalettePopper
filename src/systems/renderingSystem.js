@@ -1,5 +1,5 @@
 import { PositionComponent } from "../components.js";
-import System from "./system.js";
+import System from "./systemTemplate.js";
 
 export class RenderingSystem extends System {
   constructor(elements) {

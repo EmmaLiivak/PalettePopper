@@ -1,3 +1,4 @@
+// Base system template
 export default class System {
   constructor() {
     this.components = [];

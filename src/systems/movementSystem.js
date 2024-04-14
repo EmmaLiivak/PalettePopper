@@ -1,4 +1,4 @@
-import System from "./system.js";
+import System from "./systemTemplate.js";
 import { PositionComponent, VelocityComponent } from "../components.js";
 
 export class MovementSystem extends System {

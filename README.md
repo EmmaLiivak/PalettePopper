@@ -36,6 +36,11 @@ Physics:
 
 * [Physics for a Block Breaker Game](https://www.smilingcatentertainment.com/physics-for-a-block-breaker-game/)
 
+Game States:
+
+* [Managing States in Entity-Component-System (aka Finite-State-Machine)](https://medium.com/@ben.rasooli/managing-states-in-entity-component-system-aka-finite-state-machine-8db8d19dec46)
+This article helped me with the decision to handle game states with a system-based approach instead of component-based approach. Although the system-based approach aligns more with Object-Oriented reasoning, it makes the code easier to understand and maintain. Because the game has only few game states, I found this to be a suitable solution.
+
 Performance:
 
 * [Simplify paint complexity and reduce paint areas](https://web.dev/articles/simplify-paint-complexity-and-reduce-paint-areas)
