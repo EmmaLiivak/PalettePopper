@@ -1,10 +1,10 @@
-import { Entity, EntityManager } from "./entityTemplate.js";
-import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent } from "../components.js";
-import { ballConfig } from "./entityConfigurations.js";
+import Entity from "./entityTemplate.js";
+import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, RenderComponent } from "../components.js";
+import { ballConfig } from "../configurations/entityConfigurations.js";
+import ecsSystem from "../systems/ECSSystem.js";
 
-export const ballEntity = new Entity('ball');
-
-EntityManager.addEntity(ballEntity);
+const ballEntity = new Entity('ball');
+ecsSystem.addEntity(ballEntity);
 
 const ballCollisionComponent = new CollisionComponent('ball');
 const ballInputComponent = new InputComponent('ball');
@@ -14,6 +14,7 @@ ballEntity.attachComponents(
   new VelocityComponent(ballConfig.startDX, ballConfig.startDY),
   new SizeComponent(ballConfig.width, ballConfig.height),
   new ColorComponent(ballConfig.color),
+  new RenderComponent(),
   ballCollisionComponent,
   ballInputComponent
 );
@@ -53,3 +54,5 @@ function launchBall() {
     velocity.dy = ballConfig.defaultDY;
   }
 }
+
+export default ballEntity;

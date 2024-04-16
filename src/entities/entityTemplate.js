@@ -1,5 +1,5 @@
 // Base Entity Template
-export class Entity {
+export default class Entity {
   constructor(name) {
     this.id = crypto.randomUUID();
     this.name = name;
@@ -32,18 +32,3 @@ export class Entity {
     return this.components.find(component => component instanceof componentType);
   }
 }
-
-export const entities = [];
-
-// Entity manager to interact with the entity array
-export const EntityManager = {
-  addEntity: (entity) => {
-    entities.push(entity);
-  },
-
-  getAllEntities: () => entities,
-
-  getEntityByComponent: (componentType) => {
-    return entities.filter(entity => entity.hasComponent(componentType));
-  }
-};

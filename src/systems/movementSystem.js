@@ -1,13 +1,14 @@
 import System from "./systemTemplate.js";
 import { PositionComponent, VelocityComponent } from "../components.js";
+import ecsSystem from "./ECSSystem.js";
 
-export class MovementSystem extends System {
+class MovementSystem extends System {
   constructor() {
     super();
   }
 
-  update() {
-    for (const entity of this.components) {
+  update(entities) {
+    for (const entity of entities) {
       const position = entity.getComponent(PositionComponent);
       const velocity = entity.getComponent(VelocityComponent);
 
@@ -17,7 +18,10 @@ export class MovementSystem extends System {
       position.x += velocity.dx;
       position.y += velocity.dy;
     }
-
-    this.deleteStaleComponents();
   }
 }
+
+const movementSystem = new MovementSystem();
+ecsSystem.addSystem(movementSystem);
+
+export default movementSystem;

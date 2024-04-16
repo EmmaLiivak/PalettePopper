@@ -1,27 +1,32 @@
-import { CollisionComponent, VelocityComponent, PositionComponent, SizeComponent } from "../components.js";
 import System from "./systemTemplate.js";
+import { CollisionComponent, PositionComponent, SizeComponent } from "../components.js";
+import ecsSystem from "./ECSSystem.js";
 
-export default class CollisionSystem extends System {
-  constructor(entities) {
+class CollisionSystem extends System {
+  constructor() {
     super();
-    this.entities = entities;
   }
 
-  update() {
-    this.entities.forEach(entity => {
-      if (entity.hasComponent(CollisionComponent)){
-        this.entities.forEach(otherEntity => {
-          if (entity.id !== otherEntity.id && otherEntity.hasComponent(CollisionComponent)) {
-            if (this.checkCollision(entity, otherEntity)) {
-              this.invokeCallbacks(entity, otherEntity);
-            }
-          }
-        });
+  update(entities) {
+    // Check for collision between two entities with collision components
+    for (const entity of entities) {
+      if (!entity.hasComponent(CollisionComponent)) continue;
+
+      this.checkCollisionsForEntity(entity, entities);
+    }
+  }
+
+  checkCollisionsForEntity(entity, entities) {
+    for (const otherEntity of entities) {
+      if (entity === otherEntity || !otherEntity.hasComponent(CollisionComponent)) continue;
+
+      if (this.areEntitiesColliding(entity, otherEntity)) {
+        this.invokeCallbacks(entity, otherEntity);
       }
-    });
+    }
   }
 
-  checkCollision(entity1, entity2) {
+  areEntitiesColliding(entity1, entity2) {
     const pos1 = entity1.getComponent(PositionComponent);
     const pos2 = entity2.getComponent(PositionComponent);
     const size1 = entity1.getComponent(SizeComponent);
@@ -46,3 +51,8 @@ export default class CollisionSystem extends System {
     collisionComponent2.invokeCallbacks(tag1, entity2, entity1);
   }
 }
+
+const collisionSystem = new CollisionSystem();
+ecsSystem.addSystem(collisionSystem);
+
+export default collisionSystem;

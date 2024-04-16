@@ -1,15 +1,19 @@
-import Entity from "./entity";
+import { PositionComponent, SizeComponent, ColorComponent, CollisionComponent, RenderComponent } from "../components.js";
+import Entity from "./entityTemplate.js";
 
 // Brick Entity Template
 class BrickEntity extends Entity {
-  constructor(name, width, height, color, collisionTag) {
-    super(name);
+  constructor(width, height, color) {
+    super('brick');
     this.attachComponents(
+      new PositionComponent(x, y),
       new SizeComponent(width, height),
       new ColorComponent(color),
-      new CollisionComponent(collisionTag)
+      new CollisionComponent('brick'),
+      new RenderComponent()
     );
   }
 }
 
-const brickEntities = [];
+const bricks = [];
+export default bricks;

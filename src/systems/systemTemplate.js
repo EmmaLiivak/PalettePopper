@@ -2,9 +2,20 @@
 export default class System {
   constructor() {
     this.components = [];
+    this.entities = [];
+    this.elements = new Map();
   }
 
-  update() {}
+  addEntity(entity) {
+    this.entities.push(entity)
+  }
+
+  removeEntity(entity) {
+    const index = this.entities.indexOf(entity);
+    if (index !== -1) {
+      this.entities.splice(index, 1);
+    }
+  }
 
   addComponent(component) {
     this.components.push(component);
@@ -16,8 +27,12 @@ export default class System {
       this.components.splice(index, 1);
     }
   }
-  
-  deleteStaleComponents() {
-    this.components = this.components.filter(x => !x.isDeleted);
+
+  addElement(entityName, element) {
+    this.elements.set(entityName, element);
+  }
+
+  removeElement(entityName) {
+    this.elements.delete(entityName);
   }
 }

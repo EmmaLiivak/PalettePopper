@@ -1,5 +1,5 @@
 // Game Container data and configuration
-const gameContainer = document.querySelector('.gameContainer');
+export const gameContainer = document.querySelector('.gameContainer');
 export const gameContainerWidth = gameContainer.offsetWidth;
 export const gameContainerHeight = gameContainer.offsetHeight;
 
@@ -9,7 +9,7 @@ export const paddleConfig = {
     startY: gameContainerHeight - (gameContainerHeight * 0.02) - 1,
     startDX: 0,
     startDY: 0,
-    DX: 3,
+    defaultDX: 3,
     width: gameContainerWidth * 0.1,
     height: gameContainerHeight * 0.02,
     color: 'black'

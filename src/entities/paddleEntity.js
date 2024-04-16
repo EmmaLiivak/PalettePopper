@@ -1,34 +1,36 @@
-import { Entity, EntityManager } from "./entityTemplate.js";
-import { paddleConfig, gameContainerWidth } from "./entityConfigurations.js";
-import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, CollisionComponent } from "../components.js";
+import Entity from "./entityTemplate.js";
+import { paddleConfig, gameContainerWidth } from "../configurations/entityConfigurations.js";
+import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, CollisionComponent, RenderComponent } from "../components.js";
+import ecsSystem from "../systems/ECSSystem.js";
 
-export const paddleEntity = new Entity('paddle');
-EntityManager.addEntity(paddleEntity);
+const paddleEntity = new Entity('paddle');
+ecsSystem.addEntity(paddleEntity);
 
 const paddleInputComponent = new InputComponent('paddle');
 const paddleCollisionComponent = new CollisionComponent('paddle')
-
 paddleEntity.attachComponents(
   new PositionComponent(paddleConfig.startX, paddleConfig.startY),
   new VelocityComponent(paddleConfig.startDX, paddleConfig.startDY),
   new SizeComponent(paddleConfig.width, paddleConfig.height),
   new ColorComponent(paddleConfig.color),
+  new RenderComponent(),
   paddleInputComponent,
   paddleCollisionComponent
 );
 
+// Set callbacks for collision with walls
 paddleCollisionComponent.setCallback('leftWall', () => handleWallCollision('left'));
 paddleCollisionComponent.setCallback('rightWall', () => handleWallCollision('right'));
 
 const handleWallCollision = (collisionSide) => {
   const position = paddleEntity.getComponent(PositionComponent);
   const size = paddleEntity.getComponent(SizeComponent);
-
   if (!position || !size) return;
 
   if (collisionSide === 'left') {
     position.x = 0;
-  } else if (collisionSide === 'right') {
+  }
+  if (collisionSide === 'right') {
     position.x = gameContainerWidth - size.width;
   }
 };
@@ -49,13 +51,14 @@ Object.entries(keyMapping).forEach(([key, action]) => {
     if (keyState === 'down') {
       switch (action) {
         case 'moveLeft':
-          velocity.dx = -paddleConfig.DX;
+          velocity.dx = -paddleConfig.defaultDX;
           break;
         case 'moveRight':
-          velocity.dx = paddleConfig.DX;
+          velocity.dx = paddleConfig.defaultDX;
           break;
       }
-    } else if (keyState === 'up') {
+    }
+    if (keyState === 'up') {
       switch (action) {
         case 'moveLeft':
         case 'moveRight':
@@ -65,3 +68,5 @@ Object.entries(keyMapping).forEach(([key, action]) => {
     }
   });
 });
+
+export default paddleEntity;

@@ -1,9 +1,7 @@
-import { Entity, EntityManager } from "./entityTemplate.js";
+import Entity from "./entityTemplate.js";
 import { PositionComponent, SizeComponent, CollisionComponent } from "../components.js";
-
-const gameContainer = document.querySelector('.gameContainer');
-const containerWidth = gameContainer.offsetWidth;
-const containerHeight = gameContainer.offsetHeight;
+import { gameContainerWidth, gameContainerHeight } from "../configurations/entityConfigurations.js";
+import ecsSystem from "../systems/ECSSystem.js";
 
 // Wall Entity Template
 class WallEntity extends Entity {
@@ -17,12 +15,15 @@ class WallEntity extends Entity {
   }
 }
 
-export const topWallEntity = new WallEntity('topWall', 0, 0, containerWidth, 0, 'topWall');
-export const bottomWallEntity = new WallEntity('bottomWall', 0, containerHeight, containerWidth, 0, 'bottomWall');
-export const leftWallEntity = new WallEntity('leftWall', 0, 0, 0, containerHeight, 'leftWall');
-export const rightWallEntity = new WallEntity('rightWall', containerWidth, 0, 0, containerHeight, 'rightWall');
+const topWallEntity = new WallEntity('topWall', 0, 0, gameContainerWidth, 0, 'topWall');
+const bottomWallEntity = new WallEntity('bottomWall', 0, gameContainerHeight, gameContainerWidth, 0, 'bottomWall');
+const leftWallEntity = new WallEntity('leftWall', 0, 0, 0, gameContainerHeight, 'leftWall');
+const rightWallEntity = new WallEntity('rightWall', gameContainerWidth, 0, 0, gameContainerHeight, 'rightWall');
 
-EntityManager.addEntity(topWallEntity);
-EntityManager.addEntity(bottomWallEntity);
-EntityManager.addEntity(leftWallEntity);
-EntityManager.addEntity(rightWallEntity);
+const walls = [topWallEntity, bottomWallEntity, leftWallEntity, rightWallEntity];
+
+walls.forEach(wallEntity => {
+  ecsSystem.addEntity(wallEntity);
+});
+
+export default walls;

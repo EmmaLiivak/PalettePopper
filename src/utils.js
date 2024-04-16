@@ -1,18 +1,19 @@
-import { gameSystem } from "./index.js";
+import { gameStateSystem } from "./systems/index.js";
 
 const timeDisplay = document.querySelector('.time');
 
 let totalElapsedTime = 0;
 
-export function UpdateTime() {
-  if (!gameSystem.isGameRunning) return;
+export function updateTime() {
+  if (!gameStateSystem.isGameRunning) return;
 
   let currentTime = performance.now();
-  let elapsedTime = currentTime - gameSystem.lastUpdateTime;
+  let elapsedTime = currentTime - gameStateSystem.lastUpdateTime;
 
-  gameSystem.lastUpdateTime = currentTime;
+  gameStateSystem.lastUpdateTime = currentTime;
   
   totalElapsedTime += elapsedTime;
+
   let seconds = Math.floor(totalElapsedTime / 1000);
   let minutes = Math.floor(seconds / 60);
   seconds = seconds % 60;

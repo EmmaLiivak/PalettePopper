@@ -40,6 +40,12 @@ export class ColorComponent extends Component {
   }
 }
 
+export class RenderComponent extends Component {
+  constructor() {
+    super();
+  }
+}
+
 class CallbackManagerComponent extends Component {
   constructor(tag) {
     super();

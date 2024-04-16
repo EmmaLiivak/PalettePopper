@@ -1,10 +1,10 @@
 import System from "./systemTemplate.js";
 import { InputComponent } from "../components.js";
+import ecsSystem from "./ECSSystem.js";
 
-export default class InputSystem extends System {
-  constructor(entities) {
+class InputSystem extends System {
+  constructor() {
     super();
-    this.entities = entities;
     this.keyDownHandler = this.handleKeyDown.bind(this);
     this.keyUpHandler = this.handleKeyUp.bind(this);
   }
@@ -21,21 +21,22 @@ export default class InputSystem extends System {
 
   handleKeyDown(event) {
     const key = event.key.toLowerCase();
-    this.entities.forEach(entity => {
+    for (const entity of ecsSystem.entities) {
       const inputComponent = entity.getComponent(InputComponent);
-      if (inputComponent) {
-        inputComponent.invokeCallbacks(key, 'down');
-      }
-    });
+      if (!inputComponent) continue;
+      inputComponent.invokeCallbacks(key, 'down');
+    }
   }
 
   handleKeyUp(event) {
     const key = event.key.toLowerCase();
-    this.entities.forEach(entity => {
+    for (const entity of ecsSystem.entities) {
       const inputComponent = entity.getComponent(InputComponent);
-      if (inputComponent) {
-        inputComponent.invokeCallbacks(key,  'up');
-      }
-    });
+      if (!inputComponent) continue;
+      inputComponent.invokeCallbacks(key,  'up');
+    }
   }
 }
+
+const inputSystem = new InputSystem();
+export default inputSystem;
