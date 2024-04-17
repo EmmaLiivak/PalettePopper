@@ -6,18 +6,7 @@ import { gameContainer } from "../configurations/entityConfigurations.js";
 class RenderingSystem extends System {
   constructor() {
     super();
-  }
-
-  initialize() {
-    const renderableEntities = ecsSystem.entities.filter(entity =>
-      entity.hasComponent(RenderComponent)
-    );
-
-    renderableEntities.forEach(entity => {
-      const element = this.createVisualElementForEntity(entity);
-
-      this.addElement(entity.name, element);
-    });
+    this.bricksContainer = null;
   }
 
   update(entities) {
@@ -33,11 +22,40 @@ class RenderingSystem extends System {
     });
   }
 
-  createVisualElementForEntity(entity) {
-    const element = document.createElement('div');
-    element.classList.add(`${entity.name}`);
-    gameContainer.appendChild(element);
-    return element;
+  loadLevel(levelData) {
+    this.clearGameContainer();
+    this.createBricksContainer(levelData.gridColumns, levelData.gridRows);
+    this.appendBallAndPaddle(levelData.ball, levelData.paddle);
+    this.appendBricks(levelData.bricks);
+  }
+
+  clearGameContainer() {
+    gameContainer.innerHTML = '';
+  }
+
+  createBricksContainer(gridColumns, gridRows) {
+    this.bricksContainer = document.createElement('div');
+    this.bricksContainer.classList.add('brickContainer');
+    this.bricksContainer.style.display = 'grid';
+    this.bricksContainer.style.gridTemplateColumns = `repeat(${gridColumns}, auto)`;
+    this.bricksContainer.style.gap = '5px';
+    this.bricksContainer.style.height = `${gridRows * 10}%`;
+    gameContainer.appendChild(this.bricksContainer);
+  }
+
+  appendBallAndPaddle(ballConfig, paddleConfig) {
+    const ballElement = this.createEntity(ballConfig);
+    gameContainer.appendChild(ballElement);
+
+    const paddleElement = this.createEntity(paddleConfig);
+    gameContainer.appendChild(paddleElement);
+  }
+
+  appendBricks(bricks) {
+    bricks.forEach(brickConfig => {
+      const brickElement = this.createEntity(brickConfig);
+      this.bricksContainer.appendChild(brickElement);
+    });
   }
 
   renderEntityPosition(element, position) {
