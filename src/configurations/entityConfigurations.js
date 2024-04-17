@@ -3,7 +3,6 @@ export const gameContainer = document.querySelector('.gameContainer');
 export const gameContainerWidth = gameContainer.offsetWidth;
 export const gameContainerHeight = gameContainer.offsetHeight;
 
-// Initial paddle configuration
 export const paddleConfig = {
     startX: gameContainerWidth / 2 - (gameContainerWidth * 0.1 / 2) - 1,
     startY: gameContainerHeight - (gameContainerHeight * 0.02) - 1,
@@ -15,7 +14,6 @@ export const paddleConfig = {
     color: 'black'
 };
 
-// Initial ball configuration
 export const ballConfig = {
     startX: paddleConfig.startX + (paddleConfig.width / 2) - (gameContainerWidth * 0.01 / 2),
     startY: paddleConfig.startY - (gameContainerWidth * 0.01) - 1,

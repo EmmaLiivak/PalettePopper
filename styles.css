@@ -19,21 +19,25 @@
   will-change: transform;
   transform: translateZ(0);
   position: absolute;
+  /*
   height: 2%;
   width: 10%;
   bottom: 0px;
   left: 45%;
   background-color: black;
+  */
 }
 
 .ball {
   will-change: transform;
   transform: translateZ(0);
   position: absolute;
+  /*
   height: 1vw;
   width: 1vw;
   border-radius: 50%;
   background-color: red;
+  */
 }
 
 .removed {

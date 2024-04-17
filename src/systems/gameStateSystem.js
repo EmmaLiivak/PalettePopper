@@ -6,7 +6,7 @@ import ecsSystem from './ECSSystem.js';
 import System from "./systemTemplate.js";
 
 class GameStateSystem extends System {
-  constructor(levels) {
+  constructor() {
     super();
     this.isGameRunning = false;
     this.lastUpdateTime = null;
