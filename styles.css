@@ -27,6 +27,11 @@
   justify-content: center;
 }
 
+.pause-menu {
+  display: flex;
+  flex-direction: row;
+}
+
 .game-container {
   position: relative;
   width: 80vw;
@@ -76,7 +81,7 @@
 .metrics-container {
   position: relative;
   width: 80vw;
-  margin: 0 auto;
+  margin: 1% auto;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
