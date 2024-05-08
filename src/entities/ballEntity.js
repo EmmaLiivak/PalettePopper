@@ -48,11 +48,13 @@ function collisionHandler(collisionObject) {
 ballInputComponent.setCallback(' ', () => launchBall());
 
 function launchBall() {
+  console.log('ball launch');
   const velocity = ballEntity.getComponent(VelocityComponent);
   if (velocity.dx === 0 && velocity.dy === 0) {
     velocity.dx = ballConfig.defaultDX;
     velocity.dy = ballConfig.defaultDY;
   }
+  console.log(velocity);
 }
 
 export default ballEntity;

@@ -1,7 +1,10 @@
 import System from "./systemTemplate.js";
+import renderingSystem from "./renderingSystem.js";
+import levels from "../configurations/levelConfigurations.js";
 
 class LevelManagementSystem extends System {
   constructor(levels) {
+    super();
     this.levels = levels;
     this.currentLevelIndex = 0;
   }
@@ -30,5 +33,5 @@ class LevelManagementSystem extends System {
   }
 }
 
-const levelManagementSystem = new LevelManagementSystem();
+const levelManagementSystem = new LevelManagementSystem(levels);
 export default levelManagementSystem;

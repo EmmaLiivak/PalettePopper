@@ -11,12 +11,3 @@ export function gameLoop() {
 
   requestAnimationFrame(gameLoop);
 }
-
-window.addEventListener('load', () => {
-  renderingSystem.initialize();
-  const startOption = confirm('Start game?');
-  if (startOption) {
-    inputSystem.startListening();
-    gameStateSystem.startGame();
-  }
-});

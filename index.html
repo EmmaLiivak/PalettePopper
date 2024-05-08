@@ -15,14 +15,28 @@
 
   <body>
 
-    <div class="gameContainer"></div>
+    <div class="game-menu">
+      <div class="game-menu-container">
+        <button id="play-button">Play</button>
+  
+        <div class="level-select-button">
+          <button>&#9664;</button>
+          <span>Level 1</span>
+          <button>&#9654;</button>
+        </div>
+  
+      </div>
+    </div>   
 
-    <div class="metricsContainer">
+    <div class="game-container"></div>
+
+    <div class="metrics-container">
       <div class="time">Time: 00:00</div>
       <div class="score">Score: 0</div>
       <div class="lives">Lives: &#10084;&#10084;&#10084;</div>
     </div>
 
+    <script type="module" src="./src/interface/gameMenu.js"></script>
     <script type="module" src="./src/index.js"></script>
 
   </body>

@@ -10,6 +10,7 @@ class RenderingSystem extends System {
   }
 
   update(entities) {
+    // TODO! Currently not working as intended
     this.elements.forEach((element, entityName) => {
       const entity = entities.find(entity => entity.name === entityName);
       if (!entity) return;
@@ -23,6 +24,7 @@ class RenderingSystem extends System {
   }
 
   loadLevel(levelData) {
+    console.log(levelData);
     this.clearGameContainer();
     this.createBricksContainer(levelData.gridColumns, levelData.gridRows);
     this.appendBallAndPaddle(levelData.ball, levelData.paddle);
@@ -35,7 +37,7 @@ class RenderingSystem extends System {
 
   createBricksContainer(gridColumns, gridRows) {
     this.bricksContainer = document.createElement('div');
-    this.bricksContainer.classList.add('brickContainer');
+    this.bricksContainer.classList.add('bricksContainer');
     this.bricksContainer.style.display = 'grid';
     this.bricksContainer.style.gridTemplateColumns = `repeat(${gridColumns}, auto)`;
     this.bricksContainer.style.gap = '5px';
@@ -46,16 +48,29 @@ class RenderingSystem extends System {
   appendBallAndPaddle(ballConfig, paddleConfig) {
     const ballElement = this.createEntity(ballConfig);
     gameContainer.appendChild(ballElement);
-
+  
     const paddleElement = this.createEntity(paddleConfig);
     gameContainer.appendChild(paddleElement);
   }
 
   appendBricks(bricks) {
     bricks.forEach(brickConfig => {
-      const brickElement = this.createEntity(brickConfig);
+      const brickElement = document.createElement('div');
+      brickElement.classList.add('brick');
+      brickElement.style.backgroundColor = brickConfig;
       this.bricksContainer.appendChild(brickElement);
     });
+  }
+
+  createEntity(entityConfig) {
+    const entityElement = document.createElement('div');
+    entityElement.classList.add(entityConfig.type);
+    entityElement.style.width = `${entityConfig.width}px`;
+    entityElement.style.height = `${entityConfig.height}px`;
+    entityElement.style.left = `${entityConfig.startX}px`;
+    entityElement.style.top = `${entityConfig.startY}px`;
+    entityElement.style.backgroundColor = entityConfig.color;
+    return entityElement;
   }
 
   renderEntityPosition(element, position) {
