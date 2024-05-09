@@ -6,11 +6,11 @@ import { gameContainer } from "../configurations/entityConfigurations.js";
 class RenderingSystem extends System {
   constructor() {
     super();
+    this.elements = new Map();
     this.bricksContainer = null;
   }
 
   update(entities) {
-    // TODO! Currently not working as intended
     this.elements.forEach((element, entityName) => {
       const entity = entities.find(entity => entity.name === entityName);
       if (!entity) return;
@@ -48,9 +48,11 @@ class RenderingSystem extends System {
   appendBallAndPaddle(ballConfig, paddleConfig) {
     const ballElement = this.createEntity(ballConfig);
     gameContainer.appendChild(ballElement);
+    this.elements.set(ballConfig.type, ballElement);
   
     const paddleElement = this.createEntity(paddleConfig);
     gameContainer.appendChild(paddleElement);
+    this.elements.set(paddleConfig.type, paddleElement);
   }
 
   appendBricks(bricks) {
@@ -59,6 +61,7 @@ class RenderingSystem extends System {
       brickElement.classList.add('brick');
       brickElement.style.backgroundColor = brickConfig;
       this.bricksContainer.appendChild(brickElement);
+      this.elements.set('brick', brickElement);
     });
   }
 
