@@ -2,8 +2,8 @@ import { PositionComponent, SizeComponent, ColorComponent, CollisionComponent, R
 import Entity from "./entityTemplate.js";
 
 // Brick Entity Template
-class BrickEntity extends Entity {
-  constructor(width, height, color) {
+export class BrickEntity extends Entity {
+  constructor(x, y, width, height, color, brickElement) {
     super('brick');
     this.attachComponents(
       new PositionComponent(x, y),
@@ -12,6 +12,15 @@ class BrickEntity extends Entity {
       new CollisionComponent('brick'),
       new RenderComponent()
     );
+
+    // Add collision callback for the brick entity
+    const collisionComponent = this.getComponent(CollisionComponent);
+    collisionComponent.setCallback('ball', () => {
+      // Check if the brick is already removed
+      if (!brickElement.classList.contains('removed')) {
+        brickElement.classList.add('removed');
+      }
+    });
   }
 }
 

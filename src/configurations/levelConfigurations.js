@@ -14,6 +14,7 @@ const levels = [
     ],
     gridColumns: 10,
     gridRows: 4,
+    gridGap: 5,
   },
   {
     level: 2,
@@ -26,6 +27,7 @@ const levels = [
     ],
     gridColumns: 5,
     gridRows: 3,
+    gridGap: 5,
   },
 ];
 

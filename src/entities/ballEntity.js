@@ -19,11 +19,13 @@ ballEntity.attachComponents(
   ballInputComponent
 );
 
+// Add collision callbacks to ball
 ballCollisionComponent.setCallback('topWall', () => collisionHandler('topWall'));
 ballCollisionComponent.setCallback('leftWall', () => collisionHandler('leftWall'));
 ballCollisionComponent.setCallback('rightWall', () => collisionHandler('rightWall'));
 ballCollisionComponent.setCallback('bottomWall', () => collisionHandler('bottomWall'));
 ballCollisionComponent.setCallback('paddle', () => collisionHandler('paddle'));
+ballCollisionComponent.setCallback('brick', () => collisionHandler('brick'));
 
 function collisionHandler(collisionObject) {
   const velocity = ballEntity.getComponent(VelocityComponent);
@@ -32,6 +34,7 @@ function collisionHandler(collisionObject) {
     case 'bottomWall':
     case 'topWall':
     case 'paddle':
+    case 'brick':
       velocity.dy = -velocity.dy;
       break;
     case 'rightWall':
