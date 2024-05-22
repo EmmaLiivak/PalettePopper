@@ -44,7 +44,7 @@ function collisionHandler(collisionObject) {
       const paddlePosition = paddleEntity.getComponent(PositionComponent);
       paddlePosition.x = paddleConfig.startX;
       paddlePosition.y = paddleConfig.startY;
-      
+
       break;
     case 'topWall':
     case 'paddle':
@@ -65,13 +65,36 @@ function collisionHandler(collisionObject) {
 ballInputComponent.setCallback(' ', () => launchBall());
 
 function launchBall() {
-  console.log('ball launch');
   const velocity = ballEntity.getComponent(VelocityComponent);
   if (velocity.dx === 0 && velocity.dy === 0) {
     velocity.dx = ballConfig.defaultDX;
     velocity.dy = ballConfig.defaultDY;
   }
-  console.log(velocity);
+}
+
+// Add callback to align the ball with paddle if ball is not launched
+const arrowKeys = ['a', 'd', 'arrowleft', 'arrowright'];
+arrowKeys.forEach(key => {
+  ballInputComponent.setCallback(key, () => {
+    const velocity = ballEntity.getComponent(VelocityComponent);
+    if (velocity.dx === 0 && velocity.dy === 0) {
+      alignBallWithPaddle();
+    }
+  });
+});
+
+function alignBallWithPaddle () {
+  const velocity = ballEntity.getComponent(VelocityComponent);
+  if (velocity.dx === 0 && velocity.dy === 0) {
+    const paddlePosition = paddleEntity.getComponent(PositionComponent);
+    const paddleSize = paddleEntity.getComponent(SizeComponent);
+    const ballPosition = ballEntity.getComponent(PositionComponent);
+    const ballSize = ballEntity.getComponent(SizeComponent);
+
+    // Calculate the new x position for the ball to align it with the center of the paddle
+    const newBallX = paddlePosition.x + (paddleSize.width / 2) - (ballSize.width / 2);
+    ballPosition.x = newBallX;
+  }
 }
 
 export default ballEntity;
