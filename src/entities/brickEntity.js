@@ -1,5 +1,6 @@
 import { PositionComponent, SizeComponent, ColorComponent, CollisionComponent, RenderComponent } from "../components.js";
 import Entity from "./entityTemplate.js";
+import ecsSystem from "../systems/ECSSystem.js";
 
 // Brick Entity Template
 export class BrickEntity extends Entity {
@@ -19,6 +20,7 @@ export class BrickEntity extends Entity {
       // Check if the brick is already removed
       if (!brickElement.classList.contains('removed')) {
         brickElement.classList.add('removed');
+        ecsSystem.removeEntity(this);
       }
     });
   }
