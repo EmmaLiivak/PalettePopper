@@ -1,4 +1,4 @@
-import { gameStateSystem } from "./systems/index.js";
+import { gameStateSystem } from "../systems/index.js";
 
 const timeDisplay = document.querySelector('.time');
 

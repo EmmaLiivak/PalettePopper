@@ -3,6 +3,7 @@ import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent
 import { ballConfig, paddleConfig } from "../configurations/entityConfigurations.js";
 import ecsSystem from "../systems/ECSSystem.js";
 import paddleEntity from "./paddleEntity.js";
+import { updateLivesDisplay } from "../interface/livesDisplay.js";
 
 export let ballIsLaunched = false;
 
@@ -48,16 +49,21 @@ function collisionHandler(collisionObject) {
       paddlePosition.x = paddleConfig.startX;
       paddlePosition.y = paddleConfig.startY;
 
+      // Update lives
+      updateLivesDisplay();
       break;
+
     case 'topWall':
     case 'paddle':
     case 'brick':
       velocity.dy = -velocity.dy;
       break;
+
     case 'rightWall':
     case 'leftWall':
       velocity.dx = -velocity.dx;
       break;
+      
     default:
       console.error('Invalid collision object type');
       break;

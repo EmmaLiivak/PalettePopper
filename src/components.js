@@ -90,3 +90,10 @@ export class GameStateComponent extends CallbackManagerComponent {
     super(gameStateTag);
   }
 }
+
+export class LivesComponent extends Component {
+  constructor(initialLives) {
+    super();
+    this.lives = initialLives;
+  }
+}
