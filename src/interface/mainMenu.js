@@ -3,11 +3,7 @@ import inputSystem from "../systems/inputSystem.js";
 import gameStateSystem from '../systems/gameStateSystem.js'
 
 const playButton = document.getElementById('play-button');
-const gameMenu = document.querySelector('.game-menu');
-
-function updateLevel() {
-  levelSpan.textContent = 'Level ' + (levelManagementSystem.currentLevelIndex + 1);
-}
+const mainMenu = document.querySelector('.main-menu');
 
 playButton.addEventListener('click', () => {
   console.log('Loading level ' + (levelManagementSystem.currentLevelIndex + 1) + '...');
@@ -17,7 +13,10 @@ playButton.addEventListener('click', () => {
   closeMenu();
 });
 
+function updateLevel() {
+  levelSpan.textContent = 'Level ' + (levelManagementSystem.currentLevelIndex + 1);
+}
+
 function closeMenu() {
-  gameMenu.style.display = 'none';
-  console.log('Menu closed.');
+  mainMenu.style.display = 'none';
 }

@@ -22,15 +22,15 @@
       <div class="time">Time: 00:00</div>
       <div class="level">Level 1</div>
       
-      <div class="pause-menu">
+      <div class="game-menu">
         <div class="pause-button"><i class="uil uil-pause"></i></div>
         <div class="replay-button"><i class="uil uil-redo"></i></div>
         <div class="menu-button"><i class="uil uil-bars"></i></div>
       </div>
     </div>
 
-    <div class="game-menu">
-      <div class="game-menu-container">
+    <div class="main-menu">
+      <div class="main-menu-container">
         <button id="play-button">Play</button>
   
         <div class="level-select-button">
@@ -40,7 +40,13 @@
         </div>
   
       </div>
-    </div>   
+    </div>
+    
+    <div class="pause-menu">
+      <div class="pause-menu-container">
+        <p>Game Paused</p>
+      </div>
+    </div>
 
     <div class="game-container"></div>
 
@@ -49,7 +55,7 @@
       <div class="lives">Lives: &#10084;&#10084;&#10084;</div>
     </div>
 
-    <script type="module" src="./src/interface/gameMenu.js"></script>
+    <script type="module" src="./src/interface/mainMenu.js"></script>
     <script type="module" src="./src/index.js"></script>
 
   </body>

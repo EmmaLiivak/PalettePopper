@@ -5,6 +5,8 @@ import inputSystem from './inputSystem.js';
 import ecsSystem from './ECSSystem.js';
 import System from "./systemTemplate.js";
 
+const pauseMenu = document.querySelector('.pause-menu');
+
 class GameStateSystem extends System {
   constructor() {
     super();
@@ -17,11 +19,11 @@ class GameStateSystem extends System {
     this.lastUpdateTime = performance.now();
 
     gameLoop();
-    // Hide menu
   }
 
   pauseGame() {
     this.isGameRunning = false;
+    pauseMenu.style.display = 'flex';
 
     ecsSystem.removeSystem(movementSystem);
     inputSystem.removeComponent(paddleEntity);
@@ -30,6 +32,7 @@ class GameStateSystem extends System {
   resumeGame() {
     this.isGameRunning = true;
     this.lastUpdateTime = performance.now();
+    pauseMenu.style.display = 'none';
 
     ecsSystem.addSystem(movementSystem);
     inputSystem.addComponent(paddleEntity);
