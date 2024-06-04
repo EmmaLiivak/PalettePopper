@@ -4,6 +4,8 @@ import { ballConfig, paddleConfig } from "../configurations/entityConfigurations
 import ecsSystem from "../systems/ECSSystem.js";
 import paddleEntity from "./paddleEntity.js";
 
+export let ballIsLaunched = false;
+
 const ballEntity = new Entity('ball');
 ecsSystem.addEntity(ballEntity);
 
@@ -39,6 +41,7 @@ function collisionHandler(collisionObject) {
       position.y = ballConfig.startY;
       velocity.dx = ballConfig.startDX;
       velocity.dy = ballConfig.startDY;
+      ballIsLaunched = false;
 
       // Reset paddle to start position
       const paddlePosition = paddleEntity.getComponent(PositionComponent);
@@ -66,26 +69,15 @@ ballInputComponent.setCallback(' ', () => launchBall());
 
 function launchBall() {
   const velocity = ballEntity.getComponent(VelocityComponent);
-  if (velocity.dx === 0 && velocity.dy === 0) {
+  if (!ballIsLaunched) {
     velocity.dx = ballConfig.defaultDX;
     velocity.dy = ballConfig.defaultDY;
+    ballIsLaunched = true;
   }
 }
 
-// Add callback to align the ball with paddle if ball is not launched
-const arrowKeys = ['a', 'd', 'arrowleft', 'arrowright'];
-arrowKeys.forEach(key => {
-  ballInputComponent.setCallback(key, () => {
-    const velocity = ballEntity.getComponent(VelocityComponent);
-    if (velocity.dx === 0 && velocity.dy === 0) {
-      alignBallWithPaddle();
-    }
-  });
-});
-
-function alignBallWithPaddle () {
-  const velocity = ballEntity.getComponent(VelocityComponent);
-  if (velocity.dx === 0 && velocity.dy === 0) {
+export function alignBallWithPaddle () {
+  if (!ballIsLaunched){
     const paddlePosition = paddleEntity.getComponent(PositionComponent);
     const paddleSize = paddleEntity.getComponent(SizeComponent);
     const ballPosition = ballEntity.getComponent(PositionComponent);

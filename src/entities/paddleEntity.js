@@ -2,6 +2,7 @@ import Entity from "./entityTemplate.js";
 import { paddleConfig, gameContainerWidth } from "../configurations/entityConfigurations.js";
 import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, CollisionComponent, RenderComponent } from "../components.js";
 import ecsSystem from "../systems/ECSSystem.js";
+import ballEntity, { alignBallWithPaddle, ballIsLaunched } from './ballEntity.js'
 
 const paddleEntity = new Entity('paddle');
 ecsSystem.addEntity(paddleEntity);
@@ -33,6 +34,7 @@ const handleWallCollision = (collisionSide) => {
   if (collisionSide === 'right') {
     position.x = gameContainerWidth - size.width;
   }
+  alignBallWithPaddle();
 };
 
 // Define a mapping between keys and their corresponding actions
@@ -46,15 +48,18 @@ const keyMapping = {
 // Set up input callbacks based on the key mapping
 Object.entries(keyMapping).forEach(([key, action]) => {
   paddleInputComponent.setCallback(key, (keyState) => {
-    const velocity = paddleEntity.getComponent(VelocityComponent);
+    const paddleVelocity = paddleEntity.getComponent(VelocityComponent);
+    const ballVelocity = ballEntity.getComponent(VelocityComponent);
 
     if (keyState === 'down') {
       switch (action) {
         case 'moveLeft':
-          velocity.dx = -paddleConfig.defaultDX;
+          paddleVelocity.dx = -paddleConfig.defaultDX;
+          if (!ballIsLaunched) ballVelocity.dx = -paddleConfig.defaultDX;
           break;
         case 'moveRight':
-          velocity.dx = paddleConfig.defaultDX;
+          paddleVelocity.dx = paddleConfig.defaultDX;
+          if (!ballIsLaunched) ballVelocity.dx = paddleConfig.defaultDX;
           break;
       }
     }
@@ -62,9 +67,11 @@ Object.entries(keyMapping).forEach(([key, action]) => {
       switch (action) {
         case 'moveLeft':
         case 'moveRight':
-          velocity.dx = 0;
+          paddleVelocity.dx = 0;
+          if (!ballIsLaunched) ballVelocity.dx = 0;
           break;
       }
+      alignBallWithPaddle();
     }
   });
 });
