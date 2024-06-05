@@ -7,18 +7,21 @@ import System from "./systemTemplate.js";
 import gameStateEntity from '../entities/gameStateEntity.js';
 import { LivesComponent } from '../components.js';
 
-const pauseMenu = document.querySelector('.pause-menu');
-
 class GameStateSystem extends System {
   constructor() {
     super();
     this.isGameRunning = false;
     this.lastUpdateTime = null;
+    this.pauseSystem = new PauseSystem();
+    this.gameEndSystem = new GameEndSystem();
   }
 
   update() {
     if (!this.isGameRunning) return;
-    this.checkGameEnd();
+    
+    if (this.gameEndSystem.isGameOver()) {
+      this.isGameRunning = false;
+    }
   }
 
   startGame() {
@@ -29,37 +32,74 @@ class GameStateSystem extends System {
 
   pauseGame() {
     this.isGameRunning = false;
-    pauseMenu.style.display = 'flex';
-    ecsSystem.removeSystem(movementSystem);
-    inputSystem.removeComponent(paddleEntity);
+    this.pauseSystem.pauseGame();
   }
 
   resumeGame() {
     this.isGameRunning = true;
     this.lastUpdateTime = performance.now();
-    pauseMenu.style.display = 'none';
+    this.pauseSystem.resumeGame();
+  }
+}
+
+class PauseSystem extends System {
+  constructor() {
+    super();
+    this.pauseMenu = document.querySelector('.pause-menu');
+    this.nextLevelButton = document.getElementById('next-level-button')
+  }
+
+  pauseGame() {
+    this.nextLevelButton.classList.add('hidden');
+    this.pauseMenu.classList.remove('hidden');
+    ecsSystem.removeSystem(movementSystem);
+    inputSystem.removeComponent(paddleEntity);
+  }
+
+  resumeGame() {
+    this.pauseMenu.classList.add('hidden');
     ecsSystem.addSystem(movementSystem);
     inputSystem.addComponent(paddleEntity);
   }
+}
 
-  checkGameEnd() {
+class GameEndSystem extends System {
+  constructor() {
+    super();
+    this.pauseMenu = document.querySelector('.pause-menu');
+    this.nextLevelButton = document.getElementById('next-level-button');
+    this.resumeButton = document.getElementById('resume-button');
+    this.restartButton = document.getElementById('restart-button');
+    this.pauseMessage = document.getElementById('pause-message');
+  }
+
+  isGameOver() {
     const livesComponent = gameStateEntity.getComponent(LivesComponent);
     if (livesComponent.lives <= 0) {
       this.endGame(false); // All lives lost, game lost
+      return true;
     }
 
     if (!ecsSystem.entities.some(entity => entity.name === 'brick')) {
       this.endGame(true); // All bricks removed, game won
+      return true;
     }
+
+    return false;
   }
 
   endGame(isWin) {
-    this.pauseGame();
+    this.pauseMenu.classList.remove('hidden');
+    ecsSystem.removeSystem(movementSystem);
+    inputSystem.removeComponent(paddleEntity);
 
     if (isWin) {
-      console.log('Game Won!');
+      this.nextLevelButton.classList.remove('hidden');
+      this.resumeButton.classList.add('hidden');
+      this.pauseMessage.innerText = 'Game Won!';
     } else {
-      console.log('Game Over!');
+      this.resumeButton.classList.add('hidden');
+      this.pauseMessage.innerText = 'Game Lost!';
     }
   }
 }
