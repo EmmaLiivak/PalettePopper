@@ -18,43 +18,67 @@
 
   <body>
 
+    <!-- Top metrics container -->
     <div class="metrics-container">
       <div class="time">Time: 00:00</div>
       <div class="level">Level 1</div>
       
       <div class="game-menu">
-        <div class="pause-button"><i class="uil uil-pause"></i></div>
-        <div class="replay-button"><i class="uil uil-redo"></i></div>
-        <div class="menu-button"><i class="uil uil-bars"></i></div>
+        <button id="pause-button">[P]ause</button>
       </div>
     </div>
 
-    <div class="main-menu">
-      <div class="main-menu-container">
-        <button id="play-button">Play</button>
-  
-        <div class="level-select-button">
-          <button>&#9664;</button>
-          <span>Level 1</span>
-          <button>&#9654;</button>
-        </div>
-  
-      </div>
-    </div>
-    
-    <div class="pause-menu">
-      <div class="pause-menu-container">
-        <p>Game Paused</p>
-      </div>
-    </div>
-
+    <!-- The game container -->
     <div class="game-container"></div>
 
+    <!-- Bottom metrics container -->
     <div class="metrics-container">
       <div class="score">Score: 0</div>
       <div class="lives">Lives: &#10084;&#10084;&#10084;</div>
     </div>
 
+    <!-- Menu container modules -->
+
+    <!-- The main menu -->
+    <div class="main-menu blocker">
+
+      <h1>PalettePopper</h1>
+
+      <div class="menu-buttons">
+        <button id="play-button">Play</button>
+
+        <div class="level-select-button">
+          <button>&#9664;</button>
+          <span>Level 1</span>
+          <button>&#9654;</button>
+        </div>
+
+        <button id="settings-button">Settings</button>
+        <button id="controls-button">Controls</button>
+
+      </div>
+  
+    </div>
+    
+    <!-- The pause menu -->
+    <div class="pause-menu hidden blocker">
+        
+      <h2 id="pause-message">Game Paused</h2>
+
+      <div class="menu-buttons">
+        <button id="next-level-button">Next Level</button>
+
+        <button id="resume-button">Resume</button>
+        <button id="restart-button">Restart</button>
+
+        <button id="settings-button">Settings</button>
+        <button id="controls-button">Controls</button>
+        <button id="main-menu-button">Main Menu</button>
+      </div>
+        
+    </div>
+
+    <!-- scripts -->
     <script type="module" src="./src/interface/mainMenu.js"></script>
     <script type="module" src="./src/index.js"></script>
 
