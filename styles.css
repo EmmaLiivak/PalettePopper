@@ -6,11 +6,21 @@
   box-sizing: border-box;
 }
 
+body,
 .main-menu {
   background-image: url('https://www.tilingtextures.com/wp-content/uploads/2018/11/0066.jpg');
   background-size: cover;
-  background-repeat: no-repeat;
   background-position: center center;
+}
+
+h1 {
+  padding-bottom: 0.5em;
+  font-size: 5em;
+  background: linear-gradient(to right, #FFC811, #FE0789);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  mix-blend-mode: multiply;
 }
 
 .pause-menu {
@@ -34,6 +44,7 @@
 .menu-buttons {
   display: flex;
   flex-direction: column;
+  padding-bottom: 15em;
 }
 
 .menu-buttons > button,
@@ -71,12 +82,19 @@
   will-change: transform;
   transform: translateZ(0);
   position: absolute;
+  mix-blend-mode: multiply;
 }
 
 .ball {
   will-change: transform;
   transform: translateZ(0);
   position: absolute;
+  mix-blend-mode: multiply;
+  border-radius: 100%;
+}
+
+.brick {
+  mix-blend-mode: multiply;
 }
 
 .removed {
