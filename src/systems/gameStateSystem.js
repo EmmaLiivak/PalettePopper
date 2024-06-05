@@ -45,7 +45,7 @@ class GameStateSystem extends System {
   checkGameEnd() {
     const livesComponent = gameStateEntity.getComponent(LivesComponent);
     if (livesComponent.lives <= 0) {
-      this.endGame(false); // Game lost
+      this.endGame(false); // All lives lost, game lost
     }
 
     if (!ecsSystem.entities.some(entity => entity.name === 'brick')) {

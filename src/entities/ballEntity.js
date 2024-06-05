@@ -4,6 +4,7 @@ import { ballConfig, paddleConfig } from "../configurations/entityConfigurations
 import ecsSystem from "../systems/ECSSystem.js";
 import paddleEntity from "./paddleEntity.js";
 import { updateLivesDisplay } from "../interface/livesDisplay.js";
+import { updateScoreDisplay } from "../interface/scoreDisplay.js";
 
 export let ballIsLaunched = false;
 
@@ -55,13 +56,17 @@ function collisionHandler(collisionObject) {
 
     case 'topWall':
     case 'paddle':
-    case 'brick':
       velocity.dy = -velocity.dy;
       break;
 
     case 'rightWall':
     case 'leftWall':
       velocity.dx = -velocity.dx;
+      break;
+
+    case 'brick':
+      updateScoreDisplay();
+      velocity.dy = -velocity.dy;
       break;
       
     default:

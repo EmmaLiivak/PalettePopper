@@ -97,3 +97,10 @@ export class LivesComponent extends Component {
     this.lives = initialLives;
   }
 }
+
+export class ScoreComponent extends Component {
+  constructor() {
+    super();
+    this.score = 0;
+  }
+}
