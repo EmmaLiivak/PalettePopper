@@ -2,7 +2,7 @@ import Entity from "./entityTemplate.js";
 import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, RenderComponent } from "../components.js";
 import { ballConfig, paddleConfig } from "../configurations/entityConfigurations.js";
 import ecsSystem from "../systems/ECSSystem.js";
-import paddleEntity from "./paddleEntity.js";
+import paddleEntity, { restartPaddle } from "./paddleEntity.js";
 import { updateLivesDisplay } from "../interface/livesDisplay.js";
 import { gameStateSystem } from "../systems/index.js";
 
@@ -34,23 +34,13 @@ ballCollisionComponent.setCallback('brick', () => collisionHandler('brick'));
 
 function collisionHandler(collisionObject) {
   const velocity = ballEntity.getComponent(VelocityComponent);
-  const position = ballEntity.getComponent(PositionComponent);
   const ballColor = ballEntity.getComponent(ColorComponent);
   const paddleColor = paddleEntity.getComponent(ColorComponent);
 
   switch (collisionObject) {
     case 'bottomWall':
-      // Reset ball to start position and velocity
-      position.x = ballConfig.startX;
-      position.y = ballConfig.startY;
-      velocity.dx = ballConfig.startDX;
-      velocity.dy = ballConfig.startDY;
-      ballIsLaunched = false;
-
-      // Reset paddle to start position
-      const paddlePosition = paddleEntity.getComponent(PositionComponent);
-      paddlePosition.x = paddleConfig.startX;
-      paddlePosition.y = paddleConfig.startY;
+      restartBall();
+      restartPaddle();
 
       // Update lives
       updateLivesDisplay();
@@ -99,6 +89,17 @@ export function alignBallWithPaddle () {
     const newBallX = paddlePosition.x + (paddleSize.width / 2) - (ballSize.width / 2);
     ballPosition.x = newBallX;
   }
+}
+
+export function restartBall() {
+  const velocity = ballEntity.getComponent(VelocityComponent);
+  const position = ballEntity.getComponent(PositionComponent);
+  // Reset ball to start position and velocity
+  position.x = ballConfig.startX;
+  position.y = ballConfig.startY;
+  velocity.dx = ballConfig.startDX;
+  velocity.dy = ballConfig.startDY;
+  ballIsLaunched = false;
 }
 
 export default ballEntity;

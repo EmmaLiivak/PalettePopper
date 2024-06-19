@@ -4,10 +4,13 @@ import { collisionSystem, ecsSystem, gameStateSystem, inputSystem, movementSyste
 import './systems/index.js';
 
 // Main game loop
-export function gameLoop() {
-  ecsSystem.update();
-
-  updateTime();
+function gameLoop() {
+  if (gameStateSystem.isGameRunning) {
+    ecsSystem.update();
+    updateTime();
+  }
 
   requestAnimationFrame(gameLoop);
 }
+
+gameLoop();

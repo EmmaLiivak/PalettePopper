@@ -8,3 +8,8 @@ export function updateLivesDisplay() {
   livesComponent.lives--;
   livesDisplay.innerHTML = 'Lives: ' + '&#10084;'.repeat(livesComponent.lives);
 }
+
+export function restartLivesDisplay() {
+  livesComponent.lives = 3;
+  livesDisplay.innerHTML = 'Lives: ' + '&#10084;'.repeat(livesComponent.lives);
+}

@@ -2,6 +2,8 @@ import levelManagementSystem from "../systems/levelManagementSystem.js";
 import inputSystem from "../systems/inputSystem.js";
 import gameStateSystem from '../systems/gameStateSystem.js'
 import handleMenuNavigation from "./menuNavigation.js";
+import ecsSystem from "../systems/ECSSystem.js";
+import movementSystem from "../systems/movementSystem.js";
 
 const mainMenu = document.querySelector('.main-menu');
 const playButton = document.getElementById('play-button');
@@ -14,15 +16,11 @@ playButton.addEventListener('click', () => {
   levelManagementSystem.loadLevel();
   inputSystem.startListening();
   gameStateSystem.startGame();
-  closeMenu();
+  mainMenu.classList.add('hidden');
 });
 
 function updateLevel() {
   levelSpan.textContent = 'Level ' + (levelManagementSystem.currentLevelIndex + 1);
-}
-
-function closeMenu() {
-  mainMenu.style.display = 'none';
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -6,7 +6,11 @@ import { BrickEntity } from "../entities/brickEntity.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
 import { createColorPicker, updateColorPicker } from "../interface/colorPicker.js";
 import { ColorComponent, ColorPickerComponent } from "../components.js";
-import paddleEntity from "../entities/paddleEntity.js"
+import paddleEntity, { restartPaddle } from "../entities/paddleEntity.js"
+import { restartLivesDisplay } from "../interface/livesDisplay.js";
+import { restartScoreDisplay } from "../interface/scoreDisplay.js";
+import { restartBall } from "../entities/ballEntity.js";
+import { restartTimeDisplay } from "../interface/timeDisplay.js";
 
 class LevelManagementSystem extends System {
   constructor(levels) {
@@ -21,7 +25,7 @@ class LevelManagementSystem extends System {
     this.currentLevelIndex = levelIndex;
     if (levelIndex >= 0 && levelIndex < this.levels.length) {
       const levelData = levels[levelIndex];
-      this.clearGameContainer();
+      this.restartGameContainer();
       this.createBricksContainer(levelData.gridColumns, levelData.gridRows, levelData.gridGap);
       this.appendBallAndPaddle(levelData.ball, levelData.paddle, levelData.colorPickerColors);
       this.appendBricks(levelData.bricks, levelData.gridColumns, levelData.gridRows, levelData.gridGap);
@@ -31,8 +35,11 @@ class LevelManagementSystem extends System {
     }
   }
 
-  clearGameContainer() {
+  restartGameContainer() {
     gameContainer.innerHTML = '';
+    restartLivesDisplay();
+    restartScoreDisplay();
+    restartTimeDisplay();
   }
 
   createBricksContainer(gridColumns, gridRows, gridGap) {
@@ -50,11 +57,13 @@ class LevelManagementSystem extends System {
     const ballElement = renderingSystem.createEntityElement(ballConfig);
     gameContainer.appendChild(ballElement);
     renderingSystem.elements.set(ballConfig.type, ballElement);
+    restartBall();
   
     // Paddle setup
     const paddleElement = renderingSystem.createEntityElement(paddleConfig);
     gameContainer.appendChild(paddleElement);
     renderingSystem.elements.set(paddleConfig.type, paddleElement);
+    restartPaddle();
 
     // Update paddle colors
     const paddleColorPickerComponent = paddleEntity.getComponent(ColorPickerComponent);

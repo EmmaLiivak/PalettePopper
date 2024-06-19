@@ -22,3 +22,8 @@ export function updateTime() {
 
   timeDisplay.textContent = 'Time: ' + minutes + ':' + seconds;
 }
+
+export function restartTimeDisplay() {
+  totalElapsedTime = 0;
+  timeDisplay.textContent = 'Time: 00:00';
+}

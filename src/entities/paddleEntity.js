@@ -100,4 +100,11 @@ Object.entries(keyMapping).forEach(([key, action]) => {
   });
 });
 
+export function restartPaddle() {
+  // Reset paddle to start position
+  const paddlePosition = paddleEntity.getComponent(PositionComponent);
+  paddlePosition.x = paddleConfig.startX;
+  paddlePosition.y = paddleConfig.startY;
+}
+
 export default paddleEntity;

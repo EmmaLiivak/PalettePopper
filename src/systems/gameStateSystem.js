@@ -1,5 +1,4 @@
 import paddleEntity from '../entities/paddleEntity.js'
-import { gameLoop } from '../index.js';
 import movementSystem from './movementSystem.js'
 import inputSystem from './inputSystem.js';
 import ecsSystem from './ECSSystem.js';
@@ -27,7 +26,6 @@ class GameStateSystem extends System {
   startGame() {
     this.isGameRunning = true;
     this.lastUpdateTime = performance.now();
-    gameLoop();
   }
 
   pauseGame() {
@@ -39,6 +37,11 @@ class GameStateSystem extends System {
     this.isGameRunning = true;
     this.lastUpdateTime = performance.now();
     this.pauseSystem.resumeGame();
+  }
+
+  stopGame() {
+    this.isGameRunning = false;
+    this.lastUpdateTime = null;
   }
 }
 
@@ -97,6 +100,7 @@ class GameEndSystem extends System {
       this.pauseMessage.innerText = 'Game Won!';
     } else {
       this.resumeButton.classList.add('hidden');
+      this.nextLevelButton.classList.add('hidden');
       this.pauseMessage.innerText = 'Game Lost!';
     }
   }
