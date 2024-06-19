@@ -18,9 +18,9 @@ const levels = [
     ball: ballConfig,
     paddle: paddleConfig,
     bricks: [
-      colors.ceruleanBlue, colors.ceruleanBlue, colors.ceruleanBlue,
-      colors.green, colors.green, colors.green,
-      colors.lemonYellow, colors.lemonYellow, colors.lemonYellow,
+      colors.cadmiumYellow, colors.cadmiumYellow, colors.cadmiumYellow,
+      colors.orange, colors.orange, colors.orange,
+      colors.permanentRose, colors.permanentRose, colors.permanentRose,
     ],
     gridColumns: 3,
     gridRows: 3,

@@ -32,7 +32,7 @@ class LevelManagementSystem extends System {
 
   createBricksContainer(gridColumns, gridRows, gridGap) {
     this.bricksContainer = document.createElement('div');
-    this.bricksContainer.classList.add('bricksContainer');
+    this.bricksContainer.classList.add('brick-container');
     this.bricksContainer.style.display = 'grid';
     this.bricksContainer.style.gridTemplateColumns = `repeat(${gridColumns}, auto)`;
     this.bricksContainer.style.gap = `${gridGap}px`;

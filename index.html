@@ -13,6 +13,11 @@
     <!-- ===== Iconscout ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
+    <!-- ===== Google Fonts ===== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
     <title>PalettePopper</title>
   </head>
 
@@ -45,16 +50,16 @@
       <h1>PalettePopper</h1>
 
       <div class="menu-buttons">
-        <button id="play-button">Play</button>
+        <button id="play-button" tabindex="0">Play</button>
 
-        <div class="level-select-button">
-          <button>&#9664;</button>
-          <span>Level 1</span>
-          <button>&#9654;</button>
+        <div class="level-select-button" tabindex="0">  
+          <div>&#9664;</div>
+          <p>Level 1</p>
+          <div>&#9654;</div>
         </div>
 
-        <button id="settings-button">Settings</button>
-        <button id="controls-button">Controls</button>
+        <button id="settings-button" tabindex="0">Settings</button>
+        <button id="controls-button" tabindex="0">Controls</button>
 
       </div>
   
@@ -66,20 +71,21 @@
       <h2 id="pause-message">Game Paused</h2>
 
       <div class="menu-buttons">
-        <button id="next-level-button">Next Level</button>
+        <button id="next-level-button" tabindex="0">Next Level</button>
 
-        <button id="resume-button">Resume</button>
-        <button id="restart-button">Restart</button>
+        <button id="resume-button" tabindex="0">Resume</button>
+        <button id="restart-button" tabindex="0">Restart</button>
 
-        <button id="settings-button">Settings</button>
-        <button id="controls-button">Controls</button>
-        <button id="main-menu-button">Main Menu</button>
+        <button id="settings-button" tabindex="0">Settings</button>
+        <button id="controls-button" tabindex="0">Controls</button>
+        <button id="main-menu-button" tabindex="0">Main Menu</button>
       </div>
         
     </div>
 
     <!-- scripts -->
     <script type="module" src="./src/interface/mainMenu.js"></script>
+    <script type="module" src="./src/interface/pauseMenu.js"></script>
     <script type="module" src="./src/index.js"></script>
 
   </body>
