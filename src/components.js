@@ -104,3 +104,19 @@ export class ScoreComponent extends Component {
     this.score = 0;
   }
 }
+
+export class ColorPickerComponent extends Component {
+  constructor(colors, selectedColorIndex = 1) {
+    super();
+    this.colors = colors;
+    this.selectedColorIndex = selectedColorIndex;
+  }
+
+  selectColor(index) {
+    this.selectedColorIndex = index;
+  }
+
+  getSelectedColor() {
+    return this.colors[this.selectedColorIndex];
+  }
+}

@@ -5,19 +5,20 @@ import ecsSystem from "./ECSSystem.js"
 class RenderingSystem extends System {
   constructor() {
     super();
-    this.elements = new Map();
+    this.elements = new Map(); // Map to store elements associated with entities
   }
 
   update(entities) {
-    this.elements.forEach((element, entityName) => {
-      const entity = entities.find(entity => entity.name === entityName);
-      if (!entity) return;
+    // Update existing elements based on entities
+    entities.forEach(entity => {
+      const element = this.elements.get(entity.name);
+      if (!element) return;
 
       const position = entity.getComponent(PositionComponent);
       const color = entity.getComponent(ColorComponent);
 
       if (position) this.renderEntityPosition(element, position);
-      if (color) this.renderEntityColor(element, color);
+      if (color) this.renderEntityColor(element, color.color);
     });
   }
 
@@ -38,7 +39,7 @@ class RenderingSystem extends System {
   }
 
   renderEntityColor(element, color) {
-    element.style.color = color;
+    element.style.backgroundColor = color;
   }
 }
 

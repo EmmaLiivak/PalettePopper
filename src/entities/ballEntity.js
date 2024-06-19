@@ -5,6 +5,7 @@ import ecsSystem from "../systems/ECSSystem.js";
 import paddleEntity from "./paddleEntity.js";
 import { updateLivesDisplay } from "../interface/livesDisplay.js";
 import { updateScoreDisplay } from "../interface/scoreDisplay.js";
+import { gameStateSystem } from "../systems/index.js";
 
 export let ballIsLaunched = false;
 
@@ -80,7 +81,7 @@ ballInputComponent.setCallback(' ', () => launchBall());
 
 function launchBall() {
   const velocity = ballEntity.getComponent(VelocityComponent);
-  if (!ballIsLaunched) {
+  if (!ballIsLaunched && gameStateSystem.isGameRunning) {
     velocity.dx = ballConfig.defaultDX;
     velocity.dy = ballConfig.defaultDY;
     ballIsLaunched = true;

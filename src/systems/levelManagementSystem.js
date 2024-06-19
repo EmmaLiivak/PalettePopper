@@ -4,6 +4,9 @@ import ecsSystem from "./ECSSystem.js";
 import levels from "../configurations/levelConfigurations.js";
 import { BrickEntity } from "../entities/brickEntity.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
+import { createColorPicker, updateColorPicker } from "../interface/colorPicker.js";
+import { ColorComponent, ColorPickerComponent } from "../components.js";
+import paddleEntity from "../entities/paddleEntity.js"
 
 class LevelManagementSystem extends System {
   constructor(levels) {
@@ -11,6 +14,7 @@ class LevelManagementSystem extends System {
     this.levels = levels;
     this.currentLevelIndex = 0;
     this.bricksContainer = null;
+    this.colorPicker = document.querySelector('.color-picker');
   }
 
   loadLevel(levelIndex = this.currentLevelIndex) {
@@ -19,8 +23,9 @@ class LevelManagementSystem extends System {
       const levelData = levels[levelIndex];
       this.clearGameContainer();
       this.createBricksContainer(levelData.gridColumns, levelData.gridRows, levelData.gridGap);
-      this.appendBallAndPaddle(levelData.ball, levelData.paddle);
+      this.appendBallAndPaddle(levelData.ball, levelData.paddle, levelData.colorPickerColors);
       this.appendBricks(levelData.bricks, levelData.gridColumns, levelData.gridRows, levelData.gridGap);
+      createColorPicker(levelData.colorPickerColors);
     } else {
       console.error("Invalid level index.");
     }
@@ -40,14 +45,23 @@ class LevelManagementSystem extends System {
     gameContainer.appendChild(this.bricksContainer);
   }
 
-  appendBallAndPaddle(ballConfig, paddleConfig) {
+  appendBallAndPaddle(ballConfig, paddleConfig, colorPickerColors) {
+    // Ball setup
     const ballElement = renderingSystem.createEntityElement(ballConfig);
     gameContainer.appendChild(ballElement);
     renderingSystem.elements.set(ballConfig.type, ballElement);
   
+    // Paddle setup
     const paddleElement = renderingSystem.createEntityElement(paddleConfig);
     gameContainer.appendChild(paddleElement);
     renderingSystem.elements.set(paddleConfig.type, paddleElement);
+
+    // Update paddle colors
+    const paddleColorPickerComponent = paddleEntity.getComponent(ColorPickerComponent);
+    paddleColorPickerComponent.colors = colorPickerColors;
+    paddleEntity.getComponent(ColorComponent).color = paddleColorPickerComponent.getSelectedColor();
+
+    renderingSystem.update([paddleEntity]);
   }
 
   appendBricks(bricks, gridColumns, gridRows, gridGap) {

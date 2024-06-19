@@ -53,13 +53,11 @@ class PauseSystem extends System {
     this.nextLevelButton.classList.add('hidden');
     this.pauseMenu.classList.remove('hidden');
     ecsSystem.removeSystem(movementSystem);
-    inputSystem.removeComponent(paddleEntity);
   }
 
   resumeGame() {
     this.pauseMenu.classList.add('hidden');
     ecsSystem.addSystem(movementSystem);
-    inputSystem.addComponent(paddleEntity);
   }
 }
 
