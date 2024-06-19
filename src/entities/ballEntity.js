@@ -36,6 +36,8 @@ ballCollisionComponent.setCallback('brick', () => collisionHandler('brick'));
 function collisionHandler(collisionObject) {
   const velocity = ballEntity.getComponent(VelocityComponent);
   const position = ballEntity.getComponent(PositionComponent);
+  const ballColor = ballEntity.getComponent(ColorComponent);
+  const paddleColor = paddleEntity.getComponent(ColorComponent);
 
   switch (collisionObject) {
     case 'bottomWall':
@@ -56,8 +58,11 @@ function collisionHandler(collisionObject) {
       break;
 
     case 'topWall':
+      velocity.dy = -velocity.dy;
+      break;
     case 'paddle':
       velocity.dy = -velocity.dy;
+      ballColor.color = paddleColor.color;
       break;
 
     case 'rightWall':
