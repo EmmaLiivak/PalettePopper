@@ -4,7 +4,8 @@ import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, In
 import ecsSystem from "../systems/ECSSystem.js";
 import ballEntity, { alignBallWithPaddle, ballIsLaunched } from './ballEntity.js'
 import { updateColorPicker } from "../interface/colorPicker.js";
-import { gameStateSystem } from "../systems/index.js";
+import { gameStateSystem, renderingSystem } from "../systems/index.js";
+import { gameContainer } from "../configurations/entityConfigurations.js";
 
 const paddleEntity = new Entity('paddle');
 ecsSystem.addEntity(paddleEntity);
@@ -100,11 +101,26 @@ Object.entries(keyMapping).forEach(([key, action]) => {
   });
 });
 
+// Reset paddle to it's initial position
 export function restartPaddle() {
-  // Reset paddle to start position
   const paddlePosition = paddleEntity.getComponent(PositionComponent);
   paddlePosition.x = paddleConfig.startX;
   paddlePosition.y = paddleConfig.startY;
+}
+
+// Create and append paddle element to game container
+export function appendPaddle(paddleConfig, colorPickerColors) {
+  const paddleElement = renderingSystem.createEntityElement(paddleConfig);
+  gameContainer.appendChild(paddleElement);
+  renderingSystem.elements.set(paddleConfig.type, paddleElement);
+  restartPaddle();
+
+  // Update paddle colors
+  const paddleColorPickerComponent = paddleEntity.getComponent(ColorPickerComponent);
+  paddleColorPickerComponent.colors = colorPickerColors;
+  paddleEntity.getComponent(ColorComponent).color = paddleColorPickerComponent.getSelectedColor();
+
+  renderingSystem.update([paddleEntity]);
 }
 
 export default paddleEntity;
