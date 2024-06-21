@@ -8,7 +8,7 @@ import { ColorComponent, ColorPickerComponent } from "../components.js";
 import paddleEntity, { restartPaddle } from "../entities/paddleEntity.js"
 import { restartLivesDisplay } from "../interface/livesDisplay.js";
 import { restartScoreDisplay } from "../interface/scoreDisplay.js";
-import { restartBall } from "../entities/ballEntity.js";
+import { appendBall, restartBall } from "../entities/ballEntity.js";
 import { restartTimeDisplay } from "../interface/timeDisplay.js";
 
 class LevelManagementSystem extends System {
@@ -16,7 +16,6 @@ class LevelManagementSystem extends System {
     super();
     this.levels = levels;
     this.currentLevelIndex = 0;
-    this.colorPicker = document.querySelector('.color-picker');
   }
 
   loadLevel(levelIndex = this.currentLevelIndex) {
@@ -25,7 +24,8 @@ class LevelManagementSystem extends System {
       const levelData = levels[levelIndex];
       this.restartGameContainer();
       createBricksContainer(levelData.gridColumns, levelData.gridRows, levelData.gridGap);
-      this.appendBallAndPaddle(levelData.ball, levelData.paddle, levelData.colorPickerColors);
+      appendBall(levelData.ball)
+      this.appendPaddle(levelData.paddle, levelData.colorPickerColors);
       appendBricks(levelData.bricks, levelData.gridColumns, levelData.gridRows, levelData.gridGap);
       createColorPicker(levelData.colorPickerColors);
     } else {
@@ -40,13 +40,7 @@ class LevelManagementSystem extends System {
     restartTimeDisplay();
   }
 
-  appendBallAndPaddle(ballConfig, paddleConfig, colorPickerColors) {
-    // Ball setup
-    const ballElement = renderingSystem.createEntityElement(ballConfig);
-    gameContainer.appendChild(ballElement);
-    renderingSystem.elements.set(ballConfig.type, ballElement);
-    restartBall();
-  
+  appendPaddle(paddleConfig, colorPickerColors) {
     // Paddle setup
     const paddleElement = renderingSystem.createEntityElement(paddleConfig);
     gameContainer.appendChild(paddleElement);

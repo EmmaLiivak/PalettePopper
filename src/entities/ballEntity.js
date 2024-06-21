@@ -4,7 +4,8 @@ import { ballConfig, paddleConfig } from "../configurations/entityConfigurations
 import ecsSystem from "../systems/ECSSystem.js";
 import paddleEntity, { restartPaddle } from "./paddleEntity.js";
 import { updateLivesDisplay } from "../interface/livesDisplay.js";
-import { gameStateSystem } from "../systems/index.js";
+import { gameStateSystem, renderingSystem } from "../systems/index.js";
+import { gameContainer } from "../configurations/entityConfigurations.js";
 
 export let ballIsLaunched = false;
 
@@ -78,6 +79,7 @@ function launchBall() {
   }
 }
 
+// Align ball with paddle while the ball is not launched
 export function alignBallWithPaddle () {
   if (!ballIsLaunched){
     const paddlePosition = paddleEntity.getComponent(PositionComponent);
@@ -91,15 +93,23 @@ export function alignBallWithPaddle () {
   }
 }
 
+// Restart the ball position and velocity to it's initial state
 export function restartBall() {
   const velocity = ballEntity.getComponent(VelocityComponent);
   const position = ballEntity.getComponent(PositionComponent);
-  // Reset ball to start position and velocity
   position.x = ballConfig.startX;
   position.y = ballConfig.startY;
   velocity.dx = ballConfig.startDX;
   velocity.dy = ballConfig.startDY;
   ballIsLaunched = false;
+}
+
+// Create and append ball element to game container
+export function appendBall() {
+  const ballElement = renderingSystem.createEntityElement(ballConfig);
+  gameContainer.appendChild(ballElement);
+  renderingSystem.elements.set(ballConfig.type, ballElement);
+  restartBall();
 }
 
 export default ballEntity;
