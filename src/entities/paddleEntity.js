@@ -96,7 +96,7 @@ Object.entries(keyMapping).forEach(([key, action]) => {
           if (!ballEntity.isLaunched) ballVelocity.dx = 0;
           break;
       }
-      alignBallWithPaddle();
+      ballEntity.alignBallWithPaddle();
     }
   });
 });

@@ -15,6 +15,7 @@ class WallEntity extends Entity {
   }
 }
 
+// Create wall entities
 const topWallEntity = new WallEntity('topWall', 0, 0, gameContainerWidth, 0, 'topWall');
 const bottomWallEntity = new WallEntity('bottomWall', 0, gameContainerHeight, gameContainerWidth, 0, 'bottomWall');
 const leftWallEntity = new WallEntity('leftWall', 0, 0, 0, gameContainerHeight, 'leftWall');
@@ -22,6 +23,7 @@ const rightWallEntity = new WallEntity('rightWall', gameContainerWidth, 0, 0, ga
 
 const walls = [topWallEntity, bottomWallEntity, leftWallEntity, rightWallEntity];
 
+// Add wall entities to ECS system
 walls.forEach(wallEntity => {
   ecsSystem.addEntity(wallEntity);
 });

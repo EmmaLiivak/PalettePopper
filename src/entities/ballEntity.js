@@ -88,6 +88,7 @@ class BallEntity extends Entity {
     }
   }
 
+  // Add velocity to ball to launch it
   launchBall() {
     if (this.isLaunched && !gameStateSystem.isGameRunning) return;
 
@@ -107,6 +108,7 @@ class BallEntity extends Entity {
     this.position.x = paddlePosition.x + (paddleSize.width / 2) - (this.size.width / 2);
   }
 
+  // Return ball to it's initial position and velocity
   restartBall() {
     this.position.x = ballConfig.startX;
     this.position.y = ballConfig.startY;
@@ -115,6 +117,7 @@ class BallEntity extends Entity {
     this.isLaunched = false;
   }
 
+  // Append the ball element to the game container
   appendBall(ballConfig) {
     const ballElement = renderingSystem.createEntityElement(ballConfig);
     gameContainer.appendChild(ballElement);
