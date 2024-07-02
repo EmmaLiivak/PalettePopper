@@ -1,115 +1,129 @@
 import Entity from "./entityTemplate.js";
 import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, RenderComponent } from "../components.js";
-import { ballConfig, paddleConfig } from "../configurations/entityConfigurations.js";
+import { ballConfig } from "../configurations/entityConfigurations.js";
 import ecsSystem from "../systems/ECSSystem.js";
 import paddleEntity, { restartPaddle } from "./paddleEntity.js";
 import { updateLivesDisplay } from "../interface/livesDisplay.js";
 import { gameStateSystem, renderingSystem } from "../systems/index.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
 
-export let ballIsLaunched = false;
+const COLLISION_OBJECTS = {
+  TOP_WALL: 'topWall',
+  LEFT_WALL: 'leftWall',
+  RIGHT_WALL: 'rightWall',
+  BOTTOM_WALL: 'bottomWall',
+  PADDLE: 'paddle',
+  BRICK: 'brick'
+};
 
-const ballEntity = new Entity('ball');
-ecsSystem.addEntity(ballEntity);
+class BallEntity extends Entity {
+  constructor() {
+    super('ball');
+    this.isLaunched = false;
+    this.initComponents();
+    this.setupCollisionCallbacks();
+    this.setupInputCallbacks();
+  }
 
-const ballCollisionComponent = new CollisionComponent('ball');
-const ballInputComponent = new InputComponent('ball');
+  initComponents() {
+    this.attachComponents(
+      new PositionComponent(ballConfig.startX, ballConfig.startY),
+      new VelocityComponent(ballConfig.startDX, ballConfig.startDY),
+      new SizeComponent(ballConfig.width, ballConfig.height),
+      new ColorComponent(ballConfig.color),
+      new RenderComponent(),
+      new CollisionComponent('ball'),
+      new InputComponent('ball')
+    );
 
-ballEntity.attachComponents(
-  new PositionComponent(ballConfig.startX, ballConfig.startY),
-  new VelocityComponent(ballConfig.startDX, ballConfig.startDY),
-  new SizeComponent(ballConfig.width, ballConfig.height),
-  new ColorComponent(ballConfig.color),
-  new RenderComponent(),
-  ballCollisionComponent,
-  ballInputComponent
-);
+    this.position = this.getComponent(PositionComponent);
+    this.velocity = this.getComponent(VelocityComponent);
+    this.size = this.getComponent(SizeComponent);
+    this.color = this.getComponent(ColorComponent);
+    this.render = this.getComponent(RenderComponent);
+    this.collision = this.getComponent(CollisionComponent);
+    this.input = this.getComponent(InputComponent);
+  }
 
-// Add collision callbacks to ball
-ballCollisionComponent.setCallback('topWall', () => collisionHandler('topWall'));
-ballCollisionComponent.setCallback('leftWall', () => collisionHandler('leftWall'));
-ballCollisionComponent.setCallback('rightWall', () => collisionHandler('rightWall'));
-ballCollisionComponent.setCallback('bottomWall', () => collisionHandler('bottomWall'));
-ballCollisionComponent.setCallback('paddle', () => collisionHandler('paddle'));
-ballCollisionComponent.setCallback('brick', () => collisionHandler('brick'));
+  // Add callbacks to all collision objects
+  setupCollisionCallbacks() {
+    Object.values(COLLISION_OBJECTS).forEach(collisionObject => {
+      this.collision.setCallback(collisionObject, () => this.handleCollision(collisionObject));
+    });
+  }
 
-function collisionHandler(collisionObject) {
-  const velocity = ballEntity.getComponent(VelocityComponent);
-  const ballColor = ballEntity.getComponent(ColorComponent);
-  const paddleColor = paddleEntity.getComponent(ColorComponent);
+  // Add callback to launch the ball when space is pressed
+  setupInputCallbacks() {
+    this.input.setCallback(' ', () => this.launchBall());
+  }
 
-  switch (collisionObject) {
-    case 'bottomWall':
-      restartBall();
-      restartPaddle();
+  handleCollision(collisionObject) {
+    const paddleColor = paddleEntity.getComponent(ColorComponent); 
 
-      // Update lives
-      updateLivesDisplay();
-      break;
+    switch (collisionObject) {
+      case COLLISION_OBJECTS.BOTTOM_WALL:
+        this.restartBall();
+        restartPaddle();
+        updateLivesDisplay();
+        break;
 
-    case 'topWall':
-    case 'brick':
-      velocity.dy = -velocity.dy;
-      break;
-    case 'paddle':
-      velocity.dy = -velocity.dy;
-      ballColor.color = paddleColor.color;
-      break;
-
-    case 'rightWall':
-    case 'leftWall':
-      velocity.dx = -velocity.dx;
-      break;
+      case COLLISION_OBJECTS.TOP_WALL:
+      case COLLISION_OBJECTS.BRICK:
+        this.velocity.dy = -this.velocity.dy;
+        break;
       
-    default:
-      console.error('Invalid collision object type');
-      break;
+      case COLLISION_OBJECTS.PADDLE:
+        this.velocity.dy = -this.velocity.dy;
+        this.color.color = paddleColor.color;
+        break;
+
+      case COLLISION_OBJECTS.RIGHT_WALL:
+      case COLLISION_OBJECTS.LEFT_WALL:
+        this.velocity.dx = -this.velocity.dx;
+        break;
+      
+      default:
+        console.error('Invalid collision object type');
+        break;
+    }
   }
-}
 
-// Add callback to launch the ball when space is pressed
-ballInputComponent.setCallback(' ', () => launchBall());
+  launchBall() {
+    if (this.isLaunched && !gameStateSystem.isGameRunning) return;
 
-function launchBall() {
-  const velocity = ballEntity.getComponent(VelocityComponent);
-  if (!ballIsLaunched && gameStateSystem.isGameRunning) {
-    velocity.dx = ballConfig.defaultDX;
-    velocity.dy = ballConfig.defaultDY;
-    ballIsLaunched = true;
+    this.velocity.dx = ballConfig.defaultDX;
+    this.velocity.dy = ballConfig.defaultDY;
+    this.isLaunched = true;
   }
-}
 
-// Align ball with paddle while the ball is not launched
-export function alignBallWithPaddle () {
-  if (!ballIsLaunched){
+  // Align ball with paddle while the ball is not launched
+  alignBallWithPaddle() {
+    if (this.isLaunched) return;
+
     const paddlePosition = paddleEntity.getComponent(PositionComponent);
     const paddleSize = paddleEntity.getComponent(SizeComponent);
-    const ballPosition = ballEntity.getComponent(PositionComponent);
-    const ballSize = ballEntity.getComponent(SizeComponent);
 
     // Calculate the new x position for the ball to align it with the center of the paddle
-    const newBallX = paddlePosition.x + (paddleSize.width / 2) - (ballSize.width / 2);
-    ballPosition.x = newBallX;
+    this.position.x = paddlePosition.x + (paddleSize.width / 2) - (this.size.width / 2);
+  }
+
+  restartBall() {
+    this.position.x = ballConfig.startX;
+    this.position.y = ballConfig.startY;
+    this.velocity.dx = ballConfig.startDX;
+    this.velocity.dy = ballConfig.startDY;
+    this.isLaunched = false;
+  }
+
+  appendBall(ballConfig) {
+    const ballElement = renderingSystem.createEntityElement(ballConfig);
+    gameContainer.appendChild(ballElement);
+    renderingSystem.elements.set(ballConfig.type, ballElement);
+    this.restartBall();
   }
 }
 
-// Restart the ball position and velocity to it's initial state
-export function restartBall() {
-  const velocity = ballEntity.getComponent(VelocityComponent);
-  const position = ballEntity.getComponent(PositionComponent);
-  position.x = ballConfig.startX;
-  position.y = ballConfig.startY;
-  velocity.dx = ballConfig.startDX;
-  velocity.dy = ballConfig.startDY;
-  ballIsLaunched = false;
-}
-
-// Create and append ball element to game container
-export function appendBall() {
-  const ballElement = renderingSystem.createEntityElement(ballConfig);
-  gameContainer.appendChild(ballElement);
-  renderingSystem.elements.set(ballConfig.type, ballElement);
-  restartBall();
-}
+const ballEntity = new BallEntity();
+ecsSystem.addEntity(ballEntity);
 
 export default ballEntity;

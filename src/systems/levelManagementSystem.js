@@ -5,7 +5,7 @@ import { gameContainer } from "../configurations/entityConfigurations.js";
 import { createColorPicker } from "../interface/colorPicker.js";
 import { restartLivesDisplay } from "../interface/livesDisplay.js";
 import { restartScoreDisplay } from "../interface/scoreDisplay.js";
-import { appendBall } from "../entities/ballEntity.js";
+import ballEntity from "../entities/ballEntity.js";
 import { restartTimeDisplay } from "../interface/timeDisplay.js";
 import { appendPaddle } from "../entities/paddleEntity.js";
 
@@ -22,7 +22,7 @@ class LevelManagementSystem extends System {
       const levelData = levels[levelIndex];
       this.restartGameContainer();
       createBricksContainer(levelData.gridColumns, levelData.gridRows, levelData.gridGap);
-      appendBall(levelData.ball)
+      ballEntity.appendBall(levelData.ball);
       appendPaddle(levelData.paddle, levelData.colorPickerColors);
       appendBricks(levelData.bricks, levelData.gridColumns, levelData.gridRows, levelData.gridGap);
       createColorPicker(levelData.colorPickerColors);

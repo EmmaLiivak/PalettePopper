@@ -2,7 +2,7 @@ import Entity from "./entityTemplate.js";
 import { paddleConfig, gameContainerWidth } from "../configurations/entityConfigurations.js";
 import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, CollisionComponent, RenderComponent, ColorPickerComponent } from "../components.js";
 import ecsSystem from "../systems/ECSSystem.js";
-import ballEntity, { alignBallWithPaddle, ballIsLaunched } from './ballEntity.js'
+import ballEntity from './ballEntity.js'
 import { updateColorPicker } from "../interface/colorPicker.js";
 import { gameStateSystem, renderingSystem } from "../systems/index.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
@@ -40,7 +40,7 @@ const handleWallCollision = (collisionSide) => {
   if (collisionSide === 'right') {
     position.x = gameContainerWidth - size.width;
   }
-  alignBallWithPaddle();
+  ballEntity.alignBallWithPaddle();
 };
 
 // Define a mapping between keys and their corresponding actions
@@ -69,11 +69,11 @@ Object.entries(keyMapping).forEach(([key, action]) => {
         // Move the paddle
         case 'moveLeft':
           paddleVelocity.dx = -paddleConfig.defaultDX;
-          if (!ballIsLaunched) ballVelocity.dx = -paddleConfig.defaultDX;
+          if (!ballEntity.isLaunched) ballVelocity.dx = -paddleConfig.defaultDX;
           break;
         case 'moveRight':
           paddleVelocity.dx = paddleConfig.defaultDX;
-          if (!ballIsLaunched) ballVelocity.dx = paddleConfig.defaultDX;
+          if (!ballEntity.isLaunched) ballVelocity.dx = paddleConfig.defaultDX;
           break;
         // Change the color of the paddle
         case 'colorUp':
@@ -93,7 +93,7 @@ Object.entries(keyMapping).forEach(([key, action]) => {
         case 'moveLeft':
         case 'moveRight':
           paddleVelocity.dx = 0;
-          if (!ballIsLaunched) ballVelocity.dx = 0;
+          if (!ballEntity.isLaunched) ballVelocity.dx = 0;
           break;
       }
       alignBallWithPaddle();
