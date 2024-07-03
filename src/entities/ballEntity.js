@@ -90,7 +90,7 @@ class BallEntity extends Entity {
 
   // Add velocity to ball to launch it
   launchBall() {
-    if (this.isLaunched && !gameStateSystem.isGameRunning) return;
+    if (this.isLaunched || !gameStateSystem.isGameRunning) return;
 
     this.velocity.dx = ballConfig.defaultDX;
     this.velocity.dy = ballConfig.defaultDY;
