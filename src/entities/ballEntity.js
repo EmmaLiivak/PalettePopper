@@ -54,7 +54,7 @@ class BallEntity extends Entity {
 
   // Add callback to launch the ball when space is pressed
   setInputCallbacks() {
-    this.input.setCallback(' ', () => this.launchBall());
+    this.input.setCallback(' ', () => this.launch());
   }
 
   handleCollision(collisionObject) {
@@ -113,10 +113,10 @@ class BallEntity extends Entity {
   }
 
   // Append the ball element to the game container
-  render(ballConfig) {
-    const ballElement = renderingSystem.createEntityElement(ballConfig);
+  renderBall(config) {
+    const ballElement = renderingSystem.createEntityElement(config);
     gameContainer.appendChild(ballElement);
-    renderingSystem.elements.set(ballConfig.type, ballElement);
+    renderingSystem.elements.set(config.type, ballElement);
     this.reset();
   }
 }
