@@ -1,16 +1,5 @@
 import { paddleConfig, ballConfig } from "./entityConfigurations.js";
-
-const colors = {
-  lemonYellow: '#FFF80A',
-  ceruleanBlue: '#3EAFE9',
-  green: '#ACDA78',
-  cadmiumYellow: '#FDC50C',
-  permanentRose: '#FE0789',
-  orange: '#FF8043',
-  frenchUltramarine: '#142AD6',
-  alizarinCrimson: '#C7113A',
-  purple: '#6E218B',
-};
+import colors from "./colorConfigurations.js";
 
 const levels = [
   {
@@ -34,15 +23,17 @@ const levels = [
     ball: ballConfig,
     paddle: paddleConfig,
     bricks: [
-      'red', 'red', 'red', 'red', 'red',
-      'orange', 'orange', 'orange', 'orange', 'orange',
-      'yellow', 'yellow', 'yellow', 'yellow', 'yellow',
+      colors.transparent, colors.transparent, colors.lemonYellow, colors.transparent, colors.transparent,
+      colors.transparent, colors.lemonYellow, colors.green, colors.lemonYellow, colors.transparent,
+      colors.lemonYellow, colors.green, colors.ceruleanBlue, colors.green, colors.lemonYellow,
+      colors.transparent, colors.lemonYellow, colors.green, colors.lemonYellow, colors.transparent,
+      colors.transparent, colors.transparent, colors.lemonYellow, colors.transparent, colors.transparent,
     ],
     gridColumns: 5,
-    gridRows: 3,
+    gridRows: 5,
     gridGap: 5,
     colorPickerColors: [
-      'red', 'orange', 'yellow',
+      colors.permanentRose, colors.lemonYellow, colors.ceruleanBlue,
     ],
   },
 ];

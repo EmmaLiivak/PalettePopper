@@ -7,9 +7,10 @@ import renderingSystem from "../systems/renderingSystem.js";
 
 // Brick Entity Template
 class BrickEntity extends Entity {
-  constructor(x, y, width, height, color) {
+  constructor(x, y, width, height, color, element) {
     super('brick');
-    this.color = color;
+    this.color = color
+    this.element = element;
     this.initComponents(x, y, width, height, color);
     this.setCollisionCallbacks();
   }
@@ -29,7 +30,7 @@ class BrickEntity extends Entity {
     collisionComponent.setCallback('ball', () => {
       const ballColor = ballEntity.getComponent(ColorComponent).color;
       // Check if the brick is already removed
-      if (!this.element.classList.contains('removed') && this.color === ballColor) {
+      if (!this.element.classList.contains('removed') && this.color.hexCode === ballColor) {
         this.element.classList.add('removed');
         ecsSystem.removeEntity(this);
         gameManagerEntity.updateScoreDisplay();
@@ -71,16 +72,13 @@ class BrickEntity extends Entity {
       // Create and add the brick entity element for rendering system
       const brickElement = document.createElement('div');
       brickElement.classList.add('brick');
-      brickElement.style.backgroundColor = brickConfig;
+      brickElement.style.backgroundColor = brickConfig.hexCode;
       bricksContainer.appendChild(brickElement);
       renderingSystem.elements.set('brick', brickElement);
   
       // Create and add the brick entity
       const brick = new BrickEntity(brickX, brickY, brickWidth, brickHeight, brickConfig, brickElement);
       ecsSystem.addEntity(brick);
-
-      // Attach element reference to brick entity for collision callback
-      brick.element = brickElement;
     });
   }
 }

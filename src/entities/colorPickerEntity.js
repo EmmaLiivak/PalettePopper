@@ -44,7 +44,7 @@ class ColorPickerEntity extends Entity {
   }
 
   getSelectedColor() {
-    return this.colors[this.selectedColorIndex];
+    return this.colors[this.selectedColorIndex].hexCode;
   }
 
   updateColorPicker(direction) {
@@ -74,7 +74,7 @@ class ColorPickerEntity extends Entity {
     colors.forEach((color, index) => {
       const colorDot = document.createElement('div');
       colorDot.classList.add('color-dot');
-      colorDot.style.backgroundColor = color;
+      colorDot.style.backgroundColor = color.hexCode;
       colorDot.setAttribute('data-index', index);
       colorDot.style.order = index;
       if (index === 1) colorDot.classList.add('selected-color');
