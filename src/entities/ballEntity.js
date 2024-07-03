@@ -2,7 +2,7 @@ import Entity from "./entityTemplate.js";
 import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, RenderComponent } from "../components.js";
 import { ballConfig } from "../configurations/entityConfigurations.js";
 import ecsSystem from "../systems/ECSSystem.js";
-import paddleEntity, { restartPaddle } from "./paddleEntity.js";
+import paddleEntity from "./paddleEntity.js";
 import { gameStateSystem, renderingSystem } from "../systems/index.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
 import gameStateEntity from "./gameManagerEntity.js";
@@ -58,12 +58,10 @@ class BallEntity extends Entity {
   }
 
   handleCollision(collisionObject) {
-    const paddleColor = paddleEntity.getComponent(ColorComponent); 
-
     switch (collisionObject) {
       case COLLISION_OBJECTS.BOTTOM_WALL:
         this.restartBall();
-        restartPaddle();
+        paddleEntity.reset();
         gameStateEntity.updateLivesDisplay();
         break;
 
@@ -74,7 +72,7 @@ class BallEntity extends Entity {
       
       case COLLISION_OBJECTS.PADDLE:
         this.velocity.dy = -this.velocity.dy;
-        this.color.color = paddleColor.color;
+        this.color.color = paddleEntity.color.color;
         break;
 
       case COLLISION_OBJECTS.RIGHT_WALL:
@@ -101,11 +99,8 @@ class BallEntity extends Entity {
   alignBallWithPaddle() {
     if (this.isLaunched) return;
 
-    const paddlePosition = paddleEntity.getComponent(PositionComponent);
-    const paddleSize = paddleEntity.getComponent(SizeComponent);
-
     // Calculate the new x position for the ball to align it with the center of the paddle
-    this.position.x = paddlePosition.x + (paddleSize.width / 2) - (this.size.width / 2);
+    this.position.x = paddleEntity.position.x + (paddleEntity.size.width / 2) - (this.size.width / 2);
   }
 
   // Return ball to it's initial position and velocity

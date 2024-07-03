@@ -7,44 +7,13 @@ import { updateColorPicker } from "../interface/colorPicker.js";
 import { gameStateSystem, renderingSystem } from "../systems/index.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
 
-const paddleEntity = new Entity('paddle');
-ecsSystem.addEntity(paddleEntity);
-
-const paddleInputComponent = new InputComponent('paddle');
-const paddleCollisionComponent = new CollisionComponent('paddle')
-const paddleColorPickerComponent = new ColorPickerComponent();
-
-paddleEntity.attachComponents(
-  new PositionComponent(paddleConfig.startX, paddleConfig.startY),
-  new VelocityComponent(paddleConfig.startDX, paddleConfig.startDY),
-  new SizeComponent(paddleConfig.width, paddleConfig.height),
-  new ColorComponent(paddleConfig.color),
-  new RenderComponent(),
-  paddleInputComponent,
-  paddleCollisionComponent,
-  paddleColorPickerComponent
-);
-
-// Set callbacks for collision with walls
-paddleCollisionComponent.setCallback('leftWall', () => handleWallCollision('left'));
-paddleCollisionComponent.setCallback('rightWall', () => handleWallCollision('right'));
-
-const handleWallCollision = (collisionSide) => {
-  const position = paddleEntity.getComponent(PositionComponent);
-  const size = paddleEntity.getComponent(SizeComponent);
-  if (!position || !size) return;
-
-  if (collisionSide === 'left') {
-    position.x = 0;
-  }
-  if (collisionSide === 'right') {
-    position.x = gameContainerWidth - size.width;
-  }
-  ballEntity.alignBallWithPaddle();
+const COLLISION_OBJECTS = {
+  LEFT_WALL: 'leftWall',
+  RIGHT_WALL: 'rightWall',
 };
 
-// Define a mapping between keys and their corresponding actions
-const keyMapping = {
+// Defined mapping between keys and their corresponding actions
+const KEY_MAPPING = {
   'a': 'moveLeft',
   'arrowleft': 'moveLeft',
   'd': 'moveRight',
@@ -52,75 +21,130 @@ const keyMapping = {
   'w': 'colorUp',
   'arrowup': 'colorUp',
   's': 'colorDown',
-  'arrowdown': 'colorDown'
+  'arrowdown': 'colorDown',
 };
 
-// Set up input callbacks based on the key mapping
-Object.entries(keyMapping).forEach(([key, action]) => {
-  paddleInputComponent.setCallback(key, (keyState) => {
+class PaddleEntity extends Entity {
+  constructor() {
+    super('paddle');
+    this.initComponents();
+    this.setCollisionCallbacks();
+    this.setInputCallbacks();
+  }
+
+  initComponents() {
+    this.attachComponents(
+      new PositionComponent(paddleConfig.startX, paddleConfig.startY),
+      new VelocityComponent(paddleConfig.startDX, paddleConfig.startDY),
+      new SizeComponent(paddleConfig.width, paddleConfig.height),
+      new ColorComponent(paddleConfig.color),
+      new RenderComponent(),
+      new InputComponent('paddle'),
+      new CollisionComponent('paddle'),
+      new ColorPickerComponent()
+    )
+
+    this.position = this.getComponent(PositionComponent);
+    this.velocity = this.getComponent(VelocityComponent);
+    this.size = this.getComponent(SizeComponent);
+    this.color = this.getComponent(ColorComponent);
+    this.input = this.getComponent(InputComponent);
+    this.collision = this.getComponent(CollisionComponent);
+    this.colorPicker = this.getComponent(ColorPickerComponent);
+  }
+
+  setCollisionCallbacks() {
+    Object.values(COLLISION_OBJECTS).forEach(collisionObject => {
+      this.collision.setCallback(collisionObject, () => this.handleWallCollision(collisionObject));
+    });
+  }
+
+  handleWallCollision(collisionSide) {
+    if (!this.position || !this.size) return;
+
+    if (collisionSide === COLLISION_OBJECTS.LEFT_WALL) {
+      this.position.x = 0;
+    } else if (collisionSide === COLLISION_OBJECTS.RIGHT_WALL) {
+      this.position.x = gameContainerWidth - this.size.width;
+    }
+
+    ballEntity.alignBallWithPaddle();
+  }
+
+  setInputCallbacks() {
+    Object.entries(KEY_MAPPING).forEach(([key, action]) => {
+      this.input.setCallback(key, (keyState) => this.handleInput(action, keyState));
+    });
+  }
+
+  handleInput(action, keyState) {
     if (!gameStateSystem.isGameRunning) return;
-    
-    const paddleVelocity = paddleEntity.getComponent(VelocityComponent);
-    const ballVelocity = ballEntity.getComponent(VelocityComponent);
-    const paddleColor = paddleEntity.getComponent(ColorComponent);
 
     if (keyState === 'down') {
-      switch (action) {
-        // Move the paddle
-        case 'moveLeft':
-          paddleVelocity.dx = -paddleConfig.defaultDX;
-          if (!ballEntity.isLaunched) ballVelocity.dx = -paddleConfig.defaultDX;
-          break;
-        case 'moveRight':
-          paddleVelocity.dx = paddleConfig.defaultDX;
-          if (!ballEntity.isLaunched) ballVelocity.dx = paddleConfig.defaultDX;
-          break;
-        // Change the color of the paddle
-        case 'colorUp':
-          paddleColorPickerComponent.selectColor((paddleColorPickerComponent.selectedColorIndex - 1 + paddleColorPickerComponent.colors.length) % paddleColorPickerComponent.colors.length);
-          paddleColor.color = paddleColorPickerComponent.getSelectedColor();
-          updateColorPicker(paddleColorPickerComponent.selectedColorIndex, 'up');
-          break;
-        case 'colorDown':
-          paddleColorPickerComponent.selectColor((paddleColorPickerComponent.selectedColorIndex + 1) % paddleColorPickerComponent.colors.length);
-          paddleColor.color = paddleColorPickerComponent.getSelectedColor();
-          updateColorPicker(paddleColorPickerComponent.selectedColorIndex, 'down');
-          break;
-      }
+      this.handleKeyDown(action);
+    } else if (keyState === 'up') {
+      this.handleKeyUp(action);
     }
-    if (keyState === 'up') {
-      switch (action) {
-        case 'moveLeft':
-        case 'moveRight':
-          paddleVelocity.dx = 0;
-          if (!ballEntity.isLaunched) ballVelocity.dx = 0;
-          break;
-      }
-      ballEntity.alignBallWithPaddle();
-    }
-  });
-});
+  }
 
-// Reset paddle to it's initial position
-export function restartPaddle() {
-  const paddlePosition = paddleEntity.getComponent(PositionComponent);
-  paddlePosition.x = paddleConfig.startX;
-  paddlePosition.y = paddleConfig.startY;
+  handleKeyDown(action) {
+    switch (action) {
+      case 'moveLeft':
+        this.velocity.dx = -paddleConfig.defaultDX;
+        if (!ballEntity.isLaunched) ballEntity.velocity.dx = -paddleConfig.defaultDX;
+        break;
+      case 'moveRight':
+        this.velocity.dx = paddleConfig.defaultDX;
+        if (!ballEntity.isLaunched) ballEntity.velocity.dx = paddleConfig.defaultDX;
+        break;
+      case 'colorUp':
+        this.colorPicker.selectColor((this.colorPicker.selectedColorIndex - 1 + this.colorPicker.colors.length) % this.colorPicker.colors.length);
+        this.color.color = this.colorPicker.getSelectedColor();
+        updateColorPicker(this.colorPicker.selectedColorIndex, 'up');
+        break;
+      case 'colorDown':
+        this.colorPicker.selectColor((this.colorPicker.selectedColorIndex + 1) % this.colorPicker.colors.length);
+        this.color.color = this.colorPicker.getSelectedColor();
+        updateColorPicker(this.colorPicker.selectedColorIndex, 'down');
+        break;
+    }
+  }
+
+  handleKeyUp(action) {
+    switch (action) {
+      case 'moveLeft':
+      case 'moveRight':
+        // Stop moving
+        this.velocity.dx = 0;
+        if (!ballEntity.isLaunched) ballEntity.velocity.dx = 0;
+        break;
+    }
+
+    ballEntity.alignBallWithPaddle();
+  }
+
+  // Reset paddle to it's initial position
+  reset() {
+    this.position.x = paddleConfig.startX;
+    this.position.y = paddleConfig.startY;
+  }
+
+  // Create and append paddle element to game container
+  append(paddleConfig, colorPickerColors) {
+    const paddleElement = renderingSystem.createEntityElement(paddleConfig);
+    gameContainer.appendChild(paddleElement);
+    renderingSystem.elements.set(paddleConfig.type, paddleElement);
+    this.reset();
+
+    // Update paddle colors
+    this.colorPicker.colors = colorPickerColors;
+    this.color.color = this.colorPicker.getSelectedColor();
+
+    renderingSystem.update([paddleEntity]);
+  }
 }
 
-// Create and append paddle element to game container
-export function appendPaddle(paddleConfig, colorPickerColors) {
-  const paddleElement = renderingSystem.createEntityElement(paddleConfig);
-  gameContainer.appendChild(paddleElement);
-  renderingSystem.elements.set(paddleConfig.type, paddleElement);
-  restartPaddle();
-
-  // Update paddle colors
-  const paddleColorPickerComponent = paddleEntity.getComponent(ColorPickerComponent);
-  paddleColorPickerComponent.colors = colorPickerColors;
-  paddleEntity.getComponent(ColorComponent).color = paddleColorPickerComponent.getSelectedColor();
-
-  renderingSystem.update([paddleEntity]);
-}
+const paddleEntity = new PaddleEntity();
+ecsSystem.addEntity(paddleEntity);
 
 export default paddleEntity;
