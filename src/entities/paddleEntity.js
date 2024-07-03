@@ -1,11 +1,10 @@
 import Entity from "./entityTemplate.js";
 import { paddleConfig, gameContainerWidth } from "../configurations/entityConfigurations.js";
-import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, CollisionComponent, RenderComponent, ColorPickerComponent } from "../components.js";
-import ecsSystem from "../systems/ECSSystem.js";
+import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, CollisionComponent, RenderComponent } from "../components.js";
 import ballEntity from './ballEntity.js'
-import { updateColorPicker } from "../interface/colorPicker.js";
-import { gameStateSystem, renderingSystem } from "../systems/index.js";
+import { gameStateSystem, renderingSystem, ecsSystem } from "../systems/index.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
+import colorPickerEntity from "./colorPickerEntity.js";
 
 const COLLISION_OBJECTS = {
   LEFT_WALL: 'leftWall',
@@ -18,10 +17,6 @@ const KEY_MAPPING = {
   'arrowleft': 'moveLeft',
   'd': 'moveRight',
   'arrowright': 'moveRight',
-  'w': 'colorUp',
-  'arrowup': 'colorUp',
-  's': 'colorDown',
-  'arrowdown': 'colorDown',
 };
 
 class PaddleEntity extends Entity {
@@ -41,8 +36,7 @@ class PaddleEntity extends Entity {
       new RenderComponent(),
       new InputComponent('paddle'),
       new CollisionComponent('paddle'),
-      new ColorPickerComponent()
-    )
+    );
 
     this.position = this.getComponent(PositionComponent);
     this.velocity = this.getComponent(VelocityComponent);
@@ -50,7 +44,6 @@ class PaddleEntity extends Entity {
     this.color = this.getComponent(ColorComponent);
     this.input = this.getComponent(InputComponent);
     this.collision = this.getComponent(CollisionComponent);
-    this.colorPicker = this.getComponent(ColorPickerComponent);
   }
 
   setCollisionCallbacks() {
@@ -97,16 +90,6 @@ class PaddleEntity extends Entity {
         this.velocity.dx = paddleConfig.defaultDX;
         if (!ballEntity.isLaunched) ballEntity.velocity.dx = paddleConfig.defaultDX;
         break;
-      case 'colorUp':
-        this.colorPicker.selectColor((this.colorPicker.selectedColorIndex - 1 + this.colorPicker.colors.length) % this.colorPicker.colors.length);
-        this.color.color = this.colorPicker.getSelectedColor();
-        updateColorPicker(this.colorPicker.selectedColorIndex, 'up');
-        break;
-      case 'colorDown':
-        this.colorPicker.selectColor((this.colorPicker.selectedColorIndex + 1) % this.colorPicker.colors.length);
-        this.color.color = this.colorPicker.getSelectedColor();
-        updateColorPicker(this.colorPicker.selectedColorIndex, 'down');
-        break;
     }
   }
 
@@ -130,16 +113,14 @@ class PaddleEntity extends Entity {
   }
 
   // Create and append paddle element to game container
-  append(paddleConfig, colorPickerColors) {
+  render(paddleConfig) {
     const paddleElement = renderingSystem.createEntityElement(paddleConfig);
     gameContainer.appendChild(paddleElement);
     renderingSystem.elements.set(paddleConfig.type, paddleElement);
     this.reset();
 
-    // Update paddle colors
-    this.colorPicker.colors = colorPickerColors;
-    this.color.color = this.colorPicker.getSelectedColor();
-
+    // Update paddle color
+    this.color.color = colorPickerEntity.getSelectedColor();
     renderingSystem.update([paddleEntity]);
   }
 }

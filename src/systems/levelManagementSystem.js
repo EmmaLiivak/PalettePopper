@@ -2,10 +2,10 @@ import System from "./systemTemplate.js";
 import levels from "../configurations/levelConfigurations.js";
 import BrickEntity from "../entities/brickEntity.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
-import { createColorPicker } from "../interface/colorPicker.js";
 import ballEntity from "../entities/ballEntity.js";
 import paddleEntity from "../entities/paddleEntity.js";
 import gameManagerEntity from "../entities/gameManagerEntity.js";
+import colorPickerEntity from "../entities/colorPickerEntity.js";
 
 class LevelManagementSystem extends System {
   constructor(levels) {
@@ -19,10 +19,10 @@ class LevelManagementSystem extends System {
     if (levelIndex >= 0 && levelIndex < this.levels.length) {
       const levelData = levels[levelIndex];
       this.restartGameContainer();
+      colorPickerEntity.render(levelData.colorPickerColors);
       BrickEntity.appendBricks(levelData.bricks, levelData.gridColumns, levelData.gridRows, levelData.gridGap);
       ballEntity.appendBall(levelData.ball);
-      paddleEntity.append(levelData.paddle, levelData.colorPickerColors);
-      createColorPicker(levelData.colorPickerColors);
+      paddleEntity.render(levelData.paddle);
     } else {
       console.error("Invalid level index.");
     }
