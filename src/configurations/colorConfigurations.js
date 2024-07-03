@@ -1,8 +1,8 @@
 class Color {
-  constructor(name, hexCode, isPrimary = true, requiredHits = [], isTransparent = false) {
+  constructor(name, hexCode, isSecondary = false, requiredHits = [], isTransparent = false) {
     this.name = name;
     this.hexCode = hexCode;
-    this.isPrimary = isPrimary;
+    this.isSecondary = isSecondary;
     this.requiredHits = requiredHits;
     this.isTransparent = isTransparent;
   }
@@ -20,8 +20,8 @@ const colors = {
 };
 
 // Define secondary colors
-colors.green = new Color('Green', '#ACDA78', false, [colors.lemonYellow, colors.ceruleanBlue]);
-colors.purple = new Color('Purple', '#6E218B', false, [colors.frenchUltramarine, colors.alizarinCrimson]),
-colors.orange = new Color('Orange', '#FF8043', false, [colors.cadmiumYellow, colors.permanentRose]);
+colors.green = new Color('Green', '#ACDA78', true, [colors.lemonYellow, colors.ceruleanBlue]);
+colors.purple = new Color('Purple', '#6E218B', true, [colors.frenchUltramarine, colors.alizarinCrimson]),
+colors.orange = new Color('Orange', '#FF8043', true, [colors.cadmiumYellow, colors.permanentRose]);
 
 export default colors;

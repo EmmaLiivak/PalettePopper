@@ -28,12 +28,29 @@ class BrickEntity extends Entity {
   setCollisionCallbacks() {
     const collisionComponent = this.getComponent(CollisionComponent);
     collisionComponent.setCallback('ball', () => {
-      const ballColor = ballEntity.getComponent(ColorComponent).color;
       // Check if the brick is already removed
-      if (!this.element.classList.contains('removed') && this.color.hexCode === ballColor) {
+      if (this.element.classList.contains('removed')) return;
+      
+      // Check if the ball color matches the brick color
+      if (this.color.hexCode === ballEntity.color.color) {
         this.element.classList.add('removed');
         ecsSystem.removeEntity(this);
         gameManagerEntity.updateScoreDisplay();
+        return;
+      }
+
+      // Check secondary color conditions
+      if (this.color.isSecondary) {
+        // Check if any required hits colors match ball color
+        const matchingPrimaryColor = this.color.requiredHits.find(primaryColor => primaryColor.hexCode === ballEntity.color.color);
+        // Change the brick color to primary color if match was found
+        if (matchingPrimaryColor) {
+          const newPrimaryColor = this.color.requiredHits.find(primaryColor => primaryColor !== matchingPrimaryColor);
+          this.color = newPrimaryColor;
+          this.element.style.backgroundColor = newPrimaryColor.hexCode;
+          gameManagerEntity.updateScoreDisplay();
+          return;
+        }
       }
     });
   }
