@@ -48,16 +48,13 @@ class BallEntity extends Entity {
   // Add callbacks to all collision objects
   setCollisionCallbacks() {
     Object.values(COLLISION_OBJECTS).forEach(collisionObject => {
-      this.collision.setCallback(collisionObject, () => this.handleCollision(collisionObject));
+      this.collision.setCallback(collisionObject, (ball, otherEntity) => {
+        this.handleCollision(collisionObject, otherEntity)
+      });
     });
   }
 
-  // Add callback to launch the ball when space is pressed
-  setInputCallbacks() {
-    this.input.setCallback(' ', () => this.launch());
-  }
-
-  handleCollision(collisionObject) {
+  handleCollision(collisionObject, otherEntity) {
     switch (collisionObject) {
       case COLLISION_OBJECTS.BOTTOM_WALL:
         this.reset();
@@ -66,7 +63,6 @@ class BallEntity extends Entity {
         break;
 
       case COLLISION_OBJECTS.TOP_WALL:
-      case COLLISION_OBJECTS.BRICK:
         this.velocity.dy = -this.velocity.dy;
         break;
       
@@ -79,11 +75,32 @@ class BallEntity extends Entity {
       case COLLISION_OBJECTS.LEFT_WALL:
         this.velocity.dx = -this.velocity.dx;
         break;
+
+      case COLLISION_OBJECTS.BRICK:
+        const brickPosition = otherEntity.getComponent(PositionComponent);
+        const brickSize = otherEntity.getComponent(SizeComponent);
+
+        const ballBottomEdgeNextFrame = this.position.y + this.size.height - Math.abs(this.velocity.dy);
+        const ballTopEdgeNextFrame = this.position.y + Math.abs(this.velocity.dy);
+
+        // Determine if the ball is hitting the brick from the top or bottom
+        if (ballBottomEdgeNextFrame <= brickPosition.y ||
+          ballTopEdgeNextFrame >= brickPosition.y + brickSize.height) {
+          this.velocity.dy = -this.velocity.dy; // Reverse vertical direction
+        } else {
+          this.velocity.dx = -this.velocity.dx; // Reverse horizontal direction
+        }
+        break;
       
       default:
         console.error('Invalid collision object type');
         break;
     }
+  }
+
+   // Add callback to launch the ball when space is pressed
+   setInputCallbacks() {
+    this.input.setCallback(' ', () => this.launch());
   }
 
   // Add velocity to ball to launch it
