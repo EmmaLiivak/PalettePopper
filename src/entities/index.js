@@ -1,6 +1,6 @@
 import ballEntity from "./ballEntity.js";
-import gameStateEntity from "./gameStateEntity.js";
+import gameManagerEntity from "./gameManagerEntity.js";
 import paddleEntity from "./paddleEntity.js";
 import walls from "./wallEntity.js";
 
-export {ballEntity, gameStateEntity, paddleEntity, walls};
+export {ballEntity, gameManagerEntity, paddleEntity, walls};

@@ -3,9 +3,9 @@ import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent
 import { ballConfig } from "../configurations/entityConfigurations.js";
 import ecsSystem from "../systems/ECSSystem.js";
 import paddleEntity, { restartPaddle } from "./paddleEntity.js";
-import { updateLivesDisplay } from "../interface/livesDisplay.js";
 import { gameStateSystem, renderingSystem } from "../systems/index.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
+import gameStateEntity from "./gameManagerEntity.js";
 
 const COLLISION_OBJECTS = {
   TOP_WALL: 'topWall',
@@ -64,7 +64,7 @@ class BallEntity extends Entity {
       case COLLISION_OBJECTS.BOTTOM_WALL:
         this.restartBall();
         restartPaddle();
-        updateLivesDisplay();
+        gameStateEntity.updateLivesDisplay();
         break;
 
       case COLLISION_OBJECTS.TOP_WALL:

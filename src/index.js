@@ -1,5 +1,4 @@
-import { updateTime } from './interface/timeDisplay.js';
-import { ballEntity, gameStateEntity, paddleEntity, walls} from './entities/index.js'
+import { ballEntity, gameManagerEntity, paddleEntity, walls} from './entities/index.js'
 import { collisionSystem, ecsSystem, gameStateSystem, inputSystem, movementSystem, renderingSystem } from './systems/index.js'
 import './systems/index.js';
 
@@ -7,7 +6,7 @@ import './systems/index.js';
 function gameLoop() {
   if (gameStateSystem.isGameRunning) {
     ecsSystem.update();
-    updateTime();
+    gameManagerEntity.updateTimeDisplay();
   }
 
   requestAnimationFrame(gameLoop);

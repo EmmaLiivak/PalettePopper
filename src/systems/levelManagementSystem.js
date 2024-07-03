@@ -3,11 +3,9 @@ import levels from "../configurations/levelConfigurations.js";
 import BrickEntity from "../entities/brickEntity.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
 import { createColorPicker } from "../interface/colorPicker.js";
-import { restartLivesDisplay } from "../interface/livesDisplay.js";
-import { restartScoreDisplay } from "../interface/scoreDisplay.js";
 import ballEntity from "../entities/ballEntity.js";
-import { restartTimeDisplay } from "../interface/timeDisplay.js";
 import { appendPaddle } from "../entities/paddleEntity.js";
+import gameManagerEntity from "../entities/gameManagerEntity.js";
 
 class LevelManagementSystem extends System {
   constructor(levels) {
@@ -32,9 +30,7 @@ class LevelManagementSystem extends System {
 
   restartGameContainer() {
     gameContainer.innerHTML = '';
-    restartLivesDisplay();
-    restartScoreDisplay();
-    restartTimeDisplay();
+    gameManagerEntity.restartDisplays();
   }
 
   goToNextLevel() {

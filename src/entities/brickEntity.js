@@ -1,8 +1,7 @@
 import { PositionComponent, SizeComponent, ColorComponent, CollisionComponent, RenderComponent } from "../components.js";
 import Entity from "./entityTemplate.js";
 import ecsSystem from "../systems/ECSSystem.js";
-import { ballEntity } from "./index.js";
-import { updateScoreDisplay } from "../interface/scoreDisplay.js";
+import { ballEntity, gameManagerEntity } from "./index.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
 import renderingSystem from "../systems/renderingSystem.js";
 
@@ -33,7 +32,7 @@ class BrickEntity extends Entity {
       if (!this.element.classList.contains('removed') && this.color === ballColor) {
         this.element.classList.add('removed');
         ecsSystem.removeEntity(this);
-        updateScoreDisplay();
+        gameManagerEntity.updateScoreDisplay();
       }
     });
   }

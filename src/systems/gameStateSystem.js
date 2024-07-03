@@ -3,8 +3,7 @@ import movementSystem from './movementSystem.js'
 import inputSystem from './inputSystem.js';
 import ecsSystem from './ECSSystem.js';
 import System from "./systemTemplate.js";
-import gameStateEntity from '../entities/gameStateEntity.js';
-import { LivesComponent } from '../components.js';
+import gameManagerEntity from '../entities/gameManagerEntity.js';
 
 class GameStateSystem extends System {
   constructor() {
@@ -75,8 +74,7 @@ class GameEndSystem extends System {
   }
 
   isGameOver() {
-    const livesComponent = gameStateEntity.getComponent(LivesComponent);
-    if (livesComponent.lives <= 0) {
+    if (gameManagerEntity.lives.lives <= 0) {
       this.endGame(false); // All lives lost, game lost
       return true;
     }
