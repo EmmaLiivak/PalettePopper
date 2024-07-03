@@ -21,8 +21,8 @@ class BallEntity extends Entity {
     super('ball');
     this.isLaunched = false;
     this.initComponents();
-    this.setupCollisionCallbacks();
-    this.setupInputCallbacks();
+    this.setCollisionCallbacks();
+    this.setInputCallbacks();
   }
 
   initComponents() {
@@ -46,21 +46,21 @@ class BallEntity extends Entity {
   }
 
   // Add callbacks to all collision objects
-  setupCollisionCallbacks() {
+  setCollisionCallbacks() {
     Object.values(COLLISION_OBJECTS).forEach(collisionObject => {
       this.collision.setCallback(collisionObject, () => this.handleCollision(collisionObject));
     });
   }
 
   // Add callback to launch the ball when space is pressed
-  setupInputCallbacks() {
+  setInputCallbacks() {
     this.input.setCallback(' ', () => this.launchBall());
   }
 
   handleCollision(collisionObject) {
     switch (collisionObject) {
       case COLLISION_OBJECTS.BOTTOM_WALL:
-        this.restartBall();
+        this.reset();
         paddleEntity.reset();
         gameStateEntity.updateLivesDisplay();
         break;
@@ -87,7 +87,7 @@ class BallEntity extends Entity {
   }
 
   // Add velocity to ball to launch it
-  launchBall() {
+  launch() {
     if (this.isLaunched || !gameStateSystem.isGameRunning) return;
 
     this.velocity.dx = ballConfig.defaultDX;
@@ -104,7 +104,7 @@ class BallEntity extends Entity {
   }
 
   // Return ball to it's initial position and velocity
-  restartBall() {
+  reset() {
     this.position.x = ballConfig.startX;
     this.position.y = ballConfig.startY;
     this.velocity.dx = ballConfig.startDX;
@@ -113,11 +113,11 @@ class BallEntity extends Entity {
   }
 
   // Append the ball element to the game container
-  appendBall(ballConfig) {
+  render(ballConfig) {
     const ballElement = renderingSystem.createEntityElement(ballConfig);
     gameContainer.appendChild(ballElement);
     renderingSystem.elements.set(ballConfig.type, ballElement);
-    this.restartBall();
+    this.reset();
   }
 }
 

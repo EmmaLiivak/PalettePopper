@@ -11,7 +11,7 @@ class BrickEntity extends Entity {
     super('brick');
     this.color = color;
     this.initComponents(x, y, width, height, color);
-    this.setupCollisionCallback();
+    this.setCollisionCallbacks();
   }
 
   initComponents(x, y, width, height, color) {
@@ -24,7 +24,7 @@ class BrickEntity extends Entity {
     );
   }
 
-  setupCollisionCallback() {
+  setCollisionCallbacks() {
     const collisionComponent = this.getComponent(CollisionComponent);
     collisionComponent.setCallback('ball', () => {
       const ballColor = ballEntity.getComponent(ColorComponent).color;
@@ -48,7 +48,7 @@ class BrickEntity extends Entity {
     return bricksContainer;
   }
 
-  static appendBricks(bricks, gridColumns, gridRows, gridGap) {
+  static renderBricks(bricks, gridColumns, gridRows, gridGap) {
     const bricksContainer = BrickEntity.createBricksContainer(gridColumns, gridRows, gridGap);
     const brickContainerWidth = bricksContainer.offsetWidth;
     const brickContainerHeight = bricksContainer.offsetHeight;

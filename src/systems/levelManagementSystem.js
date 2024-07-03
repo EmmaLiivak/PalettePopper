@@ -20,9 +20,9 @@ class LevelManagementSystem extends System {
       const levelData = levels[levelIndex];
       this.restartGameContainer();
       colorPickerEntity.render(levelData.colorPickerColors);
-      BrickEntity.appendBricks(levelData.bricks, levelData.gridColumns, levelData.gridRows, levelData.gridGap);
-      ballEntity.appendBall(levelData.ball);
+      BrickEntity.renderBricks(levelData.bricks, levelData.gridColumns, levelData.gridRows, levelData.gridGap);
       paddleEntity.render(levelData.paddle);
+      ballEntity.render(levelData.ball);
     } else {
       console.error("Invalid level index.");
     }
@@ -30,7 +30,7 @@ class LevelManagementSystem extends System {
 
   restartGameContainer() {
     gameContainer.innerHTML = '';
-    gameManagerEntity.restartDisplays();
+    gameManagerEntity.resetDisplays();
   }
 
   goToNextLevel() {

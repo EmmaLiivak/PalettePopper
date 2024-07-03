@@ -13,8 +13,8 @@ class GameManagerEntity extends Entity {
     this.initialScore = 0;
     this.totalElapsedTime = 0;
     this.initComponents();
-    this.setupInputCallbacks();
-    this.restartDisplays(); // Ensure displays are initialized correctly
+    this.setInputCallbacks();
+    this.resetDisplays(); // Ensure displays are initialized correctly
   }
 
   initComponents() {
@@ -22,14 +22,14 @@ class GameManagerEntity extends Entity {
       new InputComponent('gameState'),
       new LivesComponent(this.initialLives),
       new ScoreComponent(this.initialScore),
-    )
+    );
 
     this.input = this.getComponent(InputComponent);
     this.lives = this.getComponent(LivesComponent);
     this.score = this.getComponent(ScoreComponent);
   }
 
-  setupInputCallbacks() {
+  setInputCallbacks() {
     this.input.setCallback('p', (keyState) => this.togglePause(keyState));
   }
 
@@ -66,7 +66,7 @@ class GameManagerEntity extends Entity {
     this.timeDisplay.textContent = 'Time: ' + minutes + ':' + seconds;
   }
 
-  restartDisplays() {
+  resetDisplays() {
     // Restart lives display
     this.lives.lives = this.initialLives;
     this.livesDisplay.innerHTML = 'Lives: ' + '&#10084;'.repeat(this.lives.lives);
