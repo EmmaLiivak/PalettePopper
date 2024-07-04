@@ -9,7 +9,7 @@ export const paddleConfig = {
     startDX: 0,
     startDY: 0,
     defaultDX: 3,
-    width: gameContainerWidth * 0.1,
+    width: gameContainerWidth * 0.15,
     height: gameContainerHeight * 0.02,
     color: 'black',
     type: 'paddle'

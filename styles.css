@@ -23,11 +23,10 @@ h1 {
   font-size: 50px;
   color: var(--permanentRose);
   font-family: "Gluten", cursive;
-  
 }
 
 .main-menu {
-  background-image: url('https://watercolormisfit.com/wp-content/uploads/2019/11/watercolor.jpg');
+  background-image: url('./assets/background.gif');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -61,21 +60,20 @@ h1 {
 .menu-buttons > div {
   margin-top: 0.75em;
   font-size: 20px;
-  border: none;
+  border: solid 0.15rem var(--permanentRose);
   border-radius: 0.5em;
   padding: 0.5em 2em 0.5em 2em ;
-  color: white;
+  color: var(--permanentRose);
   transition-duration: 400ms;
 }
 
 .main-menu .menu-buttons > button,
 .main-menu .menu-buttons > div {
-  background-color: var(--permanentRose);
-  mix-blend-mode: overlay;
+  background-color: whitesmoke;
 }
 
 .pause-menu .menu-buttons > * {
-  background-color: var(--permanentRose);
+  background-color: whitesmoke;
 }
 
 .menu-buttons > button:hover,
@@ -84,7 +82,8 @@ h1 {
 .menu-buttons > div:focus {
   outline: none;
   cursor: pointer;
-  background-color: var(--cadmiumYellow);
+  background-color: var(--permanentRose);
+  color: whitesmoke;
 }
 
 .level-select-button {
@@ -163,6 +162,7 @@ h1 {
   transform: translateZ(0);
   position: absolute;
   mix-blend-mode: multiply;
+  clip-path: polygon(5% 40%,25% 0%,75% 0%,95% 40%,100% 100%,0% 100%);
 }
 
 .ball {
