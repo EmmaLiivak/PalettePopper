@@ -71,7 +71,6 @@ class BallEntity extends Entity {
         const hitPosition = (this.position.x + this.size.width / 2) - paddleEntity.position.x;
         const paddleSection = paddleEntity.size.width / 5; // Divide paddle into 5 sections
 
-        // Determine where the ball hit the paddle
         let newDX;
         if (hitPosition < paddleSection) {
           // Left edge
