@@ -67,7 +67,33 @@ class BallEntity extends Entity {
         break;
       
       case COLLISION_OBJECTS.PADDLE:
+        // Calculate where the ball hit the paddle
+        const hitPosition = (this.position.x + this.size.width / 2) - paddleEntity.position.x;
+        const paddleSection = paddleEntity.size.width / 5; // Divide paddle into 5 sections
+
+        // Determine where the ball hit the paddle
+        let newDX;
+        if (hitPosition < paddleSection) {
+          // Left edge
+          newDX = -ballConfig.defaultDX;
+        } else if (hitPosition < paddleSection * 2) {
+          // Left center
+          newDX = -(ballConfig.defaultDX / 2);
+        } else if (hitPosition < paddleSection * 3) {
+          // Middle
+          newDX = 0;
+        } else if (hitPosition < paddleSection * 4) {
+          // Right center
+          newDX = ballConfig.defaultDX / 2;
+        } else {
+          // Right edge
+          newDX = ballConfig.defaultDX
+        }
+
+        // Set the new velocity direction
         this.velocity.dy = -this.velocity.dy;
+        this.velocity.dx = newDX;
+
         this.color.color = paddleEntity.color.color;
         break;
 
