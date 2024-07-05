@@ -2,20 +2,13 @@ import Entity from "../entities/entityTemplate.js";
 import paddleEntity from "../entities/paddleEntity.js";
 import { InputComponent } from "../components.js";
 import { gameStateSystem, ecsSystem } from "../systems/index.js";
-
-// Defined mapping between keys and their corresponding actions
-const KEY_MAPPING = {
-  'w': 'colorUp',
-  'arrowup': 'colorUp',
-  's': 'colorDown',
-  'arrowdown': 'colorDown',
-};
+import { colorPickerConfig } from "../configurations/entityConfigurations.js"
 
 class ColorPickerEntity extends Entity {
   constructor() {
     super('colorPicker');
-    this.colors = [];
-    this.selectedColorIndex = 1;
+    this.colors = colorPickerConfig.colors;
+    this.selectedColorIndex = colorPickerConfig.startSelectedColorIndex;
     this.colorPickerContainer = document.querySelector('.color-picker');
     this.initComponents();
     this.setInputCallbacks();
@@ -27,7 +20,7 @@ class ColorPickerEntity extends Entity {
   }
 
   setInputCallbacks() {
-    Object.entries(KEY_MAPPING).forEach(([key, action]) => {
+    Object.entries(colorPickerConfig.keyMapping).forEach(([key, action]) => {
       this.input.setCallback(key, (keyState) => this.handleInput(action, keyState));
     });
   }
@@ -67,11 +60,9 @@ class ColorPickerEntity extends Entity {
   }
 
   render(colors) {
-    this.colors = colors;
-    this.selectColorIndex = 1;
     this.colorPickerContainer.innerHTML = '';
 
-    colors.forEach((color, index) => {
+    this.colors.forEach((color, index) => {
       const colorDot = document.createElement('div');
       colorDot.classList.add('color-dot');
       colorDot.style.backgroundColor = color.hexCode;

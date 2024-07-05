@@ -14,9 +14,6 @@ const levels = [
     gridColumns: 3,
     gridRows: 3,
     gridGap: 5,
-    colorPickerColors: [
-      colors.permanentRose, colors.cadmiumYellow, colors.ceruleanBlue,
-    ],
   },
   {
     level: 2,
@@ -32,9 +29,6 @@ const levels = [
     gridColumns: 5,
     gridRows: 5,
     gridGap: 5,
-    colorPickerColors: [
-      colors.permanentRose, colors.cadmiumYellow, colors.ceruleanBlue,
-    ],
   },
   {
     level: 3,
@@ -51,9 +45,6 @@ const levels = [
     gridColumns: 6,
     gridRows: 6,
     gridGap: 5,
-    colorPickerColors: [
-      colors.permanentRose, colors.cadmiumYellow, colors.ceruleanBlue,
-    ],
   },
 ];
 
