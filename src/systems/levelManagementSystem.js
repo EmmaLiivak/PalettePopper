@@ -26,7 +26,7 @@ class LevelManagementSystem extends System {
   }
 
   restartGameContainer() {
-    gameContainer.innerHTML = '';
+    gameContainer.element.innerHTML = '';
     gameManagerEntity.resetDisplays();
   }
 
