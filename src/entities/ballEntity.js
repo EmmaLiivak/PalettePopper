@@ -1,10 +1,8 @@
 import Entity from "./entityTemplate.js";
 import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, RenderComponent } from "../components.js";
-import { ballConfig, paddleConfig } from "../configurations/entityConfigurations.js";
-import ecsSystem from "../systems/ECSSystem.js";
 import paddleEntity from "./paddleEntity.js";
-import { gameStateSystem, renderingSystem } from "../systems/index.js";
-import { gameContainer } from "../configurations/entityConfigurations.js";
+import { gameStateSystem, renderingSystem, ecsSystem } from "../systems/index.js";
+import { gameContainer, ballConfig, paddleConfig} from "../configurations/entityConfigurations.js";
 import gameStateEntity from "./gameManagerEntity.js";
 
 class BallEntity extends Entity {
@@ -57,6 +55,11 @@ class BallEntity extends Entity {
       case 'topWall':
         this.velocity.dy = -this.velocity.dy;
         break;
+
+      case 'rightWall':
+      case 'leftWall':
+        this.velocity.dx = -this.velocity.dx;
+        break;
       
       case 'paddle':
         // Determine where the ball hits the paddle
@@ -76,11 +79,6 @@ class BallEntity extends Entity {
 
         // Match ball color to paddle color
         this.color.color = paddleEntity.color.color
-        break;
-
-      case 'rightWall':
-      case 'leftWall':
-        this.velocity.dx = -this.velocity.dx;
         break;
 
       case 'brick':
