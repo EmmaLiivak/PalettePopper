@@ -4,6 +4,7 @@ import inputSystem from './inputSystem.js';
 import ecsSystem from './ECSSystem.js';
 import System from "./systemTemplate.js";
 import gameManagerEntity from '../entities/gameManagerEntity.js';
+import levelManagementSystem from './levelManagementSystem.js';
 
 class GameStateSystem extends System {
   constructor() {
@@ -36,6 +37,13 @@ class GameStateSystem extends System {
     this.isGameRunning = true;
     this.lastUpdateTime = performance.now();
     this.pauseSystem.resumeGame();
+  }
+
+  restartLevel() {
+    this.stopGame();
+    ecsSystem.addSystem(movementSystem);
+    levelManagementSystem.resetLevel();
+    this.startGame();
   }
 
   stopGame() {

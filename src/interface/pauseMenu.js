@@ -1,43 +1,32 @@
 import gameStateSystem from '../systems/gameStateSystem.js'
-import handleMenuNavigation from "./menuNavigation.js";
-import ecsSystem from '../systems/ECSSystem.js';
-import movementSystem from '../systems/movementSystem.js';
-import levelManagementSystem from '../systems/levelManagementSystem.js';
+import Menu from './menuTemplate.js';
+import mainMenu from './mainMenu.js';
 
-const pauseMenu = document.querySelector('.pause-menu');
-const mainMenu = document.querySelector('.main-menu');
-const resumeButton = document.getElementById('resume-button');
-const restartButton = document.getElementById('restart-button');
-const mainMenuButton = document.getElementById('main-menu-button');
+class PauseMenu extends Menu {
+  constructor() {
+    super('.pause-menu');
+    this.resumeButton = this.menuElement.querySelector('#resume-button');
+    this.restartButton = this.menuElement.querySelector('#restart-button');
+    this.mainMenuButton = this.menuElement.querySelector('#main-menu-button');
+    this.nextLevelButton = this.menuElement.querySelector('#next-level-button');
+    this.pauseMessage = this.menuElement.querySelector('#pause-message');
 
-resumeButton.addEventListener('click', () => {
-  gameStateSystem.resumeGame();
-});
+    this.resumeButton.addEventListener('click', () => {
+      this.hide();
+      gameStateSystem.resumeGame();
+    });
 
-restartButton.addEventListener('click', () => {
-  gameStateSystem.stopGame();
-  pauseMenu.classList.add('hidden');
-  ecsSystem.addSystem(movementSystem);
-  levelManagementSystem.resetLevel();
-  gameStateSystem.startGame();
-})
+    this.restartButton.addEventListener('click', () => {
+      this.hide();
+      gameStateSystem.restartLevel();
+    });
 
-// next level button
+    this.mainMenuButton.addEventListener('click', () => {
+      this.hide();
+      mainMenu.show();
+    });
+  }
+}
 
-// settings button
-
-// controls button
-
-mainMenuButton.addEventListener('click', () => {
-  pauseMenu.classList.add('hidden');
-  mainMenu.classList.remove('hidden');
-  ecsSystem.addSystem(movementSystem);
-  gameStateSystem.stopGame();
-})
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  const pauseMenuButtons = pauseMenu.querySelector('.menu-buttons');
-  if (pauseMenuButtons) handleMenuNavigation(pauseMenuButtons);
-})
+const pauseMenu = new PauseMenu();
+export default pauseMenu;

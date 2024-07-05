@@ -12,4 +12,5 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
+inputSystem.startListening();
 gameLoop();
