@@ -1,6 +1,3 @@
-import paddleEntity from '../entities/paddleEntity.js'
-import movementSystem from './movementSystem.js'
-import inputSystem from './inputSystem.js';
 import ecsSystem from './ECSSystem.js';
 import System from "./systemTemplate.js";
 import gameManagerEntity from '../entities/gameManagerEntity.js';
@@ -12,13 +9,12 @@ class GameStateSystem extends System {
     super();
     this.isGameRunning = false;
     this.lastUpdateTime = null;
-    this.gameEndSystem = new GameEndSystem();
   }
 
   update() {
     if (!this.isGameRunning) return;
     
-    if (this.gameEndSystem.isGameOver()) this.isGameRunning = false;
+    if (this.isGameOver()) this.stopGame();
   }
 
   startGame() {
@@ -39,7 +35,6 @@ class GameStateSystem extends System {
 
   restartLevel() {
     this.stopGame();
-    ecsSystem.addSystem(movementSystem);
     levelManagementSystem.resetLevel();
     this.startGame();
   }
@@ -48,46 +43,19 @@ class GameStateSystem extends System {
     this.isGameRunning = false;
     this.lastUpdateTime = null;
   }
-}
-
-class GameEndSystem extends System {
-  constructor() {
-    super();
-    this.pauseMenu = document.querySelector('.pause-menu');
-    this.nextLevelButton = document.getElementById('next-level-button');
-    this.resumeButton = document.getElementById('resume-button');
-    this.restartButton = document.getElementById('restart-button');
-    this.pauseMessage = document.getElementById('pause-message');
-  }
 
   isGameOver() {
     if (gameManagerEntity.lives.lives <= 0) {
-      this.endGame(false); // All lives lost, game lost
+      pauseMenu.show(true, false); // All lives lost, game lost
       return true;
     }
 
     if (!ecsSystem.entities.some(entity => entity.name === 'brick')) {
-      this.endGame(true); // All bricks removed, game won
+      pauseMenu.show(true, true); // All bricks removed, game won
       return true;
     }
 
     return false;
-  }
-
-  endGame(isWin) {
-    this.pauseMenu.classList.remove('hidden');
-    ecsSystem.removeSystem(movementSystem);
-    inputSystem.removeComponent(paddleEntity);
-
-    if (isWin) {
-      this.nextLevelButton.classList.remove('hidden');
-      this.resumeButton.classList.add('hidden');
-      this.pauseMessage.innerText = 'Game Won!';
-    } else {
-      this.resumeButton.classList.add('hidden');
-      this.nextLevelButton.classList.add('hidden');
-      this.pauseMessage.innerText = 'Game Lost!';
-    }
   }
 }
 
