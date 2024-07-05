@@ -7,10 +7,10 @@ export default class Menu {
     this.navigation = handleMenuNavigation(this.menuButtons);
     this.settingsButton = this.menuElement.querySelector('#settings-button');
     this.controlsButton = this.menuElement.querySelector('#controls-button');
+    this.controlsMenu = document.querySelector('.controls-menu');
 
     this.settingsButton.addEventListener('click', () => {
-      this.hide();
-      settingsMenu.show();
+      this.controlsMenu.classList.remove('hidden');
     });
 
     this.controlsButton.addEventListener('click', () => {
