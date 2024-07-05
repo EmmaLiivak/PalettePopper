@@ -55,6 +55,7 @@ class BallEntity extends Entity {
   }
 
   handleCollision(collisionObject, otherEntity) {
+    if (!this.isLaunched) return;
     switch (collisionObject) {
       case COLLISION_OBJECTS.BOTTOM_WALL:
         this.reset();
@@ -159,6 +160,7 @@ class BallEntity extends Entity {
     const ballElement = renderingSystem.createEntityElement(config);
     gameContainer.appendChild(ballElement);
     renderingSystem.elements.set(config.type, ballElement);
+    this.color.color = paddleEntity.color.color;
     this.reset();
   }
 }
