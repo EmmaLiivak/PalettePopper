@@ -54,10 +54,12 @@ class BallEntity extends Entity {
 
       case 'topWall':
         this.velocity.dy = -this.velocity.dy;
+        this.position.y += this.velocity.dy;
         break;
 
       case 'rightWall':
       case 'leftWall':
+        console.log('wall');
         this.velocity.dx = -this.velocity.dx;
         break;
       
@@ -92,8 +94,10 @@ class BallEntity extends Entity {
         if (ballBottomEdgeNextFrame <= brickPosition.y ||
           ballTopEdgeNextFrame >= brickPosition.y + brickSize.height) {
           this.velocity.dy = -this.velocity.dy; // Reverse vertical direction
+          this.position.y += this.velocity.dy;
         } else {
           this.velocity.dx = -this.velocity.dx; // Reverse horizontal direction
+          this.position.x += this.velocity.dx;
         }
         break;
       
