@@ -23,17 +23,17 @@ const levels = [
     ball: ballConfig,
     paddle: paddleConfig,
     bricks: [
-      colors.transparent, colors.transparent, colors.lemonYellow, colors.transparent, colors.transparent,
-      colors.transparent, colors.lemonYellow, colors.green, colors.lemonYellow, colors.transparent,
-      colors.lemonYellow, colors.green, colors.ceruleanBlue, colors.green, colors.lemonYellow,
-      colors.transparent, colors.lemonYellow, colors.green, colors.lemonYellow, colors.transparent,
-      colors.transparent, colors.transparent, colors.lemonYellow, colors.transparent, colors.transparent,
+      colors.transparent, colors.transparent, colors.cadmiumYellow, colors.transparent, colors.transparent,
+      colors.transparent, colors.cadmiumYellow, colors.green, colors.cadmiumYellow, colors.transparent,
+      colors.cadmiumYellow, colors.green, colors.ceruleanBlue, colors.green, colors.cadmiumYellow,
+      colors.transparent, colors.cadmiumYellow, colors.green, colors.cadmiumYellow, colors.transparent,
+      colors.transparent, colors.transparent, colors.cadmiumYellow, colors.transparent, colors.transparent,
     ],
     gridColumns: 5,
     gridRows: 5,
     gridGap: 5,
     colorPickerColors: [
-      colors.permanentRose, colors.lemonYellow, colors.ceruleanBlue,
+      colors.permanentRose, colors.cadmiumYellow, colors.ceruleanBlue,
     ],
   },
   {

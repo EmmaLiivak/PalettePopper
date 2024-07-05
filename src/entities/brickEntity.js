@@ -90,12 +90,13 @@ class BrickEntity extends Entity {
       const brickElement = document.createElement('div');
       brickElement.classList.add('brick');
       brickElement.style.backgroundColor = brickConfig.hexCode;
+      if (brickConfig.isTransparent) brickElement.classList.add('removed');
       bricksContainer.appendChild(brickElement);
       renderingSystem.elements.set('brick', brickElement);
   
       // Create and add the brick entity
       const brick = new BrickEntity(brickX, brickY, brickWidth, brickHeight, brickConfig, brickElement);
-      ecsSystem.addEntity(brick);
+      if (!brickConfig.isTransparent) ecsSystem.addEntity(brick);
     });
   }
 }
