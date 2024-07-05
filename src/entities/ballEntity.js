@@ -1,6 +1,6 @@
 import Entity from "./entityTemplate.js";
 import { CollisionComponent, PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, RenderComponent } from "../components.js";
-import { ballConfig } from "../configurations/entityConfigurations.js";
+import { ballConfig, paddleConfig } from "../configurations/entityConfigurations.js";
 import ecsSystem from "../systems/ECSSystem.js";
 import paddleEntity from "./paddleEntity.js";
 import { gameStateSystem, renderingSystem } from "../systems/index.js";
@@ -68,33 +68,23 @@ class BallEntity extends Entity {
         break;
       
       case COLLISION_OBJECTS.PADDLE:
-        // Calculate where the ball hit the paddle
-        const hitPosition = (this.position.x + this.size.width / 2) - paddleEntity.position.x;
-        const paddleSection = paddleEntity.size.width / 5; // Divide paddle into 5 sections
+        // Determine where the ball hits the paddle
+        const hitPosition = this.position.x + this.size.width / 2 - paddleEntity.position.x;
 
-        let newDX;
-        if (hitPosition < paddleSection) {
-          // Left edge
-          newDX = -ballConfig.defaultDX;
-        } else if (hitPosition < paddleSection * 2) {
-          // Left center
-          newDX = -(ballConfig.defaultDX / 2);
-        } else if (hitPosition < paddleSection * 3) {
-          // Middle
-          newDX = 0;
-        } else if (hitPosition < paddleSection * 4) {
-          // Right center
-          newDX = ballConfig.defaultDX / 2;
-        } else {
-          // Right edge
-          newDX = ballConfig.defaultDX
-        }
+        // Find the appropriate section in paddleConfig based on hit position
+        const section = paddleConfig.sections.find(section => hitPosition < section.position);
 
-        // Set the new velocity direction
+        // Set new velocity direction
         this.velocity.dy = -this.velocity.dy;
-        this.velocity.dx = newDX;
+        this.velocity.dx = section.dx;
 
-        this.color.color = paddleEntity.color.color;
+        // Normalize velocity vector to desired speed
+        const magnitude = Math.sqrt(this.velocity.dx ** 2 + this.velocity.dy ** 2);
+        this.velocity.dx = (this.velocity.dx / magnitude) * ballConfig.desiredSpeed;
+        this.velocity.dy = -(Math.abs(this.velocity.dy / magnitude) * ballConfig.desiredSpeed);
+
+        // Match ball color to paddle color
+        this.color.color = paddleEntity.color.color
         break;
 
       case COLLISION_OBJECTS.RIGHT_WALL:

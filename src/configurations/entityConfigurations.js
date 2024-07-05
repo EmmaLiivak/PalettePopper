@@ -12,7 +12,14 @@ export const paddleConfig = {
     width: gameContainerWidth * 0.15,
     height: gameContainerHeight * 0.02,
     color: 'black',
-    type: 'paddle'
+    type: 'paddle',
+    sections: [
+        { position: (gameContainerWidth * 0.15) / 5, dx: -3 },          // Left edge
+        { position: ((gameContainerWidth * 0.15) / 5) * 2, dx: -1.5 },  // Left center
+        { position: ((gameContainerWidth * 0.15) / 5) * 3, dx: 0 },     // Middle
+        { position: ((gameContainerWidth * 0.15) / 5) * 4, dx: 1.5 },   // Right center
+        { position: (gameContainerWidth * 0.15), dx: 3 }                // Right edge
+    ],
 };
 
 export const ballConfig = {
@@ -22,6 +29,7 @@ export const ballConfig = {
     startDY: 0,
     defaultDX: 2,
     defaultDY: 2,
+    desiredSpeed: 3,
     width: gameContainerWidth * 0.01,
     height: gameContainerWidth * 0.01,
     color: 'red',
