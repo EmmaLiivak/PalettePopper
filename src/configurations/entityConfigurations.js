@@ -20,8 +20,18 @@ export const paddleConfig = {
         { position: ((gameContainer.width * 0.15) / 5) * 2, dx: -1.5 },  // Left center
         { position: ((gameContainer.width * 0.15) / 5) * 3, dx: 0 },     // Middle
         { position: ((gameContainer.width * 0.15) / 5) * 4, dx: 1.5 },   // Right center
-        { position: (gameContainer.width * 0.15), dx: 3 }                // Right edge
+        { position: (gameContainer.width * 0.15), dx: 3 },               // Right edge
     ],
+    collisionObjects: [
+			'leftWall',
+			'rightWall',
+		],
+		keyMapping: {
+			'a': 'moveLeft',
+			'arrowleft': 'moveLeft',
+			'd': 'moveRight',
+			'arrowright': 'moveRight',
+		},
 };
 
 export const ballConfig = {
@@ -42,6 +52,6 @@ export const ballConfig = {
 			'leftWall',
 			'rightWall',
 			'paddle',
-			'brick'
+			'brick',
     ],
 };

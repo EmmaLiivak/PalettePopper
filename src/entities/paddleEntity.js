@@ -5,19 +5,6 @@ import ballEntity from './ballEntity.js'
 import { gameStateSystem, renderingSystem, ecsSystem } from "../systems/index.js";
 import colorPickerEntity from "./colorPickerEntity.js";
 
-const COLLISION_OBJECTS = {
-  LEFT_WALL: 'leftWall',
-  RIGHT_WALL: 'rightWall',
-};
-
-// Defined mapping between keys and their corresponding actions
-const KEY_MAPPING = {
-  'a': 'moveLeft',
-  'arrowleft': 'moveLeft',
-  'd': 'moveRight',
-  'arrowright': 'moveRight',
-};
-
 class PaddleEntity extends Entity {
   constructor() {
     super('paddle');
@@ -46,25 +33,29 @@ class PaddleEntity extends Entity {
   }
 
   setCollisionCallbacks() {
-    Object.values(COLLISION_OBJECTS).forEach(collisionObject => {
-      this.collision.setCallback(collisionObject, () => this.handleWallCollision(collisionObject));
+    paddleConfig.collisionObjects.forEach(collisionObject => {
+      this.collision.setCallback(collisionObject, () => this.handleCollision(collisionObject));
     });
   }
 
-  handleWallCollision(collisionSide) {
-    if (!this.position || !this.size) return;
-
-    if (collisionSide === COLLISION_OBJECTS.LEFT_WALL) {
-      this.position.x = 0;
-    } else if (collisionSide === COLLISION_OBJECTS.RIGHT_WALL) {
-      this.position.x = gameContainer.width - this.size.width;
+  handleCollision(collisionSide) {
+    switch (collisionSide) {
+      case 'leftWall':
+        this.position.x = 0;
+        break;
+      case 'rightWall':
+        this.position.x = gameContainer.width - this.size.width
+        break;
+      default:
+        console.error('Invalid collision object type');
+        break;
     }
 
     ballEntity.alignBallWithPaddle();
   }
 
   setInputCallbacks() {
-    Object.entries(KEY_MAPPING).forEach(([key, action]) => {
+    Object.entries(paddleConfig.keyMapping).forEach(([key, action]) => {
       this.input.setCallback(key, (keyState) => this.handleInput(action, keyState));
     });
   }
@@ -72,37 +63,37 @@ class PaddleEntity extends Entity {
   handleInput(action, keyState) {
     if (!gameStateSystem.isGameRunning) return;
 
-    if (keyState === 'down') {
-      this.handleKeyDown(action);
-    } else if (keyState === 'up') {
-      this.handleKeyUp(action);
-    }
+    keyState === 'down' ? this.handleKeyDown(action) : this.handleKeyUp(action);
   }
 
   handleKeyDown(action) {
     switch (action) {
       case 'moveLeft':
-        this.velocity.dx = -paddleConfig.defaultDX;
-        if (!ballEntity.isLaunched) ballEntity.velocity.dx = -paddleConfig.defaultDX;
+        this.setVelocity(-paddleConfig.defaultDX);
         break;
       case 'moveRight':
-        this.velocity.dx = paddleConfig.defaultDX;
-        if (!ballEntity.isLaunched) ballEntity.velocity.dx = paddleConfig.defaultDX;
+        this.setVelocity(paddleConfig.defaultDX);
+        break;
+      default:
+        console.error('Invalid key down action');
         break;
     }
   }
 
-  handleKeyUp(action) {
-    switch (action) {
-      case 'moveLeft':
-      case 'moveRight':
-        // Stop moving
-        this.velocity.dx = 0;
-        if (!ballEntity.isLaunched) ballEntity.velocity.dx = 0;
-        break;
-    }
+  setVelocity(dx) {
+    this.velocity.dx = dx;
+    if (!ballEntity.isLaunched) ballEntity.velocity.dx = dx;
+  }
 
-    ballEntity.alignBallWithPaddle();
+  handleKeyUp(action) {
+    action === 'moveLeft' || action === 'moveRight' 
+      ? this.stopMoving()
+      : console.error('Invalid key up action');
+  }
+
+  stopMoving() {
+    this.velocity.dx = 0;
+    if (!ballEntity.isLaunched) ballEntity.velocity.dx = 0;
   }
 
   // Reset paddle to it's initial position
