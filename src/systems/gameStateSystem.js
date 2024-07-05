@@ -5,22 +5,20 @@ import ecsSystem from './ECSSystem.js';
 import System from "./systemTemplate.js";
 import gameManagerEntity from '../entities/gameManagerEntity.js';
 import levelManagementSystem from './levelManagementSystem.js';
+import pauseMenu from '../interface/pauseMenu.js';
 
 class GameStateSystem extends System {
   constructor() {
     super();
     this.isGameRunning = false;
     this.lastUpdateTime = null;
-    this.pauseSystem = new PauseSystem();
     this.gameEndSystem = new GameEndSystem();
   }
 
   update() {
     if (!this.isGameRunning) return;
     
-    if (this.gameEndSystem.isGameOver()) {
-      this.isGameRunning = false;
-    }
+    if (this.gameEndSystem.isGameOver()) this.isGameRunning = false;
   }
 
   startGame() {
@@ -30,13 +28,13 @@ class GameStateSystem extends System {
 
   pauseGame() {
     this.isGameRunning = false;
-    this.pauseSystem.pauseGame();
+    pauseMenu.show();
   }
 
   resumeGame() {
     this.isGameRunning = true;
     this.lastUpdateTime = performance.now();
-    this.pauseSystem.resumeGame();
+    pauseMenu.hide();
   }
 
   restartLevel() {
@@ -49,25 +47,6 @@ class GameStateSystem extends System {
   stopGame() {
     this.isGameRunning = false;
     this.lastUpdateTime = null;
-  }
-}
-
-class PauseSystem extends System {
-  constructor() {
-    super();
-    this.pauseMenu = document.querySelector('.pause-menu');
-    this.nextLevelButton = document.getElementById('next-level-button')
-  }
-
-  pauseGame() {
-    this.nextLevelButton.classList.add('hidden');
-    this.pauseMenu.classList.remove('hidden');
-    ecsSystem.removeSystem(movementSystem);
-  }
-
-  resumeGame() {
-    this.pauseMenu.classList.add('hidden');
-    ecsSystem.addSystem(movementSystem);
   }
 }
 
