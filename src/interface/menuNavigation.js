@@ -48,7 +48,7 @@ import levelManagementSystem from "../systems/levelManagementSystem.js";
     };
 
     const enable = () => {
-      focusButton(0)
+      focusButton(currentIndex)
       menuContainer.addEventListener('keydown', handleKeyDown);
       document.addEventListener('focusin', maintainFocus);
       document.addEventListener('focusout', maintainFocus);
@@ -59,6 +59,10 @@ import levelManagementSystem from "../systems/levelManagementSystem.js";
       document.removeEventListener('focusin', maintainFocus);
       document.removeEventListener('focusout', maintainFocus);
     };
+
+    const updateCurrentIndex = (newIndex) => {
+      currentIndex = newIndex;
+    };
   
     // Initially enable the navigation
     enable();
@@ -66,6 +70,7 @@ import levelManagementSystem from "../systems/levelManagementSystem.js";
     // Return control functions
     return {
       enable,
-      disable
+      disable,
+      updateCurrentIndex
     };
   }

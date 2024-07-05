@@ -1,4 +1,5 @@
 import handleMenuNavigation from "./menuNavigation.js";
+import { updateDynamicPauseMenuElements } from "./pauseMenu.js";
 
 export default class Menu {
   constructor(menuType) {
@@ -34,7 +35,8 @@ export default class Menu {
     });
   }
 
-  show() {
+  show(isGameOver = false, isGameWon = false) {
+    updateDynamicPauseMenuElements(isGameOver, isGameWon);
     this.menuElement.classList.remove('hidden');
     this.navigation.enable();
   }
