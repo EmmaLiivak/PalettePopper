@@ -37,11 +37,11 @@ export const paddleConfig = {
 
 export const ballConfig = {
 	startX: paddleConfig.startX + (paddleConfig.width / 2) - (gameContainer.width * 0.01 / 2),
-	startY: paddleConfig.startY - (gameContainer.width * 0.01),
+	startY: paddleConfig.startY - (gameContainer.width * 0.01) - 0.5,
 	startDX: 0,
 	startDY: 0,
-	defaultDX: 2,
-	defaultDY: 2,
+	defaultDX: 0,
+	defaultDY: 3,
 	desiredSpeed: 3,
 	width: gameContainer.width * 0.01,
 	height: gameContainer.width * 0.01,

@@ -59,7 +59,6 @@ class BallEntity extends Entity {
 
       case 'rightWall':
       case 'leftWall':
-        console.log('wall');
         this.velocity.dx = -this.velocity.dx;
         break;
       
