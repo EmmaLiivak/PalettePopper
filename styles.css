@@ -36,7 +36,7 @@ h1 {
   background-color: rgba(255, 255, 255, 0.75);
 }
 
-.controls-menu {
+.controls-menu, .settings-menu {
   background-color: whitesmoke;
   color: var(--permanentRose);
 }
@@ -45,6 +45,20 @@ ul {
   list-style-type: none;
   text-align: center;
   padding: 2em 0 2em 0;
+}
+
+.slider-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.slider-container label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.slider-container input[type="range"] {
+  width: 80%;
 }
 
 .blocker {

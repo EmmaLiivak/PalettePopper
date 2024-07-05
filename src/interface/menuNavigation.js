@@ -47,20 +47,25 @@ import levelManagementSystem from "../systems/levelManagementSystem.js";
       }
     };
 
-    const resetFocus = () => {
-      focusButton(0);
+    const enable = () => {
+      focusButton(0)
+      menuContainer.addEventListener('keydown', handleKeyDown);
+      document.addEventListener('focusin', maintainFocus);
+      document.addEventListener('focusout', maintainFocus);
     };
+  
+    const disable = () => {
+      menuContainer.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('focusin', maintainFocus);
+      document.removeEventListener('focusout', maintainFocus);
+    };
+  
+    // Initially enable the navigation
+    enable();
 
-    menuContainer.addEventListener('keydown', handleKeyDown);
-
-    // Maintain focus when it is lost
-    document.addEventListener('focusin', maintainFocus);
-    document.addEventListener('focusout', maintainFocus);
-
-    setInterval(maintainFocus, 100);
-
-    // Return the resetFocus function so it can be called externally
+    // Return control functions
     return {
-      resetFocus
+      enable,
+      disable
     };
   }

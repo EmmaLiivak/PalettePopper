@@ -1,7 +1,6 @@
 import levelManagementSystem from "../systems/levelManagementSystem.js";
 import gameStateSystem from '../systems/gameStateSystem.js'
 import Menu from "./menuTemplate.js";
-import handleMenuNavigation from "./menuNavigation.js";
 
 class MainMenu extends Menu {
   constructor() {
@@ -40,15 +39,3 @@ class MainMenu extends Menu {
 
 const mainMenu = new MainMenu();
 export default mainMenu;
-
-const controlsMenu = document.querySelector('.controls-menu');
-handleMenuNavigation(controlsMenu);
-
-// Setting and controls menu back buttons
-const backButtons = document.querySelectorAll('.back-button');
-
-backButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    button.parentElement.classList.add('hidden');
-  });
-});

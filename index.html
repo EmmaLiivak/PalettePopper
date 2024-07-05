@@ -87,6 +87,7 @@
         
     </div>
 
+    <!-- The controls menu -->
     <div class="controls-menu hidden blocker">
       <h2>Controls</h2>
         <ul>
@@ -97,7 +98,17 @@
           <li><strong>R/r key:</strong> Restart current level</li>
           <li><strong>Esc key:</strong> Quit to main menu</li>
         </ul>
-      <button class="back-button" tabindex="0">Back</button>
+      <button class="back-button">Back</button>
+    </div>
+
+    <!-- The settings menu -->
+    <div class="settings-menu hidden blocker">
+      <h2>Settings</h2>
+      <div class="slider-container">
+        <label for="volume-slider">Volume:</label>
+        <input type="range" id="volume-slider" min="0" max="100" value="50">
+      </div>    
+      <button class="back-button">Back</button>
     </div>
 
     <!-- scripts -->
