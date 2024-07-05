@@ -36,6 +36,25 @@ const levels = [
       colors.permanentRose, colors.lemonYellow, colors.ceruleanBlue,
     ],
   },
+  {
+    level: 3,
+    ball: ballConfig,
+    paddle: paddleConfig,
+    bricks: [
+      colors.transparent, colors.transparent, colors.transparent, colors.transparent, colors.transparent, colors.permanentRose,
+      colors.transparent, colors.transparent, colors.transparent, colors.transparent, colors.orange, colors.orange,
+      colors.transparent, colors.transparent, colors.transparent, colors.cadmiumYellow, colors.cadmiumYellow, colors.cadmiumYellow,
+      colors.transparent, colors.transparent, colors.green, colors.green, colors.green, colors.transparent,
+      colors.transparent, colors.ceruleanBlue, colors.ceruleanBlue, colors.ceruleanBlue, colors.transparent, colors.transparent,
+      colors.purple, colors.purple, colors.purple, colors.transparent, colors.transparent, colors.transparent,
+    ],
+    gridColumns: 6,
+    gridRows: 6,
+    gridGap: 5,
+    colorPickerColors: [
+      colors.permanentRose, colors.cadmiumYellow, colors.ceruleanBlue,
+    ],
+  },
 ];
 
 export default levels;
