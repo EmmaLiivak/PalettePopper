@@ -3,6 +3,7 @@ import levels from "../configurations/levelConfigurations.js";
 import BrickEntity from "../entities/brickEntity.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
 import { ballEntity, paddleEntity, gameManagerEntity, colorPickerEntity } from "../entities/index.js";
+import { gameStateSystem } from "./index.js";
 
 class LevelManagementSystem extends System {
   constructor(levels) {
@@ -35,6 +36,7 @@ class LevelManagementSystem extends System {
 
     if (this.currentLevelIndex < levels.length) {
       this.loadLevel();
+      gameStateSystem.startGame();
     } else {
       console.log("All levels completed.");
     }
