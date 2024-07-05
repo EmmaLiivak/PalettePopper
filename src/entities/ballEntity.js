@@ -7,15 +7,6 @@ import { gameStateSystem, renderingSystem } from "../systems/index.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
 import gameStateEntity from "./gameManagerEntity.js";
 
-const COLLISION_OBJECTS = {
-  TOP_WALL: 'topWall',
-  LEFT_WALL: 'leftWall',
-  RIGHT_WALL: 'rightWall',
-  BOTTOM_WALL: 'bottomWall',
-  PADDLE: 'paddle',
-  BRICK: 'brick'
-};
-
 class BallEntity extends Entity {
   constructor() {
     super('ball');
@@ -47,7 +38,7 @@ class BallEntity extends Entity {
 
   // Add callbacks to all collision objects
   setCollisionCallbacks() {
-    Object.values(COLLISION_OBJECTS).forEach(collisionObject => {
+    ballConfig.collisionObjects.forEach(collisionObject => {
       this.collision.setCallback(collisionObject, (ball, otherEntity) => {
         this.handleCollision(collisionObject, otherEntity)
       });
@@ -57,17 +48,17 @@ class BallEntity extends Entity {
   handleCollision(collisionObject, otherEntity) {
     if (!this.isLaunched) return;
     switch (collisionObject) {
-      case COLLISION_OBJECTS.BOTTOM_WALL:
+      case 'bottomWall':
         this.reset();
         paddleEntity.reset();
         gameStateEntity.updateLivesDisplay();
         break;
 
-      case COLLISION_OBJECTS.TOP_WALL:
+      case 'topWall':
         this.velocity.dy = -this.velocity.dy;
         break;
       
-      case COLLISION_OBJECTS.PADDLE:
+      case 'paddle':
         // Determine where the ball hits the paddle
         const hitPosition = this.position.x + this.size.width / 2 - paddleEntity.position.x;
 
@@ -87,12 +78,12 @@ class BallEntity extends Entity {
         this.color.color = paddleEntity.color.color
         break;
 
-      case COLLISION_OBJECTS.RIGHT_WALL:
-      case COLLISION_OBJECTS.LEFT_WALL:
+      case 'rightWall':
+      case 'leftWall':
         this.velocity.dx = -this.velocity.dx;
         break;
 
-      case COLLISION_OBJECTS.BRICK:
+      case 'brick':
         const brickPosition = otherEntity.getComponent(PositionComponent);
         const brickSize = otherEntity.getComponent(SizeComponent);
 
@@ -148,7 +139,7 @@ class BallEntity extends Entity {
   // Append the ball element to the game container
   renderBall(config) {
     const ballElement = renderingSystem.createEntityElement(config);
-    gameContainer.appendChild(ballElement);
+    gameContainer.element.appendChild(ballElement);
     renderingSystem.elements.set(config.type, ballElement);
     this.color.color = paddleEntity.color.color;
     this.reset();

@@ -1,9 +1,8 @@
 import Entity from "./entityTemplate.js";
-import { paddleConfig, gameContainerWidth } from "../configurations/entityConfigurations.js";
+import { paddleConfig, gameContainer } from "../configurations/entityConfigurations.js";
 import { PositionComponent, VelocityComponent, SizeComponent, ColorComponent, InputComponent, CollisionComponent, RenderComponent } from "../components.js";
 import ballEntity from './ballEntity.js'
 import { gameStateSystem, renderingSystem, ecsSystem } from "../systems/index.js";
-import { gameContainer } from "../configurations/entityConfigurations.js";
 import colorPickerEntity from "./colorPickerEntity.js";
 
 const COLLISION_OBJECTS = {
@@ -58,7 +57,7 @@ class PaddleEntity extends Entity {
     if (collisionSide === COLLISION_OBJECTS.LEFT_WALL) {
       this.position.x = 0;
     } else if (collisionSide === COLLISION_OBJECTS.RIGHT_WALL) {
-      this.position.x = gameContainerWidth - this.size.width;
+      this.position.x = gameContainer.width - this.size.width;
     }
 
     ballEntity.alignBallWithPaddle();
@@ -115,7 +114,7 @@ class PaddleEntity extends Entity {
   // Create and append paddle element to game container
   render(paddleConfig) {
     const paddleElement = renderingSystem.createEntityElement(paddleConfig);
-    gameContainer.appendChild(paddleElement);
+    gameContainer.element.appendChild(paddleElement);
     renderingSystem.elements.set(paddleConfig.type, paddleElement);
     this.reset();
 

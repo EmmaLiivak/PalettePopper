@@ -62,7 +62,7 @@ class BrickEntity extends Entity {
     bricksContainer.style.gridTemplateColumns = `repeat(${gridColumns}, auto)`;
     bricksContainer.style.gap = `${gridGap}px`;
     bricksContainer.style.height = `${gridRows * 10}%`;
-    gameContainer.appendChild(bricksContainer);
+    gameContainer.element.appendChild(bricksContainer);
     return bricksContainer;
   }
 
