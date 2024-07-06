@@ -96,7 +96,6 @@ class PaddleEntity extends Entity {
   decelerate() {
     if (Math.abs(this.velocity.dx) > 0) {
       // Reduce the velocity gradually
-      console.log(this.velocity.dx);
       this.velocity.dx += (this.velocity.dx > 0 ? -paddleConfig.deceleration : paddleConfig.deceleration);
       if (!ballEntity.isLaunched) ballEntity.velocity.dx = this.velocity.dx;
       requestAnimationFrame(() => this.decelerate());
