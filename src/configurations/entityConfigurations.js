@@ -6,23 +6,31 @@ export const gameContainer = {
 	height: document.querySelector('.game-container').offsetHeight,
 };
 
+const paddleWidth = gameContainer.width * 0.15;
+const numPaddleSections = 9;
+const sectionWidth = paddleWidth / numPaddleSections;
+
 export const paddleConfig = {
 	startX: gameContainer.width / 2 - (gameContainer.width * 0.1 / 2) - 1,
 	startY: gameContainer.height - (gameContainer.height * 0.02) - 1,
 	startDX: 0,
 	startDY: 0,
 	defaultDX: 4,
-	width: gameContainer.width * 0.15,
+	width: paddleWidth,
 	height: gameContainer.height * 0.02,
 	deceleration: 0.5,
 	color: 'black',
 	type: 'paddle',
 	sections: [
-		{ position: (gameContainer.width * 0.15) / 5, dx: -3 },          // Left edge
-		{ position: ((gameContainer.width * 0.15) / 5) * 2, dx: -1.5 },  // Left center
-		{ position: ((gameContainer.width * 0.15) / 5) * 3, dx: 0 },     // Middle
-		{ position: ((gameContainer.width * 0.15) / 5) * 4, dx: 1.5 },   // Right center
-		{ position: (gameContainer.width * 0.15), dx: 3 },               // Right edge
+		{ start: 0, end: sectionWidth, dx: -4 },
+		{ start: sectionWidth, end: sectionWidth * 2, dx: -3 },
+		{ start: sectionWidth * 2, end: sectionWidth * 3, dx: -2 },
+		{ start: sectionWidth * 3, end: sectionWidth * 4, dx: -1 },
+		{ start: sectionWidth * 4, end: sectionWidth * 5, dx: 0 },
+		{ start: sectionWidth * 5, end: sectionWidth * 6, dx: 1 },
+		{ start: sectionWidth * 6, end: sectionWidth * 7, dx: 2 },
+		{ start: sectionWidth * 7, end: sectionWidth * 8, dx: 3 },
+		{ start: sectionWidth * 8, end: paddleWidth, dx: 4 },
 	],
 	collisionObjects: [
 		'leftWall',

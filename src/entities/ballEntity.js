@@ -60,6 +60,7 @@ class BallEntity extends Entity {
       case 'rightWall':
       case 'leftWall':
         this.velocity.dx = -this.velocity.dx;
+        this.position.x += this.velocity.dx;
         break;
       
       case 'paddle':
@@ -67,7 +68,11 @@ class BallEntity extends Entity {
         const hitPosition = this.position.x + this.size.width / 2 - paddleEntity.position.x;
 
         // Find the appropriate section in paddleConfig based on hit position
-        const section = paddleConfig.sections.find(section => hitPosition < section.position);
+        const section = paddleConfig.sections.find(
+          section => hitPosition >= section.start && hitPosition < section.end
+        );
+
+        if (!section) break;
 
         // Set new velocity direction
         this.velocity.dy = -this.velocity.dy;
