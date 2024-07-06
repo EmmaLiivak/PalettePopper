@@ -87,13 +87,23 @@ class PaddleEntity extends Entity {
 
   handleKeyUp(action) {
     action === 'moveLeft' || action === 'moveRight' 
-      ? this.stopMoving()
+      ? this.decelerate()
       : console.error('Invalid key up action');
+
+    ballEntity.alignBallWithPaddle;
   }
 
-  stopMoving() {
-    this.velocity.dx = 0;
-    if (!ballEntity.isLaunched) ballEntity.velocity.dx = 0;
+  decelerate() {
+    if (Math.abs(this.velocity.dx) > 0) {
+      // Reduce the velocity gradually
+      console.log(this.velocity.dx);
+      this.velocity.dx += (this.velocity.dx > 0 ? -paddleConfig.deceleration : paddleConfig.deceleration);
+      if (!ballEntity.isLaunched) ballEntity.velocity.dx = this.velocity.dx;
+      requestAnimationFrame(() => this.decelerate());
+    } else {
+      this.velocity.dx = 0;
+      if (!ballEntity.isLaunched) ballEntity.velocity.dx = 0;
+    }
   }
 
   // Reset paddle to it's initial position
