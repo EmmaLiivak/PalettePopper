@@ -4,6 +4,8 @@ import BrickEntity from "../entities/brickEntity.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
 import { ballEntity, paddleEntity, gameManagerEntity, colorPickerEntity } from "../entities/index.js";
 import { gameStateSystem } from "./index.js";
+import { showEndMenu } from "../interface/pauseMenu.js";
+import mainMenu from "../interface/mainMenu.js";
 
 class LevelManagementSystem extends System {
   constructor(levels) {
@@ -13,6 +15,7 @@ class LevelManagementSystem extends System {
   }
 
   loadLevel(levelIndex = this.currentLevelIndex) {
+    this.restartGameContainer();
     this.currentLevelIndex = levelIndex;
     if (levelIndex >= 0 && levelIndex < this.levels.length) {
       const levelData = levels[levelIndex];
@@ -45,12 +48,13 @@ class LevelManagementSystem extends System {
       this.loadLevel();
       gameStateSystem.startGame();
     } else {
-      console.log("All levels completed.");
+      this.currentLevelIndex = 0;
+      mainMenu.updateLevel();
+      showEndMenu();
     }
   }
 
   resetLevel() {
-    this.restartGameContainer();
     this.loadLevel();
   }
 }

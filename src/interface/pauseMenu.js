@@ -40,17 +40,29 @@ export function updateDynamicPauseMenuElements(isGameOver, isGameWon) {
     pauseMenu.dynamicButton.classList.remove('hidden');
     pauseMenu.dynamicButton.focus();
   } else if (isGameWon) {
-    console.log('game won');
     pauseMenu.dynamicButton.textContent = 'Next Level';
     pauseMenu.pauseMessage.textContent = 'Game Won!';
     pauseMenu.dynamicButton.classList.remove('hidden');
     pauseMenu.dynamicButton.focus();
   } else {
-    console.log('game lost');
     pauseMenu.pauseMessage.textContent = 'Game Lost!';
     pauseMenu.dynamicButton.classList.add('hidden');
     pauseMenu.navigation.updateCurrentIndex(1);
   }
+}
+
+const endMenu = document.querySelector('.end-menu');
+const endButton = document.querySelector('#end-button');
+
+endButton.addEventListener('click', () => {
+  endMenu.classList.add('hidden');
+  endButton.focus();
+  mainMenu.show();
+});
+
+export function showEndMenu() {
+  pauseMenu.hide();
+  endMenu.classList.remove('hidden');
 }
 
 const pauseMenu = new PauseMenu();
