@@ -140,6 +140,7 @@ class BallEntity extends Entity {
     this.velocity.dx = ballConfig.startDX;
     this.velocity.dy = ballConfig.startDY;
     this.isLaunched = false;
+    this.color.color = paddleEntity.color.color;
   }
 
   // Append the ball element to the game container
@@ -147,7 +148,6 @@ class BallEntity extends Entity {
     const ballElement = renderingSystem.createEntityElement(config);
     gameContainer.element.appendChild(ballElement);
     renderingSystem.elements.set(config.type, ballElement);
-    this.color.color = paddleEntity.color.color;
     this.reset();
   }
 }
