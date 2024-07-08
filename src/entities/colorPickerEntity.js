@@ -2,7 +2,8 @@ import Entity from "../entities/entityTemplate.js";
 import paddleEntity from "../entities/paddleEntity.js";
 import { InputComponent } from "../components.js";
 import { gameStateSystem, ecsSystem } from "../systems/index.js";
-import { colorPickerConfig } from "../configurations/entityConfigurations.js"
+import { ballConfig, colorPickerConfig } from "../configurations/entityConfigurations.js"
+import ballEntity from "./ballEntity.js";
 
 class ColorPickerEntity extends Entity {
   constructor() {
@@ -33,6 +34,9 @@ class ColorPickerEntity extends Entity {
       : (this.selectedColorIndex + 1) % this.colors.length;
 
     paddleEntity.color.color = this.getSelectedColor();
+    if (!ballEntity.isLaunched) {
+      ballEntity.color.color = this.getSelectedColor();
+    }
     this.updateColorPicker(action === 'colorUp' ? 'up' : 'down');
   }
 
