@@ -2,6 +2,7 @@ import { InputComponent, LivesComponent, ScoreComponent } from "../components.js
 import Entity from "./entityTemplate.js";
 import gameStateSystem from "../systems/gameStateSystem.js";
 import ecsSystem from "../systems/ECSSystem.js";
+import levelManagementSystem from "../systems/levelManagementSystem.js";
 
 class GameManagerEntity extends Entity {
   constructor() {
@@ -9,6 +10,7 @@ class GameManagerEntity extends Entity {
     this.livesDisplay = document.querySelector('.lives');
     this.scoreDisplay = document.querySelector('.score');
     this.timeDisplay = document.querySelector('.time');
+    this.levelDisplay = document.querySelector('.level');
     this.initialLives = 3;
     this.initialScore = 0;
     this.totalElapsedTime = 0;
@@ -64,6 +66,10 @@ class GameManagerEntity extends Entity {
     seconds = String(seconds).padStart(2, '0');
   
     this.timeDisplay.textContent = 'Time: ' + minutes + ':' + seconds;
+  }
+
+  updateLevelDisplay() {
+    this.levelDisplay.innerHTML = 'Level ' + (levelManagementSystem.currentLevelIndex + 1);
   }
 
   resetDisplays() {

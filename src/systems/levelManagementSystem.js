@@ -5,7 +5,6 @@ import { gameContainer } from "../configurations/entityConfigurations.js";
 import { ballEntity, paddleEntity, gameManagerEntity, colorPickerEntity } from "../entities/index.js";
 import { gameStateSystem } from "./index.js";
 import { showEndMenu } from "../interface/pauseMenu.js";
-import mainMenu from "../interface/mainMenu.js";
 
 class LevelManagementSystem extends System {
   constructor(levels) {
@@ -18,6 +17,7 @@ class LevelManagementSystem extends System {
     this.restartGameContainer();
     this.currentLevelIndex = levelIndex;
     if (levelIndex >= 0 && levelIndex < this.levels.length) {
+      gameManagerEntity.updateLevelDisplay();
       const levelData = levels[levelIndex];
       colorPickerEntity.render();
       BrickEntity.renderBricks(levelData.bricks, levelData.gridColumns, levelData.gridRows, levelData.gridGap);
