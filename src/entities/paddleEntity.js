@@ -64,15 +64,18 @@ class PaddleEntity extends Entity {
     if (!gameStateSystem.isGameRunning) return;
 
     keyState === 'down' ? this.handleKeyDown(action) : this.handleKeyUp(action);
+    if (!ballEntity.isLaunched) ballEntity.alignBallWithPaddle();
   }
 
   handleKeyDown(action) {
     switch (action) {
       case 'moveLeft':
-        this.setVelocity(-paddleConfig.defaultDX);
+        this.moveLeft = true;
+        if (!this.moveRight) this.setVelocity(-paddleConfig.defaultDX);
         break;
       case 'moveRight':
-        this.setVelocity(paddleConfig.defaultDX);
+        this.moveRight = true;
+        if (!this.moveLeft) this.setVelocity(paddleConfig.defaultDX);
         break;
       default:
         console.error('Invalid key down action');
@@ -86,11 +89,19 @@ class PaddleEntity extends Entity {
   }
 
   handleKeyUp(action) {
-    action === 'moveLeft' || action === 'moveRight' 
-      ? this.decelerate()
-      : console.error('Invalid key up action');
-
-    ballEntity.alignBallWithPaddle;
+    switch (action) {
+      case 'moveLeft':
+        this.moveLeft = false;
+        this.moveRight ? this.setVelocity(paddleConfig.defaultDX) : this.decelerate();
+        break;
+      case 'moveRight':
+        this.moveRight = false;
+        this.moveLeft ? this.setVelocity(-paddleConfig.defaultDX) : this.decelerate();
+        break;
+      default:
+        console.error('Invalid key up action');
+        break;
+    }
   }
 
   decelerate() {
@@ -103,6 +114,7 @@ class PaddleEntity extends Entity {
       this.velocity.dx = 0;
       if (!ballEntity.isLaunched) ballEntity.velocity.dx = 0;
     }
+    if (!ballEntity.isLaunched) ballEntity.alignBallWithPaddle();
   }
 
   // Reset paddle to it's initial position
