@@ -91,18 +91,34 @@ class BallEntity extends Entity {
         const brickPosition = otherEntity.getComponent(PositionComponent);
         const brickSize = otherEntity.getComponent(SizeComponent);
 
-        const ballBottomEdgeNextFrame = this.position.y + this.size.height - Math.abs(this.velocity.dy);
-        const ballTopEdgeNextFrame = this.position.y + Math.abs(this.velocity.dy);
+        const ballNextRight = this.position.x + this.size.width + this.velocity.dx;
+        const ballNextLeft = this.position.x + this.velocity.dx;
+        const ballNextBottom = this.position.y + this.size.height + this.velocity.dy;
+        const ballNextTop = this.position.y + this.velocity.dy;
 
-        // Determine if the ball is hitting the brick from the top or bottom
-        if (ballBottomEdgeNextFrame <= brickPosition.y ||
-          ballTopEdgeNextFrame >= brickPosition.y + brickSize.height) {
-          this.velocity.dy = -this.velocity.dy; // Reverse vertical direction
-          this.position.y += this.velocity.dy;
-        } else {
-          this.velocity.dx = -this.velocity.dx; // Reverse horizontal direction
-          this.position.x += this.velocity.dx;
-        }
+        const brickRight = brickPosition.x + brickSize.width;
+        const brickBottom = brickPosition.y + brickSize.height;
+
+        const ballCenterX = this.position.x + this.size.width / 2;
+        const ballCenterY = this.position.y + this.size.height / 2;
+        
+        // Check horizontal intersection
+        if (!(ballNextRight >= brickPosition.x && ballNextLeft <= brickRight)) break;
+
+        // Check vertical intersection
+        if (!(ballNextBottom >= brickPosition.y && ballNextTop <= brickBottom)) break;
+
+        // Determine the direction of the collision
+        const isHorizontalCollision = ballCenterX < brickPosition.x || ballCenterX > brickRight;
+        const isVerticalCollision = ballCenterY < brickPosition.y || ballCenterY > brickBottom;
+
+        // Handle collision
+        if (isHorizontalCollision) this.velocity.dx = -this.velocity.dx;
+        if (isVerticalCollision) this.velocity.dy = -this.velocity.dy;
+
+        // Adjust ball position to prevent sticking
+        this.position.x += this.velocity.dx;
+        this.position.y += this.velocity.dy;
         break;
       
       default:
