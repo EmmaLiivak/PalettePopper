@@ -114,6 +114,11 @@ ul {
   color: whitesmoke;
 }
 
+.focused {
+  background-color: var(--permanentRose) !important;
+  color: whitesmoke !important;
+}
+
 .level-select-button {
   display: flex;
 }

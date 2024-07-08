@@ -7,8 +7,10 @@ import levelManagementSystem from "../systems/levelManagementSystem.js";
     let currentIndex = 0;
 
     const focusButton = (index) => {
+      menuButtons.forEach(button => button.classList.remove('focused'));
       currentIndex = index;
       menuButtons[currentIndex].focus();
+      menuButtons[currentIndex].classList.add('focused');
     };
 
     const handleKeyDown = (e) => {
