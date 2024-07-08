@@ -9,7 +9,7 @@ class ColorPickerEntity extends Entity {
     super('colorPicker');
     this.colors = colorPickerConfig.colors;
     this.selectedColorIndex = colorPickerConfig.startSelectedColorIndex;
-    this.colorPickerContainer = document.querySelector('.color-picker');
+    this.colorPickerContainer = document.querySelector('.color-picker-container');
     this.initComponents();
     this.setInputCallbacks();
   }
@@ -59,8 +59,15 @@ class ColorPickerEntity extends Entity {
       : (order - 1 < 1 ? 2 : 0);
   }
 
-  render(colors) {
-    this.colorPickerContainer.innerHTML = '';
+  render() {
+    const firstChild = this.colorPickerContainer.firstChild;
+    if (firstChild) {
+      this.colorPickerContainer.removeChild(firstChild);
+    }
+
+    const colorPicker = document.createElement('div');
+    colorPicker.className = 'color-picker';
+    this.colorPickerContainer.appendChild(colorPicker);
 
     this.colors.forEach((color, index) => {
       const colorDot = document.createElement('div');
@@ -69,7 +76,7 @@ class ColorPickerEntity extends Entity {
       colorDot.setAttribute('data-index', index);
       colorDot.style.order = index;
       if (index === 1) colorDot.classList.add('selected-color');
-      this.colorPickerContainer.appendChild(colorDot);
+      colorPicker.appendChild(colorDot);
     });
 
     this.colorDots = document.querySelectorAll('.color-dot');

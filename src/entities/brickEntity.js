@@ -7,12 +7,15 @@ import renderingSystem from "../systems/renderingSystem.js";
 
 // Brick Entity Template
 class BrickEntity extends Entity {
+  static bricks = [];
+
   constructor(x, y, width, height, color, element) {
     super('brick');
     this.color = color
     this.element = element;
     this.initComponents(x, y, width, height, color);
     this.setCollisionCallbacks();
+    BrickEntity.bricks.push(this);
   }
 
   initComponents(x, y, width, height, color) {
@@ -98,6 +101,16 @@ class BrickEntity extends Entity {
       const brick = new BrickEntity(brickX, brickY, brickWidth, brickHeight, brickConfig, brickElement);
       if (!brickConfig.isTransparent) ecsSystem.addEntity(brick);
     });
+  }
+
+  static clearBricks() {
+    BrickEntity.bricks.forEach(brick => {
+      if (brick.element.parentElement) {
+        brick.element.parentElement.removeChild(brick.element);
+      }
+      ecsSystem.removeEntity(brick);
+    });
+    BrickEntity.bricks = [];
   }
 }
 

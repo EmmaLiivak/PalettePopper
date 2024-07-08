@@ -16,8 +16,7 @@ class LevelManagementSystem extends System {
     this.currentLevelIndex = levelIndex;
     if (levelIndex >= 0 && levelIndex < this.levels.length) {
       const levelData = levels[levelIndex];
-      this.restartGameContainer();
-      colorPickerEntity.render(levelData.colorPickerColors);
+      colorPickerEntity.render();
       BrickEntity.renderBricks(levelData.bricks, levelData.gridColumns, levelData.gridRows, levelData.gridGap);
       paddleEntity.render(levelData.paddle);
       ballEntity.renderBall(levelData.ball);
@@ -27,7 +26,15 @@ class LevelManagementSystem extends System {
   }
 
   restartGameContainer() {
+    // Clear bricks
+    BrickEntity.clearBricks();
+    // Clear all child elements of the game container
+    while (gameContainer.element.firstChild) {
+      gameContainer.element.removeChild(gameContainer.element.firstChild);
+    }
+
     gameContainer.element.innerHTML = '';
+
     gameManagerEntity.resetDisplays();
   }
 
@@ -43,6 +50,7 @@ class LevelManagementSystem extends System {
   }
 
   resetLevel() {
+    this.restartGameContainer();
     this.loadLevel();
   }
 }
