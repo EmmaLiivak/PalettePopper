@@ -80,6 +80,7 @@ class ColorPickerEntity extends Entity {
     });
 
     this.colorDots = document.querySelectorAll('.color-dot');
+    this.selectedColorIndex = colorPickerConfig.startSelectedColorIndex;
   }
 }
 

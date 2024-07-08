@@ -109,6 +109,7 @@ class PaddleEntity extends Entity {
   reset() {
     this.position.x = paddleConfig.startX;
     this.position.y = paddleConfig.startY;
+    this.color.color = colorPickerEntity.getSelectedColor();
   }
 
   // Create and append paddle element to game container
@@ -117,9 +118,6 @@ class PaddleEntity extends Entity {
     gameContainer.element.appendChild(paddleElement);
     renderingSystem.elements.set(paddleConfig.type, paddleElement);
     this.reset();
-
-    // Update paddle color
-    this.color.color = colorPickerEntity.getSelectedColor();
     renderingSystem.update([paddleEntity]);
   }
 }
