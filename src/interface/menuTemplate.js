@@ -13,26 +13,26 @@ export default class Menu {
     this.backButtons = document.querySelectorAll('.back-button');
 
     this.settingsButton.addEventListener('click', () => {
-      this.settingsMenu.classList.remove('hidden');
-      this.settingsMenu.querySelector('.back-button').focus();
-      this.keepFocusOnBackButton(this.settingsMenu);
-      this.navigation.disable();
+      this.showSubMenu(this.settingsMenu);
     });
 
     this.controlsButton.addEventListener('click', () => {
-      this.controlsMenu.classList.remove('hidden');
-      this.controlsMenu.querySelector('.back-button').focus();
-      this.keepFocusOnBackButton(this.controlsMenu);
-      this.navigation.disable();
+      this.showSubMenu(this.controlsMenu);
     });
 
     this.backButtons.forEach(button => {
       button.addEventListener('click', () => {
         button.parentElement.classList.add('hidden');
         this.navigation.enable();
-        this.stopKeepingFocus();
+        this.stopKeepingFocus(button);
       });
     });
+  }
+
+  showSubMenu(subMenu) {
+    subMenu.classList.remove('hidden');
+    this.keepFocusOnBackButton(subMenu);
+    this.navigation.disable();
   }
 
   show(isGameOver = false, isGameWon = false) {
@@ -47,15 +47,17 @@ export default class Menu {
   }
 
   keepFocusOnBackButton(menu) {
+    const backButton = menu.querySelector('.back-button');
+    backButton.classList.add('focused');
     this.focusInterval = setInterval(() => {
-      const backButton = menu.querySelector('.back-button');
       if (document.activeElement !== backButton) {
         backButton.focus();
       }
     }, 100);
   }
 
-  stopKeepingFocus() {
+  stopKeepingFocus(button) {
+    button.classList.remove('focused');
     clearInterval(this.focusInterval);
   }
 }

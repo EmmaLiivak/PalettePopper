@@ -48,8 +48,6 @@ class LevelManagementSystem extends System {
       this.loadLevel();
       gameStateSystem.startGame();
     } else {
-      this.currentLevelIndex = 0;
-      mainMenu.updateLevel();
       showEndMenu();
     }
   }

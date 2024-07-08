@@ -81,9 +81,7 @@ ul {
   padding-bottom: 5em;
 }
 
-.menu-buttons > button,
-.menu-buttons > div,
-.back-button {
+.button {
   margin-top: 0.75em;
   font-size: 20px;
   border: solid 0.15rem var(--permanentRose);
@@ -91,23 +89,11 @@ ul {
   padding: 0.5em 2em 0.5em 2em ;
   color: var(--permanentRose);
   transition-duration: 400ms;
-}
-
-.main-menu .menu-buttons > button,
-.main-menu .menu-buttons > div {
   background-color: whitesmoke;
 }
 
-.pause-menu .menu-buttons > * {
-  background-color: whitesmoke;
-}
-
-.menu-buttons > button:hover,
-.menu-buttons > div:hover,
-.menu-buttons > button:focus,
-.menu-buttons > div:focus,
-.back-button:hover,
-.back-button:focus {
+.button:hover,
+.button:focus {
   outline: none;
   cursor: pointer;
   background-color: var(--permanentRose);
@@ -128,7 +114,7 @@ ul {
   padding-inline: 1em;
 }
 
-#pause-message {
+#pause-message, h2 {
   padding-bottom: 0.5em;
   font-size: 40px;
   color: var(--permanentRose);

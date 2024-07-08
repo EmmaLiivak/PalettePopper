@@ -51,17 +51,29 @@ export function updateDynamicPauseMenuElements(isGameOver, isGameWon) {
   }
 }
 
+let focusInterval;
+
 const endMenu = document.querySelector('.end-menu');
 const endButton = document.querySelector('#end-button');
 
 endButton.addEventListener('click', () => {
+  clearInterval(focusInterval);
+  endButton.classList.remove('focused');
   endMenu.classList.add('hidden');
-  endButton.focus();
+  levelManagementSystem.currentLevelIndex = 0;
+  mainMenu.updateLevel()
   mainMenu.show();
 });
 
 export function showEndMenu() {
   pauseMenu.hide();
+  clearInterval(focusInterval);
+  focusInterval = setInterval(() => {
+    if (document.activeElement !== endButton) {
+      endButton.focus();
+    }
+  }, 100);
+  endButton.classList.add('focused');
   endMenu.classList.remove('hidden');
 }
 
