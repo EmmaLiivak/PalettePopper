@@ -1,7 +1,7 @@
 import { PositionComponent, SizeComponent, ColorComponent, CollisionComponent, RenderComponent } from "../components.js";
 import Entity from "./entityTemplate.js";
 import ecsSystem from "../systems/ECSSystem.js";
-import { ballEntity, gameManagerEntity } from "./index.js";
+import { gameManagerEntity } from "./index.js";
 import { gameContainer } from "../configurations/entityConfigurations.js";
 import renderingSystem from "../systems/renderingSystem.js";
 
@@ -30,32 +30,35 @@ class BrickEntity extends Entity {
 
   setCollisionCallbacks() {
     const collisionComponent = this.getComponent(CollisionComponent);
-    collisionComponent.setCallback('ball', () => {
-      // Check if the brick is already removed
-      if (this.element.classList.contains('removed')) return;
+    collisionComponent.setCallback('ball', (brick, ball) => {
+      this.handleCollision(ball)
+    });
+  }
+
+  handleCollision(ball) {
+    // Check if the brick is already removed
+    if (this.element.classList.contains('removed')) return;
       
-      // Check if the ball color matches the brick color
-      if (this.color.hexCode === ballEntity.color.color) {
-        this.element.classList.add('removed');
-        ecsSystem.removeEntity(this);
+    // Check if the ball color matches the brick color
+    if (this.color.hexCode === ball.color.color) {
+      this.element.classList.add('removed');
+      ecsSystem.removeEntity(this);
+      gameManagerEntity.updateScoreDisplay();
+      return;
+    }
+    // Check secondary color conditions
+    if (this.color.isSecondary) {
+      // Check if any required hits colors match ball color
+      const matchingPrimaryColor = this.color.requiredHits.find(primaryColor => primaryColor.hexCode === ball.color.color);
+      // Change the brick color to primary color if match was found
+      if (matchingPrimaryColor) {
+        const newPrimaryColor = this.color.requiredHits.find(primaryColor => primaryColor !== matchingPrimaryColor);
+        this.color = newPrimaryColor;
+        this.element.style.backgroundColor = this.color.hexCode;
         gameManagerEntity.updateScoreDisplay();
         return;
       }
-
-      // Check secondary color conditions
-      if (this.color.isSecondary) {
-        // Check if any required hits colors match ball color
-        const matchingPrimaryColor = this.color.requiredHits.find(primaryColor => primaryColor.hexCode === ballEntity.color.color);
-        // Change the brick color to primary color if match was found
-        if (matchingPrimaryColor) {
-          const newPrimaryColor = this.color.requiredHits.find(primaryColor => primaryColor !== matchingPrimaryColor);
-          this.color = newPrimaryColor;
-          this.element.style.backgroundColor = newPrimaryColor.hexCode;
-          gameManagerEntity.updateScoreDisplay();
-          return;
-        }
-      }
-    });
+    }
   }
 
   static createBricksContainer(gridColumns, gridRows, gridGap) {
