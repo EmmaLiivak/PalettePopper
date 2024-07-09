@@ -12,6 +12,7 @@ class BallEntity extends Entity {
     this.initComponents();
     this.setCollisionCallbacks();
     this.setInputCallbacks();
+    this.launchMessage = document.querySelector('#launch-message');
   }
 
   initComponents() {
@@ -135,6 +136,7 @@ class BallEntity extends Entity {
     this.velocity.dx = ballConfig.defaultDX;
     this.velocity.dy = ballConfig.defaultDY;
     this.isLaunched = true;
+    this.launchMessage.classList.add('hidden');
   }
 
   // Align ball with paddle while the ball is not launched
@@ -153,6 +155,7 @@ class BallEntity extends Entity {
     this.velocity.dy = ballConfig.startDY;
     this.isLaunched = false;
     this.color.color = paddleEntity.color.color;
+    this.launchMessage.classList.remove('hidden');
   }
 
   // Append the ball element to the game container
