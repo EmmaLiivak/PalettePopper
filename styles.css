@@ -124,13 +124,24 @@ ul {
   position: relative;
   width: 80vw;
   margin: 1% auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
 }
 
 .metrics-container > div {
   cursor: default;
+}
+
+.left {
+  justify-self: flex-start;
+}
+
+.middle {
+  justify-self: center;
+}
+
+.right {
+  justify-self: flex-end;
 }
 
 #pause-button {
