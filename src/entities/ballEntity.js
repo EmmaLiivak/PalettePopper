@@ -88,13 +88,24 @@ class BallEntity extends Entity {
         const brickPosition = otherEntity.getComponent(PositionComponent);
         const brickSize = otherEntity.getComponent(SizeComponent);
 
-        // Determine the direction of the collision
-        const isHorizontalCollision = hitPoint.x + 2 >= brickPosition.x && hitPoint.x - 2 <= brickPosition.x + brickSize.width;
-        const isVerticalCollision = hitPoint.y + 1 >= brickPosition.y &&  hitPoint.y - 1 <= brickPosition.y + brickSize.height;
+        // Calculate the distances from the ball's center to the brick's edges
+        const distanceToLeft = Math.abs(hitPoint.x - brickPosition.x);
+        const distanceToRight = Math.abs(hitPoint.x - (brickPosition.x + brickSize.width));
+        const distanceToTop = Math.abs(hitPoint.y - brickPosition.y);
+        const distanceToBottom = Math.abs(hitPoint.y - (brickPosition.y + brickSize.height));
 
-        // Handle collision
-        if (isHorizontalCollision) this.setVelocity(-this.velocity.dx);
-        if (isVerticalCollision) this.setVelocity(this.velocity.dx, -this.velocity.dy);
+        // Determine the smallest distance to decide the collision direction
+        const minDistanceX = Math.min(distanceToLeft, distanceToRight);
+        const minDistanceY = Math.min(distanceToTop, distanceToBottom);
+
+        // Handle collision based on the smallest distance
+        if (minDistanceX < minDistanceY) {
+          // Horizontal collision
+          this.setVelocity(-this.velocity.dx);
+        } else {
+          // Vertical collision
+          this.setVelocity(this.velocity.dx, -this.velocity.dy);
+        }
         break;
       
       default:
