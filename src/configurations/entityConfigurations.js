@@ -18,7 +18,8 @@ export const paddleConfig = {
 	defaultDX: 4,
 	width: paddleWidth,
 	height: gameContainer.height * 0.02,
-	deceleration: 0.5,
+	initialDeceleration: 2,
+	decelerationFactor: 0.5,
 	color: 'black',
 	type: 'paddle',
 	sections: [

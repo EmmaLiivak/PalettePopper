@@ -94,18 +94,22 @@ class PaddleEntity extends Entity {
 
   decelerate() {
     clearInterval(this.decelerationInterval);
+    this.decelerationStep = 0;
 
     const initialDirection = Math.sign(this.velocity.dx);
 
     this.decelerationInterval = setInterval(() => {
-      if (this.velocity.dx === 0 || Math.sign(this.velocity.dx) !== initialDirection) {
+      const currentDeceleration = paddleConfig.initialDeceleration + this.decelerationStep * paddleConfig.decelerationFactor;
+      const { dx } = this.velocity;
+      if (dx === 0 || Math.sign(dx) !== initialDirection) {
         clearInterval(this.decelerationInterval);
         this.setVelocity(0);
       } else {
-        this.velocity.dx += (this.velocity.dx > 0 ? -paddleConfig.deceleration : paddleConfig.deceleration);
+        this.velocity.dx += (dx > 0 ? -currentDeceleration : currentDeceleration);
         if (!ballEntity.isLaunched) ballEntity.velocity.dx = this.velocity.dx;
       }
-    }, 30);
+      this.decelerationStep++;
+    }, 50);
   }
 
   // Reset paddle to it's initial position
