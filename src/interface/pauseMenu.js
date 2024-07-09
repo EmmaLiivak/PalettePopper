@@ -11,6 +11,7 @@ class PauseMenu extends Menu {
     this.mainMenuButton = this.menuElement.querySelector('#main-menu-button');
     this.nextLevelButton = this.menuElement.querySelector('#next-level-button');
     this.pauseMessage = this.menuElement.querySelector('#pause-message');
+    this.pauseButton = document.querySelector('#pause-button');
 
     this.dynamicButton.addEventListener('click', () => {
       if (this.dynamicButton.textContent === 'Resume') {
@@ -29,6 +30,10 @@ class PauseMenu extends Menu {
     this.mainMenuButton.addEventListener('click', () => {
       mainMenu.show();
       this.hide();
+    });
+
+    this.pauseButton.addEventListener('click', () => {
+      gameStateSystem.pauseGame();
     });
   }
 }

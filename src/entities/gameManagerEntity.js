@@ -33,6 +33,7 @@ class GameManagerEntity extends Entity {
 
   setInputCallbacks() {
     this.input.setCallback('p', (keyState) => this.togglePause(keyState));
+    this.input.setCallback('r', (keyState) => gameStateSystem.restartLevel());
   }
 
   togglePause(keyState) {
