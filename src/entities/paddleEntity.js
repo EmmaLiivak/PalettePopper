@@ -11,6 +11,7 @@ class PaddleEntity extends Entity {
     this.initComponents();
     this.setCollisionCallbacks();
     this.setInputCallbacks();
+    this.keyState = {};
   }
 
   initComponents() {
@@ -63,58 +64,48 @@ class PaddleEntity extends Entity {
   handleInput(action, keyState) {
     if (!gameStateSystem.isGameRunning) return;
 
-    keyState === 'down' ? this.handleKeyDown(action) : this.handleKeyUp(action);
+    const isKeyDown = keyState === 'down';
+    if (this.keyState[action] === isKeyDown) return;
+
+    this.keyState[action] = isKeyDown;
+    this.updateVelocity();
     if (!ballEntity.isLaunched) ballEntity.alignBallWithPaddle();
   }
 
-  handleKeyDown(action) {
-    switch (action) {
-      case 'moveLeft':
-        this.moveLeft = true;
-        if (!this.moveRight) this.setVelocity(-paddleConfig.defaultDX);
-        break;
-      case 'moveRight':
-        this.moveRight = true;
-        if (!this.moveLeft) this.setVelocity(paddleConfig.defaultDX);
-        break;
-      default:
-        console.error('Invalid key down action');
-        break;
+  updateVelocity() {
+    const { moveLeft, moveRight } = this.keyState;
+
+    if (moveLeft && moveRight) {
+      this.decelerate();
+    } else if (moveLeft) {
+      this.setVelocity(-paddleConfig.defaultDX);
+    } else if (moveRight) {
+      this.setVelocity(paddleConfig.defaultDX);
+    } else {
+      this.decelerate(); // No key pressed, stop moving
     }
   }
 
   setVelocity(dx) {
+    clearInterval(this.decelerationInterval);
     this.velocity.dx = dx;
     if (!ballEntity.isLaunched) ballEntity.velocity.dx = dx;
   }
 
-  handleKeyUp(action) {
-    switch (action) {
-      case 'moveLeft':
-        this.moveLeft = false;
-        this.moveRight ? this.setVelocity(paddleConfig.defaultDX) : this.decelerate();
-        break;
-      case 'moveRight':
-        this.moveRight = false;
-        this.moveLeft ? this.setVelocity(-paddleConfig.defaultDX) : this.decelerate();
-        break;
-      default:
-        console.error('Invalid key up action');
-        break;
-    }
-  }
-
   decelerate() {
-    if (Math.abs(this.velocity.dx) > 0) {
-      // Reduce the velocity gradually
-      this.velocity.dx += (this.velocity.dx > 0 ? -paddleConfig.deceleration : paddleConfig.deceleration);
-      if (!ballEntity.isLaunched) ballEntity.velocity.dx = this.velocity.dx;
-      requestAnimationFrame(() => this.decelerate());
-    } else {
-      this.velocity.dx = 0;
-      if (!ballEntity.isLaunched) ballEntity.velocity.dx = 0;
-    }
-    if (!ballEntity.isLaunched) ballEntity.alignBallWithPaddle();
+    clearInterval(this.decelerationInterval);
+
+    const initialDirection = Math.sign(this.velocity.dx);
+
+    this.decelerationInterval = setInterval(() => {
+      if (this.velocity.dx === 0 || Math.sign(this.velocity.dx) !== initialDirection) {
+        clearInterval(this.decelerationInterval);
+        this.setVelocity(0);
+      } else {
+        this.velocity.dx += (this.velocity.dx > 0 ? -paddleConfig.deceleration : paddleConfig.deceleration);
+        if (!ballEntity.isLaunched) ballEntity.velocity.dx = this.velocity.dx;
+      }
+    }, 30);
   }
 
   // Reset paddle to it's initial position
