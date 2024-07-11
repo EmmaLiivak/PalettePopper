@@ -11,6 +11,8 @@ export default class Menu {
     this.controlsMenu = document.querySelector('.controls-menu');
     this.settingsMenu = document.querySelector('.settings-menu');
     this.backButtons = document.querySelectorAll('.back-button');
+    this.volumeSlider = document.getElementById('volume-slider');
+    this.backgroundMusic = document.getElementById('background-music')
 
     this.settingsButton.addEventListener('click', () => {
       this.showSubMenu(this.settingsMenu);
@@ -26,6 +28,10 @@ export default class Menu {
         this.navigation.enable();
         this.stopKeepingFocus(button);
       });
+    });
+
+    this.volumeSlider.addEventListener('input', () => {
+      this.backgroundMusic.volume = this.volumeSlider.value / 100;
     });
   }
 
