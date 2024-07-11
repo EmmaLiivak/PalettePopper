@@ -3,6 +3,7 @@ import Entity from "./entityTemplate.js";
 import gameStateSystem from "../systems/gameStateSystem.js";
 import ecsSystem from "../systems/ECSSystem.js";
 import levelManagementSystem from "../systems/levelManagementSystem.js";
+import mainMenu from "../interface/mainMenu.js";
 
 class GameManagerEntity extends Entity {
   constructor() {
@@ -33,7 +34,7 @@ class GameManagerEntity extends Entity {
 
   setInputCallbacks() {
     this.input.setCallback('p', (keyState) => this.togglePause(keyState));
-    this.input.setCallback('r', (keyState) => gameStateSystem.restartLevel());
+    this.input.setCallback('r', () => gameStateSystem.restartLevel());
   }
 
   togglePause(keyState) {
