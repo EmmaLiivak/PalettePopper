@@ -3,6 +3,7 @@ import System from "./systemTemplate.js";
 import gameManagerEntity from '../entities/gameManagerEntity.js';
 import levelManagementSystem from './levelManagementSystem.js';
 import pauseMenu from '../interface/pauseMenu.js';
+import inputSystem from './inputSystem.js';
 
 class GameStateSystem extends System {
   constructor() {
@@ -20,6 +21,7 @@ class GameStateSystem extends System {
   startGame() {
     this.isGameRunning = true;
     this.lastUpdateTime = performance.now();
+    inputSystem.startListening();
   }
 
   pauseGame() {
@@ -42,6 +44,7 @@ class GameStateSystem extends System {
   stopGame() {
     this.isGameRunning = false;
     this.lastUpdateTime = null;
+    inputSystem.stopListening();
   }
 
   isGameOver() {

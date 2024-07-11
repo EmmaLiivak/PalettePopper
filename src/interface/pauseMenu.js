@@ -28,8 +28,9 @@ class PauseMenu extends Menu {
     });
 
     this.mainMenuButton.addEventListener('click', () => {
-      mainMenu.show();
       this.hide();
+      gameStateSystem.stopGame();
+      mainMenu.show();
     });
 
     this.pauseButton.addEventListener('click', () => {
