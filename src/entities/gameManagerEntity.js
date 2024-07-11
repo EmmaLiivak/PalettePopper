@@ -3,6 +3,8 @@ import Entity from "./entityTemplate.js";
 import gameStateSystem from "../systems/gameStateSystem.js";
 import ecsSystem from "../systems/ECSSystem.js";
 import levelManagementSystem from "../systems/levelManagementSystem.js";
+import mainMenu from "../interface/mainMenu.js";
+import pauseMenu from "../interface/pauseMenu.js";
 
 class GameManagerEntity extends Entity {
   constructor() {
@@ -32,8 +34,13 @@ class GameManagerEntity extends Entity {
   }
 
   setInputCallbacks() {
-    this.input.setCallback('p', (keyState) => this.togglePause(keyState));
-    this.input.setCallback('r', () => gameStateSystem.restartLevel());
+    this.input.setCallback(80, (keyState) => this.togglePause(keyState));
+    this.input.setCallback(82, () => gameStateSystem.restartLevel());
+    this.input.setCallback(27, () => {
+      gameStateSystem.stopGame();
+      if (!pauseMenu.menuElement.classList.contains('removed')) pauseMenu.hide();
+      mainMenu.show();
+    })
   }
 
   togglePause(keyState) {

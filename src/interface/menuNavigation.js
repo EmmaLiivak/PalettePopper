@@ -14,27 +14,27 @@ import levelManagementSystem from "../systems/levelManagementSystem.js";
     };
 
     const handleKeyDown = (e) => {
-      switch (e.key) {
-        case 'Tab':
-        case 'ArrowDown':
-        case 's':
+      switch (e.keyCode) {
+        case 9: // tab
+        case 40: // down arrow
+        case 83: // s
           e.preventDefault();
           focusButton((currentIndex + 1) % menuButtons.length);
           break;
-        case 'ArrowUp':
-        case 'w':
+        case 38: // up arrow
+        case 87: // w
           e.preventDefault();
           focusButton((currentIndex - 1 + menuButtons.length) % menuButtons.length);
           break;
-        case 'ArrowLeft':
-        case 'd':
+        case 37: // left arrow
+        case 68: // d
           if (menuButtons[currentIndex].id != 'level-select-button') return;
           if (levelManagementSystem.currentLevelIndex <= 0) return;
           levelManagementSystem.currentLevelIndex--;
           mainMenu.updateLevel();
           break;
-        case 'ArrowRight':
-        case 'a':
+        case 39: // right arrow
+        case 65: // a
           if (menuButtons[currentIndex].id != 'level-select-button') return;
           if (levelManagementSystem.currentLevelIndex >= levelManagementSystem.levels.length - 1) return;
           levelManagementSystem.currentLevelIndex++;

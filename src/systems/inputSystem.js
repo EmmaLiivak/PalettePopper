@@ -20,7 +20,7 @@ class InputSystem extends System {
   }
 
   handleKeyDown(event) {
-    const key = event.key.toLowerCase();
+    const key = event.keyCode;
     for (const entity of ecsSystem.entities) {
       const inputComponent = entity.getComponent(InputComponent);
       if (!inputComponent) continue;
@@ -29,7 +29,7 @@ class InputSystem extends System {
   }
 
   handleKeyUp(event) {
-    const key = event.key.toLowerCase();
+    const key = event.keyCode;
     for (const entity of ecsSystem.entities) {
       const inputComponent = entity.getComponent(InputComponent);
       if (!inputComponent) continue;

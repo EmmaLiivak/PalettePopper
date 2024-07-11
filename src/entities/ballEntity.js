@@ -129,7 +129,7 @@ class BallEntity extends Entity {
 
    // Add callback to launch the ball when space is pressed
    setInputCallbacks() {
-    this.input.setCallback(' ', () => this.launch());
+    this.input.setCallback(32, () => this.launch());
   }
 
   // Add velocity to ball to launch it

@@ -51,10 +51,10 @@ export const paddleConfig = {
 		'rightWall',
 	],
 	keyMapping: {
-		'a': 'moveLeft',
-		'arrowleft': 'moveLeft',
-		'd': 'moveRight',
-		'arrowright': 'moveRight',
+		65: 'moveLeft',
+		37: 'moveLeft',
+		68: 'moveRight',
+		39: 'moveRight',
 	},
 };
 
@@ -92,10 +92,10 @@ export const colorPickerConfig = {
 		colors.permanentRose, colors.cadmiumYellow, colors.ceruleanBlue,
 	],
 	keyMapping: {
-		'w': 'colorUp',
-		'arrowup': 'colorUp',
-		's': 'colorDown',
-		'arrowdown': 'colorDown',
+		87: 'colorUp',
+		38: 'colorUp',
+		83: 'colorDown',
+		40: 'colorDown',
 	},
 };
 
