@@ -26,10 +26,9 @@ h1 {
 }
 
 .main-menu {
-  background-image: url('./assets/background.gif');
+  background-image: url('https://www.tilingtextures.com/wp-content/uploads/2018/11/0066.jpg');
   background-size: cover;
   background-position: center center;
-  background-repeat: no-repeat;
 }
 
 .pause-menu {
