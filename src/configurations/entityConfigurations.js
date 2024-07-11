@@ -12,6 +12,18 @@ export let gameContainer = {
   },
 };
 
+const updateGameContainerSize = () => {
+  gameContainer = {
+    element: document.querySelector('.game-container'),
+    get width() {
+      return this.element.offsetWidth;
+    },
+    get height() {
+      return this.element.offsetHeight;
+    },
+  };
+};
+
 const referenceSize = Math.max(gameContainer.width, gameContainer.height);
 
 const paddleWidth = referenceSize * 0.15;
@@ -160,5 +172,6 @@ function debounce(func, delay) {
 }
 
 window.addEventListener('resize', debounce(() => {
+	updateGameContainerSize();
 	updateEntitySizeAndPosition();
 }, 300));
