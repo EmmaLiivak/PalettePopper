@@ -3,7 +3,6 @@ import Entity from "./entityTemplate.js";
 import gameStateSystem from "../systems/gameStateSystem.js";
 import ecsSystem from "../systems/ECSSystem.js";
 import levelManagementSystem from "../systems/levelManagementSystem.js";
-import mainMenu from "../interface/mainMenu.js";
 
 class GameManagerEntity extends Entity {
   constructor() {
