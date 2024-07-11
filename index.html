@@ -10,9 +10,6 @@
     <!-- ===== CSS ===== -->
     <link rel="stylesheet" href="styles.css">
 
-    <!-- ===== Iconscout ===== -->
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
-
     <!-- ===== Google Fonts ===== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,30 +20,32 @@
 
   <body>
 
-    <!-- Top metrics container -->
-    <div class="metrics-container">
-      <div class="time left">Time: 00:00</div>
-      <div class="level middle">Level 1</div>
-      
-      <div class="game-menu right">
-        <button id="pause-button">[P]ause</button>
+    <div class="main-container">
+      <!-- Top metrics container -->
+      <div class="metrics-container">
+        <div class="time left">Time: 00:00</div>
+        <div class="level middle">Level 1</div>
+        
+        <div class="game-menu right">
+          <button id="pause-button">[P]ause</button>
+        </div>
       </div>
+
+      <!-- The game container -->
+      <div class="game-container"></div>
+
+      <!-- Bottom metrics container -->
+      <div class="metrics-container">
+        <div class="score left">Score: 0</div>
+
+        <!-- Color picker -->
+        <div class="color-picker-container middle"></div>
+
+        <div class="lives right">Lives: &#10084;&#10084;&#10084;</div>
+      </div>
+
+      <p id="launch-message">Press [SPACE] to launch the ball</p>
     </div>
-
-    <!-- The game container -->
-    <div class="game-container"></div>
-
-    <!-- Bottom metrics container -->
-    <div class="metrics-container">
-      <div class="score left">Score: 0</div>
-
-      <!-- Color picker -->
-      <div class="color-picker-container middle"></div>
-
-      <div class="lives right">Lives: &#10084;&#10084;&#10084;</div>
-    </div>
-
-    <p id="launch-message">Press [SPACE] to launch the ball</p>
 
     <!-- Menu container modules -->
 

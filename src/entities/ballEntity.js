@@ -55,11 +55,13 @@ class BallEntity extends Entity {
         break;
 
       case 'topWall':
+        this.bounceSound.play();
         this.setVelocity(this.velocity.dx, -this.velocity.dy);
         break;
 
       case 'rightWall':
       case 'leftWall':
+        this.bounceSound.play();
         this.setVelocity(-this.velocity.dx);
         break;
       
@@ -87,7 +89,6 @@ class BallEntity extends Entity {
         break;
 
       case 'brick':
-        console.log('brick');
         const brickPosition = otherEntity.getComponent(PositionComponent);
         const brickSize = otherEntity.getComponent(SizeComponent);
 
@@ -162,9 +163,9 @@ class BallEntity extends Entity {
 
   // Append the ball element to the game container
   renderBall(config) {
-    const ballElement = renderingSystem.createEntityElement(config);
-    gameContainer.element.appendChild(ballElement);
-    renderingSystem.elements.set(config.type, ballElement);
+    this.element = renderingSystem.createEntityElement(config);
+    gameContainer.element.appendChild(this.element);
+    renderingSystem.elements.set(config.type, this.element);
     this.reset();
   }
 }

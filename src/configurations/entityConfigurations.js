@@ -1,23 +1,36 @@
 import colors from "./colorConfigurations.js";
+import ecsSystem from "../systems/ECSSystem.js";
+import { PositionComponent, SizeComponent } from "../components.js";
 
-export const gameContainer = {
-	element: document.querySelector('.game-container'),
-	width: document.querySelector('.game-container').offsetWidth,
-	height: document.querySelector('.game-container').offsetHeight,
+export let gameContainer = {
+  element: document.querySelector('.game-container'),
+  get width() {
+    return this.element.offsetWidth;
+  },
+  get height() {
+    return this.element.offsetHeight;
+  },
 };
 
-const paddleWidth = gameContainer.width * 0.15;
+const referenceSize = Math.max(gameContainer.width, gameContainer.height);
+
+const paddleWidth = referenceSize * 0.15;
+const paddleHeight = referenceSize * 0.02
 const numPaddleSections = 9;
 const sectionWidth = paddleWidth / numPaddleSections;
 
 export const paddleConfig = {
-	startX: gameContainer.width / 2 - (gameContainer.width * 0.1 / 2) - 1,
-	startY: gameContainer.height - (gameContainer.height * 0.02) - 1,
+	get startX() {
+    return gameContainer.width / 2 - this.width / 2;
+  },
+  get startY() {
+    return gameContainer.height - this.height - 1;
+  },
 	startDX: 0,
 	startDY: 0,
 	defaultDX: 4,
 	width: paddleWidth,
-	height: gameContainer.height * 0.02,
+	height: paddleHeight,
 	initialDeceleration: 2,
 	decelerationFactor: 0.5,
 	color: 'black',
@@ -45,16 +58,22 @@ export const paddleConfig = {
 	},
 };
 
+const ballRadius = referenceSize * 0.015;
+
 export const ballConfig = {
-	startX: paddleConfig.startX + (paddleConfig.width / 2) - (gameContainer.width * 0.01 / 2),
-	startY: paddleConfig.startY - (gameContainer.width * 0.01) - 0.5,
+  get startX() {
+    return paddleConfig.startX + (paddleConfig.width / 2) - (this.width / 2);
+  },
+  get startY() {
+    return paddleConfig.startY - (this.height) - 0.5;
+  },
 	startDX: 0,
 	startDY: 0,
 	defaultDX: 0,
 	defaultDY: 4,
 	desiredSpeed: 4,
-	width: gameContainer.width * 0.01,
-	height: gameContainer.width * 0.01,
+	width: ballRadius,
+	height: ballRadius,
 	color: 'red',
 	type: 'ball',
 	collisionObjects: [
@@ -79,3 +98,67 @@ export const colorPickerConfig = {
 		'arrowdown': 'colorDown',
 	},
 };
+
+function updateEntitySizeAndPosition() {
+	ecsSystem.entities.forEach(entity => {
+		if (entity.hasComponent(SizeComponent) && entity.hasComponent(PositionComponent)) {
+
+			if (['topWall', 'bottomWall', 'leftWall', 'rightWall'].includes(entity.name)) {
+				updateWallDimensions(entity);
+				return;
+			}
+
+			const rect = entity.element.getBoundingClientRect();
+			const sizeComponent = entity.getComponent(SizeComponent);
+			const positionComponent = entity.getComponent(PositionComponent);
+
+			sizeComponent.width = rect.width;
+			sizeComponent.height = rect.height;
+
+			const gameContainerRect = gameContainer.element.getBoundingClientRect();
+			positionComponent.x = rect.left - gameContainerRect.left;
+      positionComponent.y = rect.top - gameContainerRect.top;
+		}
+	});
+}
+
+function updateWallDimensions(wallEntity) {
+  const sizeComponent = wallEntity.getComponent(SizeComponent);
+  const positionComponent = wallEntity.getComponent(PositionComponent);
+
+	switch (wallEntity.name) {
+		case 'topWall':
+			Object.assign(sizeComponent, { width: gameContainer.width, height: 0 });
+			Object.assign(positionComponent, { x: 0, y: 0 });
+			break;
+		case 'bottomWall':
+			Object.assign(sizeComponent, { width: gameContainer.width, height: 0 });
+			Object.assign(positionComponent, { x: 0, y: gameContainer.height });
+			break;
+		case 'leftWall':
+			Object.assign(sizeComponent, { width: 0, height: gameContainer.height });
+			Object.assign(positionComponent, { x: 0, y: 0 });
+			break;
+		case 'rightWall':
+			Object.assign(sizeComponent, { width: 0, height: gameContainer.height });
+			Object.assign(positionComponent, { x: gameContainer.width, y: 0 });
+			break;
+		default:
+			console.error('Unknown wall type');
+  }
+}
+
+function debounce(func, delay) {
+  let timeoutID;
+
+  return function (...args) {
+    clearTimeout(timeoutID);
+    timeoutID = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+}
+
+window.addEventListener('resize', debounce(() => {
+	updateEntitySizeAndPosition();
+}, 300));

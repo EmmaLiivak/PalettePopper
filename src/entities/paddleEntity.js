@@ -121,9 +121,9 @@ class PaddleEntity extends Entity {
 
   // Create and append paddle element to game container
   render(paddleConfig) {
-    const paddleElement = renderingSystem.createEntityElement(paddleConfig);
-    gameContainer.element.appendChild(paddleElement);
-    renderingSystem.elements.set(paddleConfig.type, paddleElement);
+    this.element = renderingSystem.createEntityElement(paddleConfig);
+    gameContainer.element.appendChild(this.element);
+    renderingSystem.elements.set(paddleConfig.type, this.element);
     this.reset();
     renderingSystem.update([paddleEntity]);
   }
