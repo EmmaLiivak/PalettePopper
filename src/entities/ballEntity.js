@@ -56,13 +56,17 @@ class BallEntity extends Entity {
 
       case 'topWall':
         this.bounceSound.play();
-        this.setVelocity(this.velocity.dx, -this.velocity.dy);
+        this.velocity.dy = -this.velocity.dy;
+        this.position.y = this.size.width + 1;
         break;
 
       case 'rightWall':
       case 'leftWall':
         this.bounceSound.play();
-        this.setVelocity(-this.velocity.dx);
+        this.velocity.dx = -this.velocity.dx;
+        this.position.x = collisionObject === 'rightWall'
+          ? gameContainer.width - this.size.width - 1
+          : 1 + this.size.width;
         break;
       
       case 'paddle':
@@ -105,10 +109,16 @@ class BallEntity extends Entity {
         // Handle collision based on the smallest distance
         if (minDistanceX < minDistanceY) {
           // Horizontal collision
-          this.setVelocity(-this.velocity.dx);
+          this.velocity.dx = -this.velocity.dx;
+          this.position.x = distanceToLeft < distanceToRight 
+            ? brickPosition.x -this.size.width - 1
+            : brickPosition.x + brickSize.width + this.size.width + 1;
         } else {
           // Vertical collision
-          this.setVelocity(this.velocity.dx, -this.velocity.dy);
+          this.velocity.dy = -this.velocity.dy;
+          this.position.y = distanceToTop < distanceToBottom
+            ? brickPosition.y - this.size.width - 1
+            : brickPosition.y + brickSize.height + this.size.width + 1;
         }
         break;
       
@@ -116,17 +126,6 @@ class BallEntity extends Entity {
         console.error('Invalid collision object type');
         break;
     }
-  }
-
-  setVelocity(dx = this.velocity.dx, dy = this.velocity.dy) {
-    this.velocity.dx = dx;
-    this.velocity.dy = dy;
-
-    // Adjust ball position to prevent sticking
-    const newX = this.position.x + (this.velocity.dx > 0 ? 5 : (this.velocity.dx < 0 ? -5 : 0));
-    const newY = this.position.y + (this.velocity.dy > 0 ? 5 : (this.velocity.dy < 0 ? -5 : 0));
-    this.position.x = newX;
-    this.position.y = newY;
   }
 
    // Add callback to launch the ball when space is pressed
