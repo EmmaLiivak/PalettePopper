@@ -12,6 +12,7 @@ class BallEntity extends Entity {
     this.initComponents();
     this.setCollisionCallbacks();
     this.setInputCallbacks();
+    this.bounceSound = new Audio('./assets/bounce.wav');
     this.launchMessage = document.querySelector('#launch-message');
   }
 
@@ -63,6 +64,7 @@ class BallEntity extends Entity {
         break;
       
       case 'paddle':
+        this.bounceSound.play();
         const hitPosition = hitPoint.x - paddleEntity.position.x;
         // Find the appropriate section in paddleConfig based on hit position
         const section = paddleConfig.sections.find(

@@ -8,6 +8,9 @@ import renderingSystem from "../systems/renderingSystem.js";
 // Brick Entity Template
 class BrickEntity extends Entity {
   static bricks = [];
+  static popSound = new Audio('./assets/pop.wav');
+  static colorChangeSound = new Audio('./assets/color-change.wav');
+  static collisionSound = new Audio('./assets/collision.wav');
 
   constructor(x, y, width, height, color, element) {
     super('brick');
@@ -41,6 +44,7 @@ class BrickEntity extends Entity {
       
     // Check if the ball color matches the brick color
     if (this.color.hexCode === ball.color.color) {
+      BrickEntity.popSound.play();
       this.element.classList.add('removed');
       ecsSystem.removeEntity(this);
       gameManagerEntity.updateScoreDisplay();
@@ -52,6 +56,7 @@ class BrickEntity extends Entity {
       const matchingPrimaryColor = this.color.requiredHits.find(primaryColor => primaryColor.hexCode === ball.color.color);
       // Change the brick color to primary color if match was found
       if (matchingPrimaryColor) {
+        BrickEntity.colorChangeSound.play();
         const newPrimaryColor = this.color.requiredHits.find(primaryColor => primaryColor !== matchingPrimaryColor);
         this.color = newPrimaryColor;
         this.element.style.backgroundColor = this.color.hexCode;
@@ -59,6 +64,7 @@ class BrickEntity extends Entity {
         return;
       }
     }
+    BrickEntity.collisionSound.play();
   }
 
   static createBricksContainer(gridColumns, gridRows, gridGap) {
