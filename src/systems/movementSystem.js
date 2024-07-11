@@ -7,7 +7,7 @@ class MovementSystem extends System {
     super();
   }
 
-  update(entities) {
+  update(entities, deltaTime) {
     for (const entity of entities) {
       const position = entity.getComponent(PositionComponent);
       const velocity = entity.getComponent(VelocityComponent);
@@ -15,8 +15,8 @@ class MovementSystem extends System {
       if (!position || !velocity) continue;
 
       // Update entity position component
-      position.x += velocity.dx;
-      position.y += velocity.dy;
+      position.x += velocity.dx * deltaTime;
+      position.y += velocity.dy * deltaTime;
     }
   }
 }

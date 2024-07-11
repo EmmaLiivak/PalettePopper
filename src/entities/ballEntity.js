@@ -123,8 +123,10 @@ class BallEntity extends Entity {
     this.velocity.dy = dy;
 
     // Adjust ball position to prevent sticking
-    this.position.x += this.velocity.dx;
-    this.position.y += this.velocity.dy;
+    const newX = this.position.x + (this.velocity.dx > 0 ? 5 : (this.velocity.dx < 0 ? -5 : 0));
+    const newY = this.position.y + (this.velocity.dy > 0 ? 5 : (this.velocity.dy < 0 ? -5 : 0));
+    this.position.x = newX;
+    this.position.y = newY;
   }
 
    // Add callback to launch the ball when space is pressed

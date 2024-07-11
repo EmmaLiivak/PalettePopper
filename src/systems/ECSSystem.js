@@ -17,9 +17,9 @@ class ECSSystem extends System {
     }
   }
 
-  update() {
+  update(deltaTime) {
     for (const system of this.systems) {
-      system.update(this.entities);
+      system.update(this.entities, deltaTime);
     }
   }
 }

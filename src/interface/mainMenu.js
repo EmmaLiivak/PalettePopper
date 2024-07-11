@@ -11,7 +11,6 @@ class MainMenu extends Menu {
     this.nextLevelButton = this.menuElement.querySelector('#next-level');
 
     this.playButton.addEventListener('click', () => {
-      console.log('Loading level ' + (levelManagementSystem.currentLevelIndex + 1) + '...');
       levelManagementSystem.loadLevel();
       gameStateSystem.startGame();
       this.hide();
