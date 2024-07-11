@@ -12,7 +12,7 @@
   font-family: "Poppins", sans-serif;
 }
 
-body {
+body, .main-menu {
   background-image: url('https://www.tilingtextures.com/wp-content/uploads/2018/11/0066.jpg');
   background-size: cover;
   background-position: center center;
@@ -23,12 +23,6 @@ h1 {
   font-size: 50px;
   color: var(--permanentRose);
   font-family: "Gluten", cursive;
-}
-
-.main-menu {
-  background-image: url('https://www.tilingtextures.com/wp-content/uploads/2018/11/0066.jpg');
-  background-size: cover;
-  background-position: center center;
 }
 
 .pause-menu {
