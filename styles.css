@@ -99,6 +99,11 @@ ul {
   color: whitesmoke;
 }
 
+.slider-container:hover,
+.slider-container:focus {
+  outline: none;
+}
+
 .focused {
   background-color: var(--permanentRose) !important;
   color: whitesmoke !important;

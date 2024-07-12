@@ -57,6 +57,9 @@ export function updateDynamicPauseMenuElements(isGameOver, isGameWon) {
   }
 }
 
+const pauseMenu = new PauseMenu();
+export default pauseMenu;
+
 let focusInterval;
 
 const endMenu = document.querySelector('.end-menu');
@@ -82,6 +85,3 @@ export function showEndMenu() {
   endButton.classList.add('focused');
   endMenu.classList.remove('hidden');
 }
-
-const pauseMenu = new PauseMenu();
-export default pauseMenu;

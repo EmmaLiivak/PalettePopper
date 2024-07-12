@@ -8,11 +8,10 @@ export default class Menu {
     this.navigation = handleMenuNavigation(this.menuButtons);
     this.settingsButton = this.menuElement.querySelector('#settings-button');
     this.controlsButton = this.menuElement.querySelector('#controls-button');
-    this.controlsMenu = document.querySelector('.controls-menu');
-    this.settingsMenu = document.querySelector('.settings-menu');
+
+    this.controlsMenu = new SubMenu(this, '.controls-menu');
+    this.settingsMenu = new SubMenu(this, '.settings-menu');
     this.backButtons = document.querySelectorAll('.back-button');
-    this.volumeSlider = document.getElementById('volume-slider');
-    this.backgroundMusic = document.getElementById('background-music')
 
     this.settingsButton.addEventListener('click', () => {
       this.showSubMenu(this.settingsMenu);
@@ -24,21 +23,23 @@ export default class Menu {
 
     this.backButtons.forEach(button => {
       button.addEventListener('click', () => {
-        button.parentElement.classList.add('hidden');
-        this.navigation.enable();
-        this.stopKeepingFocus(button);
+        this.hideSubMenu();
       });
-    });
-
-    this.volumeSlider.addEventListener('input', () => {
-      this.backgroundMusic.volume = this.volumeSlider.value / 100;
     });
   }
 
   showSubMenu(subMenu) {
-    subMenu.classList.remove('hidden');
-    this.keepFocusOnBackButton(subMenu);
+    subMenu.menuElement.classList.remove('hidden');
     this.navigation.disable();
+    subMenu.navigation.enable();
+  }
+
+  hideSubMenu() {
+    this.controlsMenu.menuElement.classList.add('hidden');
+    this.settingsMenu.menuElement.classList.add('hidden');
+    this.controlsMenu.navigation.disable();
+    this.settingsMenu.navigation.disable();
+    this.navigation.enable();
   }
 
   show(isGameOver = false, isGameWon = false) {
@@ -51,19 +52,13 @@ export default class Menu {
     this.menuElement.classList.add('hidden');
     this.navigation.disable();
   }
+}
 
-  keepFocusOnBackButton(menu) {
-    const backButton = menu.querySelector('.back-button');
-    backButton.classList.add('focused');
-    this.focusInterval = setInterval(() => {
-      if (document.activeElement !== backButton) {
-        backButton.focus();
-      }
-    }, 100);
-  }
-
-  stopKeepingFocus(button) {
-    button.classList.remove('focused');
-    clearInterval(this.focusInterval);
+class SubMenu {
+  constructor(parentMenu, menuType) {
+    this.menuElement = document.querySelector(menuType);
+    this.menuButtons = this.menuElement.querySelector('.menu-buttons');
+    this.navigation = handleMenuNavigation(this.menuButtons);
+    this.parentMenu = parentMenu;
   }
 }
