@@ -1,6 +1,7 @@
 import colors from "./colorConfigurations.js";
 import ecsSystem from "../systems/ECSSystem.js";
 import { PositionComponent, SizeComponent } from "../components.js";
+import gameStateSystem from "../systems/gameStateSystem.js";
 
 export let gameContainer = {
   element: document.querySelector('.game-container'),
@@ -173,5 +174,6 @@ function debounce(func, delay) {
 
 window.addEventListener('resize', debounce(() => {
 	updateGameContainerSize();
+	if (!gameStateSystem.isGameRunning) return;
 	updateEntitySizeAndPosition();
 }, 300));
