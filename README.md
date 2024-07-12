@@ -1,6 +1,6 @@
 # PalettePopper
 
-Captivating brick-breaker experience where color theory takes center stage.
+Cozy brick-breaker experience with a sprinkle of color theory.
 
 ## Implementation
 
