@@ -1,6 +1,5 @@
 :root {
   --permanentRose: rgb(254, 7, 137);
-  --cadmiumYellow: rgb(252, 186, 3);
 }
 
 *,
@@ -8,35 +7,36 @@
 *::after {
   margin: 0;
   padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
 
-body, .main-menu {
+body, .main-menu, .pause-menu, .controls-menu, .settings-menu {
   background-image: url('https://www.tilingtextures.com/wp-content/uploads/2018/11/0066.jpg');
   background-size: cover;
   background-position: center center;
 }
 
-h1 {
-  padding-bottom: 0.5em;
-  font-size: 50px;
-  color: var(--permanentRose);
-  font-family: "Gluten", cursive;
+.main-menu img {
+  width: 50vw;
+  max-width: 800px;
+  height: auto;
+  display: block;
+  margin-bottom: 2em;
+  mix-blend-mode: multiply;
 }
 
 h2, #pause-message {
   padding-bottom: 0.5em;
-  font-size: 40px;
+  font-size: 30px;
   color: var(--permanentRose);
-}
-
-.pause-menu {
-  background-color: rgba(255, 255, 255, 0.75);
+  mix-blend-mode: multiply;
 }
 
 .controls-menu, .settings-menu {
-  background-color: whitesmoke;
   color: var(--permanentRose);
 }
 
@@ -83,30 +83,47 @@ ul {
 .button {
   margin-top: 0.75em;
   font-size: 20px;
-  border: solid 0.15rem var(--permanentRose);
-  border-radius: 0.5em;
-  padding: 0.5em 2em 0.5em 2em ;
+  border: none;
+  padding: 0.5em 1.5em;
   color: var(--permanentRose);
-  transition-duration: 400ms;
-  background-color: whitesmoke;
+  background-color: transparent;
+  background-image: url('./assets/button-inactive.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  mix-blend-mode: multiply;
 }
 
 .button:hover,
 .button:focus {
   outline: none;
   cursor: pointer;
-  background-color: var(--permanentRose);
   color: whitesmoke;
+  background-image: url('./assets/button-active.png');
+}
+
+.focused {
+  background-image: url('./assets/button-active.png') !important;
+  color: whitesmoke !important;
+}
+
+.slider-container label {
+  color: black;
+}
+
+.slider-container.focused {
+  background-color: transparent !important;
+  color: var(--permanentRose) !important;
+}
+
+.slider-container.focused label {
+  color: var(--permanentRose);
+  font-weight: bolder;
 }
 
 .slider-container:hover,
 .slider-container:focus {
   outline: none;
-}
-
-.focused {
-  background-color: var(--permanentRose) !important;
-  color: whitesmoke !important;
 }
 
 .level-select-button {
@@ -125,7 +142,7 @@ ul {
   max-height: 750px;
   margin: 0.5em auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
 
 .metrics-container > div {
