@@ -4,6 +4,7 @@ import paddleEntity from "./paddleEntity.js";
 import { gameStateSystem, renderingSystem, ecsSystem } from "../systems/index.js";
 import { gameContainer, ballConfig, paddleConfig} from "../configurations/entityConfigurations.js";
 import gameStateEntity from "./gameManagerEntity.js";
+import sound from "../systems/soundSystem.js";
 
 class BallEntity extends Entity {
   constructor() {
@@ -12,7 +13,6 @@ class BallEntity extends Entity {
     this.initComponents();
     this.setCollisionCallbacks();
     this.setInputCallbacks();
-    this.bounceSound = new Audio('./assets/bounce.wav');
     this.launchMessage = document.querySelector('#launch-message');
   }
 
@@ -55,14 +55,14 @@ class BallEntity extends Entity {
         break;
 
       case 'topWall':
-        this.bounceSound.play();
+        sound.ballBounce.play();
         this.velocity.dy = -this.velocity.dy;
         this.position.y = this.size.width + 1;
         break;
 
       case 'rightWall':
       case 'leftWall':
-        this.bounceSound.play();
+        sound.ballBounce.play();
         this.velocity.dx = -this.velocity.dx;
         this.position.x = collisionObject === 'rightWall'
           ? gameContainer.width - this.size.width - 1
@@ -70,7 +70,7 @@ class BallEntity extends Entity {
         break;
       
       case 'paddle':
-        this.bounceSound.play();
+        sound.ballBounce.play();
         const hitPosition = hitPoint.x - paddleEntity.position.x;
         // Find the appropriate section in paddleConfig based on hit position
         const section = paddleConfig.sections.find(
