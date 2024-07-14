@@ -60,7 +60,7 @@ import levelManagementSystem from "../systems/levelManagementSystem.js";
 
     const maintainFocus = () => {
       if (!menuButtons.includes(document.activeElement)) {
-          menuButtons[currentIndex].focus();
+        menuButtons[currentIndex].focus();
       }
     };
 
@@ -69,12 +69,14 @@ import levelManagementSystem from "../systems/levelManagementSystem.js";
       menuContainer.addEventListener('keydown', handleKeyDown);
       document.addEventListener('focusin', maintainFocus);
       document.addEventListener('focusout', maintainFocus);
+      document.addEventListener('click', maintainFocus);
     };
   
     const disable = () => {
       menuContainer.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('focusin', maintainFocus);
       document.removeEventListener('focusout', maintainFocus);
+      document.removeEventListener('click', maintainFocus);
     };
 
     const updateCurrentIndex = (newIndex) => {
