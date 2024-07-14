@@ -21,7 +21,7 @@ The game can also be played on [Github Pages](https://emmaliivak.github.io/Palet
 
 Before using the program, ensure you have the following prerequisites installed:
 
-1. **:snake: Python 3.x**
+1. **Python 3.x**
 This method uses Python's built-in server and requires Python 3.x installed on your system.
 
 ### :runner: Running the Application
