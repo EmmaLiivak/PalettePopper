@@ -80,6 +80,15 @@ The game is designed with performance optimization in mind. By utilizing an Enti
 * **Responsive Design**
 PalettePopper is designed to be played on various devices. The responsive layout and controls ensure a seamless gaming experience across different screen sizes and orientations.
 
+#### :sparkles: Future Enhancements
+
+Planned enhancements to further enrich the PalettePopper experience:
+
+* **Touch Controls**: Implement intuitive touch-based controls to make the game accessible on mobile devices and tablets.
+* **Powerups**: Introduce various powerups that enhance gameplay dynamics, offering players strategic advantages as they progress.
+* **Expanded Level Selection**: Add a broader selection of levels with diverse challenges and creative designs to keep the gameplay engaging and fresh.
+* **Enhanced Animations**: Integrate captivating animations for bricks and special effects, enhancing visual appeal and immersion.
+
 #### :books: Resources
 
 Getting Started:
