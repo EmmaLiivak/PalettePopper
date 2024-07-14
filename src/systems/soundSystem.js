@@ -4,7 +4,7 @@ class Sound {
     this.brickPop = new Audio('./assets/pop.wav');
     this.brickColorChange = new Audio('./assets/color-change.wav');
     this.brickCollision = new Audio('./assets/collision.wav');
-    this.backgroundMusic = document.getElementById('background-music');
+    this.backgroundMusic = new Audio('https://cdn.freesound.org/previews/691/691510_13228046-lq.mp3')
 
     this.soundEffects = [
       this.ballBounce,
@@ -12,6 +12,12 @@ class Sound {
       this.brickColorChange,
       this.brickCollision,
     ];
+
+    this.backgroundMusic.addEventListener('loadedmetadata', () => {
+      this.backgroundMusic.preload = 'auto';
+      document.addEventListener('click', () => this.startBackgroundMusic(), { once: true });
+      document.addEventListener('keydown', () => this.startBackgroundMusic(), { once: true});
+    });
 
     this.masterVolumeSlider = document.getElementById('master-volume-slider');
     this.musicVolumeSlider = document.getElementById('music-volume-slider');
@@ -35,7 +41,7 @@ class Sound {
     this.effectsVolumeSlider.addEventListener('input', () => {
       this.effectsVolume = this.effectsVolumeSlider.value / 100;
       this.updateEffectsVolume();
-    })
+    });
 
     this.preloadAudio();
 
@@ -57,7 +63,13 @@ class Sound {
     this.soundEffects.forEach(sound => {
       sound.preload = 'auto';
     });
-    this.backgroundMusic.preload = 'auto';
+  }
+
+  startBackgroundMusic() {
+    this.backgroundMusic.loop = true;
+    this.backgroundMusic.play().catch(error => {
+      console.error('Audio playback failed:', error);
+    });
   }
 }
 
