@@ -52,7 +52,7 @@ This command starts a server that listens on localhost (127.0.0.1) port 8000.
 
 ## Implementation
 
-### Architecture
+### :triangular_ruler: Architecture
 
 The game utilizes Entity-Component-System (ECS) to manage the complexity and scalability of the game's codebase. This decision was made after careful consideration of various architectural approaches (like Object-Oriented or Component-Based architectures).
 
@@ -63,7 +63,7 @@ The game utilizes Entity-Component-System (ECS) to manage the complexity and sca
 * Scalability and Performance:
   By organizing entities based on their components and processing them in separate systems, ECS improves scalability and performance. Systems can operate on batches of entities with similar components, enabling efficient processing and optimization.
 
-### Core Features
+### :star: Core Features
 
 * **Engaging Gameplay**
 PalettePopper offers a classic brick-breaker experience with modern enhancements. Players use a paddle to bounce a ball and break colorful bricks, progressing through increasingly challenging levels.
@@ -80,7 +80,7 @@ The game is designed with performance optimization in mind. By utilizing an Enti
 * **Responsive Design**
 PalettePopper is designed to be played on various devices. The responsive layout and controls ensure a seamless gaming experience across different screen sizes and orientations.
 
-#### Resources
+#### :books: Resources
 
 Getting Started:
 
@@ -113,8 +113,10 @@ Performance:
 
 ## For Auditors
 
-:scroll: [Audit instructions](https://github.com/01-edu/public/tree/master/subjects/make-your-game/audit)
-
 You can install the game locally ([Installation Instructions](#installation)) or play it on [Github Pages](https://emmaliivak.github.io/PalettePopper/).
 
+:scroll: [Audit instructions](https://github.com/01-edu/public/tree/master/subjects/make-your-game/audit)
+
 ## Authors
+
+[Emma Liivak](https://01.kood.tech/git/eliivak)
