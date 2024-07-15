@@ -15,7 +15,7 @@ Designed to be both challenging and visually appealing, PalettePopper offers pla
 
 This guide will walk you through running the game on your browser using Python HTTP Server. If using VS Code, you can also use the Live Server extension.
 
-The game can also be played on [Github Pages](https://emmaliivak.github.io/PalettePopper/).
+The game can also be played [here](https://emmaliivak.github.io/PalettePopper/) without any installation.
 
 ### :clipboard: Prerequisites
 
@@ -122,7 +122,7 @@ Performance:
 
 ## For Auditors
 
-You can install the game locally ([Installation Instructions](#installation)) or play it on [Github Pages](https://emmaliivak.github.io/PalettePopper/).
+You can install the game locally ([Installation Instructions](#installation)) or play it [here](https://emmaliivak.github.io/PalettePopper/).
 
 :scroll: [Audit instructions](https://github.com/01-edu/public/tree/master/subjects/make-your-game/audit)
 
