@@ -84,12 +84,10 @@ class BallEntity extends Entity {
         this.velocity.dx = section.dx;
 
         // Normalize velocity vector to desired speed
-        const magnitude = Math.sqrt(this.velocity.dx ** 2 + this.velocity.dy ** 2);
-        this.velocity.dx = (this.velocity.dx / magnitude) * ballConfig.desiredSpeed;
-        this.velocity.dy = -(Math.abs(this.velocity.dy / magnitude) * ballConfig.desiredSpeed);
+        this.normalizeVelocity();
 
         // Match ball color to paddle color
-        this.color.color = paddleEntity.color.color
+        this.color.color = paddleEntity.color.color;
         break;
 
       case 'brick':
@@ -139,8 +137,15 @@ class BallEntity extends Entity {
 
     this.velocity.dx = ballConfig.defaultDX;
     this.velocity.dy = ballConfig.defaultDY;
+    this.normalizeVelocity();
     this.isLaunched = true;
     this.launchMessage.classList.add('hidden');
+  }
+
+  normalizeVelocity() {
+    const magnitude = Math.sqrt(this.velocity.dx ** 2 + this.velocity.dy ** 2);
+    this.velocity.dx = (this.velocity.dx / magnitude) * ballConfig.desiredSpeed;
+    this.velocity.dy = -(Math.abs(this.velocity.dy / magnitude) * ballConfig.desiredSpeed);
   }
 
   // Align ball with paddle while the ball is not launched

@@ -78,12 +78,12 @@ export const ballConfig = {
     return paddleConfig.startX + (paddleConfig.width / 2) - (this.width / 2);
   },
   get startY() {
-    return paddleConfig.startY - (this.height) - 0.5;
+    return paddleConfig.startY - (this.height) - 2;
   },
 	startDX: 0,
 	startDY: 0,
-	defaultDX: 0,
-	defaultDY: 350,
+	defaultDX: 350,
+	defaultDY: -350,
 	desiredSpeed: 350,
 	width: ballRadius,
 	height: ballRadius,
