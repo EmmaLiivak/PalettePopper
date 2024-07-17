@@ -27,6 +27,7 @@ body, .main-menu, .pause-menu, .controls-menu, .settings-menu {
   display: block;
   margin-bottom: 2em;
   mix-blend-mode: multiply;
+  filter: brightness(110%);
 }
 
 h2, #pause-message {
@@ -92,6 +93,7 @@ ul {
   background-repeat: no-repeat;
   background-position: center center;
   mix-blend-mode: multiply;
+  filter: brightness(110%);
 }
 
 .button:hover,
