@@ -129,3 +129,4 @@ You can install the game locally ([Installation Instructions](#installation)) or
 ## Authors
 
 [Emma Liivak](https://01.kood.tech/git/eliivak)
+Special thanks to [Fred Gregor](https://01.kood.tech/git/foconero) for feedback and support :heart:
