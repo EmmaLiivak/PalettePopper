@@ -8,8 +8,6 @@ Designed to be both challenging and visually appealing, PalettePopper offers pla
 
 1. [Installation](#installation)
 2. [Implementation](#implementation)
-3. [For Auditors](#for-auditors)
-4. [Authors](#authors)
 
 ## Installation
 
@@ -29,13 +27,13 @@ This method uses Python's built-in server and requires Python 3.x installed on y
 1. Clone the repository to your local machine:
 
 ``` bash
-git clone https://01.kood.tech/git/eliivak/make-your-game.git
+git clone https://github.com/EmmaLiivak/PalettePopper.git
 ```
 
 2. Change to the project directory:
 
 ```bash
-cd make-your-game
+cd PalettePopper
 ```
 
 3. Run Python HTTP Server:
@@ -119,12 +117,6 @@ Performance:
 
 * [Simplify paint complexity and reduce paint areas](https://web.dev/articles/simplify-paint-complexity-and-reduce-paint-areas)
 * [Stick to Compositor-Only Properties and Manage Layer Count](https://web.dev/articles/stick-to-compositor-only-properties-and-manage-layer-count)
-
-## For Auditors
-
-You can install the game locally ([Installation Instructions](#installation)) or play it [here](https://emmaliivak.github.io/PalettePopper/).
-
-:scroll: [Audit instructions](https://github.com/01-edu/public/tree/master/subjects/make-your-game/audit)
 
 ## Authors
 
